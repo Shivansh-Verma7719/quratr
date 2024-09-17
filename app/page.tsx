@@ -34,7 +34,7 @@ export default function QuratrLandingPage() {
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.7 }}
             className="text-4xl sm:text-5xl md:text-7xl font-bold mb-6"
           >
             Connecting seekers to providers
@@ -42,7 +42,7 @@ export default function QuratrLandingPage() {
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
             className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-12"
           >
             Discover personalized experiences with a swipe
@@ -50,7 +50,7 @@ export default function QuratrLandingPage() {
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
+            transition={{ duration: 0.7, delay: 0.4 }}
           >
             <button className="bg-black text-white text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-full hover:bg-gray-800 transition-colors inline-flex items-center group">
               Start Exploring
@@ -100,7 +100,7 @@ export default function QuratrLandingPage() {
                     boxShadow: "0 10px 20px rgba(0,0,0,0.1)",
                     backgroundColor: "#f8f8f8",
                   }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.2 }}
                   viewport={{ once: true, amount: 0.5 }}
                   className="bg-white p-6 sm:p-8 rounded-lg shadow-lg text-center cursor-pointer"
                 >
@@ -133,7 +133,7 @@ export default function QuratrLandingPage() {
               <motion.div
                 initial={{ opacity: 0, x: -50 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 1 }}
                 viewport={{ once: true, amount: 0.5 }}
                 className="lg:w-1/2 mb-8 lg:mb-0"
               >
@@ -152,7 +152,7 @@ export default function QuratrLandingPage() {
               <motion.div
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
+                transition={{ duration: 1, delay: 0.2 }}
                 viewport={{ once: true, amount: 0.5 }}
                 className="lg:w-1/2"
               >
