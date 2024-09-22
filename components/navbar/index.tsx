@@ -1,53 +1,45 @@
 "use client";
-// import {
-//     Navbar,
-//     NavbarBrand,
-//     NavbarContent,
-//     NavbarItem,
-//     NavbarMenuToggle,
-//     NavbarMenu,
-//     NavbarMenuItem,
-//   } from "@nextui-org/navbar";
-//   import { Button } from "@nextui-org/button";
-//   import { Link } from "@nextui-org/link";
-
+import Image from "next/image";
 import { useState } from "react";
 import { motion, useTransform, useScroll } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import QuratrLogo from '@/public/images/logo.png';
 
 const CustomNavbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { scrollYProgress } = useScroll()
   const headerOpacity = useTransform(scrollYProgress, [0, 0.1], [1, 0.8]);
 
-  // const menuItems = ["About", "Features", "Team", "Join the waitlist"];
   return (
     <motion.header
         style={{ opacity: headerOpacity }}
-        className="fixed top-0 left-0 right-0 z-50 bg-white bg-opacity-90 backdrop-blur-sm border-b border-gray-200 shadow-sm"
+        className="fixed top-0 left-0 right-0 z-50 bg-black bg-opacity-90 backdrop-blur-sm shadow-sm"
       >
         <nav className="container mx-auto px-4 sm:px-6 py-4">
           <div className="flex justify-between items-center">
+            <a href="/">
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="text-2xl font-bold bg-black text-transparent bg-clip-text"
+              className="text-2xl flex flex-row text-white font-bold bg-black text-transparent bg-clip-text"
             >
-              Quratr
+              <Image src={QuratrLogo} alt="Quratr logo" width={35} height={35} className="-translate-y-[0.1rem] translate-x-1"/>
+              uratr
             </motion.div>
+            </a>
             <div className="hidden md:flex space-x-1">
-              {['Features', 'About', 'Contact'].map((item) => (
+              {['Features', 'About'].map((item) => (
                 <motion.a
                   key={item}
                   href={`#${item.toLowerCase()}`}
-                  className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition-colors relative group"
+                  className="text-white px-3 py-2 rounded-md text-sm font-medium transition-colors relative group"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   {item}
                   <motion.span
-                    className="absolute bottom-0 left-0 w-full h-0.5 bg-black origin-left transform scale-x-0 transition-transform group-hover:scale-x-100"
+                    className="absolute bottom-0 left-0 w-full h-0.5 bg-white origin-left transform scale-x-0 transition-transform group-hover:scale-x-100"
                     initial={false}
                     transition={{ duration: 0.3 }}
                   />
@@ -56,9 +48,12 @@ const CustomNavbar: React.FC = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-black text-white px-4 py-2 rounded-full transition-colors text-sm font-medium"
+                className="bg-[#fed4e4] text-black px-4 py-2 rounded-full transition-colors text-sm font-medium"
+                onClick={() => {
+                  document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
+                }}
               >
-                Get Started
+                Join the Waitlist
               </motion.button>
             </div>
             <div className="md:hidden">
@@ -82,7 +77,7 @@ const CustomNavbar: React.FC = () => {
             className="md:hidden bg-white py-4 border-t border-gray-100"
           >
             <div className="container mx-auto px-4 flex flex-col space-y-2">
-              {['Features', 'About', 'Contact'].map((item) => (
+              {['Features', 'About'].map((item) => (
                 <a
                   key={item}
                   href={`#${item.toLowerCase()}`}

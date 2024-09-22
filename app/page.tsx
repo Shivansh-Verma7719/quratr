@@ -5,6 +5,8 @@ import { ArrowRight, Smartphone, Users, Zap } from "lucide-react";
 import Navbar from "@/components/navbar/index";
 import Image from "next/image";
 import Footer from "@/components/footer/index";
+import heroImage from "@/public/images/landing/1.jpg";
+import discoveryImage from "@/public/images/landing/2.jpg";
 
 export default function QuratrLandingPage() {
   const [scrollY, setScrollY] = useState(0);
@@ -17,7 +19,6 @@ export default function QuratrLandingPage() {
   }, []);
 
   const heroScale = useTransform(scrollYProgress, [0, 0.2], [1, 0.9]);
-  const featureY = useTransform(scrollYProgress, [0.2, 0.4], [100, 0]);
   const aboutOpacity = useTransform(scrollYProgress, [0.4, 0.6], [0, 1]);
   const ctaScale = useTransform(scrollYProgress, [0.6, 0.8], [0.8, 1]);
 
@@ -26,49 +27,51 @@ export default function QuratrLandingPage() {
       
       <Navbar />
 
-      <main className="pt-24">
+      <main className="pt-[68px]">
         <motion.section
-          style={{ scale: heroScale }}
-          className="container mx-auto px-4 sm:px-6 py-12 text-center"
+          id="hero"
+          style={{ scale: heroScale, backgroundImage: `url(${heroImage.src})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+          className="h-screen w-full sm:px-6 py-12 text-center"
         >
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="text-4xl sm:text-5xl md:text-7xl font-bold mb-6"
-          >
-            Connecting seekers to providers
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-12"
-          >
-            Discover personalized experiences with a swipe
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.4 }}
-          >
-            <button className="bg-black text-white text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-full hover:bg-gray-800 transition-colors inline-flex items-center group">
+            <div className="flex flex-col items-center justify-center h-full">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
+              className="text-4xl text-white sm:text-5xl md:text-7xl font-bold mb-6"
+            >
+              Curate you next Experience
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+              className="text-lg sm:text-xl md:text-2xl text-white mb-12"
+            >
+              Discover personalized experiences with a swipe
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.7, delay: 0.4 }}
+            >
+              <button className="bg-[#fed4e4] text-black hover:scale-110 text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-full transition-all inline-flex items-center group">
               Start Exploring
               <ArrowRight className="ml-2 group-hover:animate-bounceHorizontal transition-transform duration-300" />
-            </button>
-          </motion.div>
+              </button>
+            </motion.div>
+            </div>
         </motion.section>
 
         <motion.section
-          style={{ y: featureY }}
           id="features"
-          className="bg-gray-50 py-16 sm:py-24"
+          className="bg-black text-white py-16 sm:py-24"
         >
           <div className="container mx-auto px-4 sm:px-6">
             <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 sm:mb-16">
-              Why Quratr?
+            Connecting seekers to providers
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12">
+            <div className="grid text-white grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12">
               {[
                 {
                   icon: (
@@ -98,11 +101,10 @@ export default function QuratrLandingPage() {
                   whileHover={{
                     scale: 1.05,
                     boxShadow: "0 10px 20px rgba(0,0,0,0.1)",
-                    backgroundColor: "#f8f8f8",
                   }}
                   transition={{ duration: 0.2 }}
                   viewport={{ once: true, amount: 0.5 }}
-                  className="bg-white p-6 sm:p-8 rounded-lg shadow-lg text-center cursor-pointer"
+                  className="bg-black p-6 sm:p-8 rounded-2xl shadow-lg text-center border border-white cursor-pointer"
                 >
                   <motion.div
                     initial={{ scale: 1 }}
@@ -137,31 +139,31 @@ export default function QuratrLandingPage() {
                 viewport={{ once: true, amount: 0.5 }}
                 className="lg:w-1/2 mb-8 lg:mb-0"
               >
-                <h2 className="text-3xl sm:text-4xl font-bold mb-4 sm:mb-6">
+                <h2 className="md:text-5xl text-4xl font-bold mb-4 sm:mb-6">
                   Redefining Discovery
                 </h2>
-                <p className="text-base sm:text-xl text-gray-600 mb-6">
+                <p className="text-base sm:text-[1.3rem] text-gray-600 mb-6">
                   Quratr is leading the Consumer AI revolution, crafting highly
                   curated recommendations for the modern, experience-driven
                   generation.
                 </p>
-                <button className="bg-black text-white px-6 sm:px-8 py-2 sm:py-3 rounded-full hover:bg-gray-800 transition-colors">
+                <button className="bg-[#fed4e4] text-black px-6 sm:px-8 py-2 sm:py-3 rounded-full hover:scale-110 transition-all">
                   Learn More
                 </button>
               </motion.div>
               <motion.div
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 1, delay: 0.2 }}
+                transition={{ duration: 1, delay: 0.5 }}
                 viewport={{ once: true, amount: 0.5 }}
                 className="lg:w-1/2"
               >
                 <Image
-                  src=""
-                  width={400}
-                  height={400}
+                  src={discoveryImage}
+                  width={500}
+                  height={500}
                   alt="Quratr App"
-                  className="rounded-lg shadow-xl w-full max-w-md mx-auto"
+                  className="rounded-xl shadow-xl w-full max-w-4xl mx-auto"
                 />
               </motion.div>
             </div>
@@ -170,7 +172,8 @@ export default function QuratrLandingPage() {
 
         <motion.section
           style={{ scale: ctaScale }}
-          className="bg-gray-900 text-white py-16 sm:py-24"
+          id="waitlist"
+          className="bg-black text-white py-16 sm:py-24"
         >
           <div className="container mx-auto px-4 sm:px-6 text-center">
             <h2 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8">
@@ -179,21 +182,26 @@ export default function QuratrLandingPage() {
             <p className="text-lg sm:text-xl mb-8 sm:mb-12">
               Join Quratr today and start discovering personalized adventures.
             </p>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-white text-gray-900 px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold hover:bg-gray-200 transition-colors"
-            >
-              Get Early Access
-            </motion.button>
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="bg-[#fed4e4] px-4 py-2 rounded-full text-black w-full sm:w-1/4"
+              />
+              <button className="bg-[#fed4e4] text-black px-6 py-2 rounded-full hover:scale-110 transition-all">
+                Join Waitlist
+              </button>
+            </div>
+            
           </div>
         </motion.section>
+        {/* <BackgroundLinesDemo /> */}
       </main>
 
       <Footer />
 
       <motion.div
-        className="fixed bottom-4 sm:bottom-8 right-4 sm:right-8 bg-black text-white p-3 sm:p-4 rounded-full shadow-lg cursor-pointer"
+        className="fixed bottom-4 sm:bottom-8 right-4 sm:right-8 bg-[#fed4e4] text-black p-3 sm:p-4 rounded-full shadow-lg cursor-pointer"
         style={{
           opacity: scrollY > 200 ? 1 : 0,
           pointerEvents: scrollY > 200 ? "auto" : "none",
