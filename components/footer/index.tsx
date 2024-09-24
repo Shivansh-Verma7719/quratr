@@ -2,7 +2,8 @@ import React from "react";
 import Link from "next/link";
 import QuratrLogo from '@/public/images/logo.png';
 import Image from 'next/image';
-import { Facebook, Instagram, Twitter, Linkedin } from 'lucide-react'
+// import { Facebook, Instagram, Twitter, Linkedin } from 'lucide-react'
+import {Instagram} from 'lucide-react'
 
 const Footer: React.FC = () => {
   return (
