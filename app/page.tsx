@@ -5,7 +5,7 @@ import { ArrowRight, Smartphone, Users, Zap } from "lucide-react";
 import Navbar from "@/components/navbar/index";
 import Image from "next/image";
 import Footer from "@/components/footer/index";
-import heroImage from "@/public/images/landing/1.jpg";
+// import heroImage from "@/public/images/landing/1.jpg";
 import discoveryImage from "@/public/images/landing/2.jpg";
 
 export default function QuratrLandingPage() {
@@ -30,17 +30,39 @@ export default function QuratrLandingPage() {
       <main className="pt-[68px]">
         <motion.section
           id="hero"
-          style={{ scale: heroScale, backgroundImage: `url(${heroImage.src})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
-          className="h-screen w-full sm:px-6 py-12 text-center"
+          style={{
+            scale: heroScale,
+            // Remove the backgroundImage property
+            // Add video as background
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+          className="h-screen w-full p-0 text-center"
         >
-            <div className="flex flex-col items-center justify-center h-full">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="z-0"
+            style={{
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+            }}
+          >
+            <source src="/videos/hero.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <div className="absolute inset-0 flex z-20 flex-col items-center justify-center">
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
               className="text-4xl text-white sm:text-5xl md:text-7xl font-bold mb-6"
             >
-              Curate you next Experience
+              Curate your next Experience
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -60,7 +82,7 @@ export default function QuratrLandingPage() {
               <ArrowRight className="ml-2 group-hover:animate-bounceHorizontal transition-transform duration-300" />
               </button>
             </motion.div>
-            </div>
+          </div>
         </motion.section>
 
         <motion.section
