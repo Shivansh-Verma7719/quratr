@@ -2,6 +2,7 @@ import { nextui } from "@nextui-org/theme";
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: 'class', // Ensure class-based dark mode is enabled
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -10,6 +11,13 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        background: "var(--color-background)",
+        foreground: "var(--color-foreground)",
+        text: "var(--color-text)",
+        textSec: "var(--color-text-secondary)"
+        /* Add more colors as needed */
+      },
       keyframes: {
         bounceHorizontal: {
           "0%, 100%": { transform: "translateX(0)" },
@@ -18,10 +26,6 @@ const config: Config = {
       },
       animation: {
         bounceHorizontal: "bounceHorizontal 1s infinite",
-      },
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
       },
     },
   },

@@ -2,23 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-background: #ffffff;
+  --color-foreground: #0a0a0a;
+  --color-text: #171717;
+  --color-text-secondary: #ffffff; /* gray-600 */
+  /* Add more variables as needed */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+.dark {
+  --color-background: #0a0a0a;
+  --color-foreground: #ededed;
+  --color-text: #ededed;
+  --color-text-secondary: #0a0a0a;
+  /* Add more variables as needed */
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
 }
 
 html {
@@ -28,12 +38,21 @@ html {
     display: none;
   }
 
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
-h1,h2,h3,h4,h5,h6 {
-  font-family: 'League Spartan', sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+  font-family: "League Spartan", sans-serif;
 }
 
 @layer utilities {

@@ -4,8 +4,8 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Smartphone, Users, Zap } from "lucide-react";
 import Navbar from "@/components/navbar/index";
 import Image from "next/image";
+import { Providers } from './providers';
 import Footer from "@/components/footer/index";
-// import heroImage from "@/public/images/landing/1.jpg";
 import discoveryImage from "@/public/images/landing/2.jpg";
 
 export default function QuratrLandingPage() {
@@ -23,11 +23,12 @@ export default function QuratrLandingPage() {
   const ctaScale = useTransform(scrollYProgress, [0.6, 0.8], [0.8, 1]);
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 font-sans overflow-x-hidden">
+    <Providers>
+    <div className="min-h-screen font-sans overflow-x-hidden">
       
       <Navbar />
 
-      <main className="pt-[68px]">
+      <main className="pt-[68px] bg-white">
         <motion.section
           id="hero"
           style={{
@@ -87,13 +88,13 @@ export default function QuratrLandingPage() {
 
         <motion.section
           id="features"
-          className="bg-black text-white py-16 sm:py-24"
+          className="bg-background text-text py-16 sm:py-24"
         >
           <div className="container mx-auto px-4 sm:px-6">
             <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 sm:mb-16">
             Connecting seekers to providers
             </h2>
-            <div className="grid text-white grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12">
+            <div className="grid text-text grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12">
               {[
                 {
                   icon: (
@@ -126,7 +127,7 @@ export default function QuratrLandingPage() {
                   }}
                   transition={{ duration: 0.2 }}
                   viewport={{ once: true, amount: 0.5 }}
-                  className="bg-black p-6 sm:p-8 rounded-2xl shadow-lg text-center border border-white cursor-pointer"
+                  className="text-text p-6 sm:p-8 rounded-2xl shadow-lg text-center border border-white cursor-pointer"
                 >
                   <motion.div
                     initial={{ scale: 1 }}
@@ -138,7 +139,7 @@ export default function QuratrLandingPage() {
                   <h3 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">
                     {feature.title}
                   </h3>
-                  <p className="text-gray-600 text-sm sm:text-base">
+                  <p className="text-sm sm:text-base">
                     {feature.description}
                   </p>
                 </motion.div>
@@ -150,7 +151,7 @@ export default function QuratrLandingPage() {
         <motion.section
           style={{ opacity: aboutOpacity }}
           id="about"
-          className="py-16 sm:py-24"
+          className="py-16 sm:py-24 bg-white"
         >
           <div className="container mx-auto px-4 sm:px-6">
             <div className="flex flex-col lg:flex-row items-center">
@@ -161,7 +162,7 @@ export default function QuratrLandingPage() {
                 viewport={{ once: true, amount: 0.5 }}
                 className="lg:w-1/2 mb-8 lg:mb-0"
               >
-                <h2 className="md:text-5xl text-4xl font-bold mb-4 sm:mb-6">
+                <h2 className="md:text-5xl text-black text-4xl font-bold mb-4 sm:mb-6">
                   Redefining Discovery
                 </h2>
                 <p className="text-base sm:text-[1.3rem] text-gray-600 mb-6">
@@ -195,7 +196,7 @@ export default function QuratrLandingPage() {
         <motion.section
           style={{ scale: ctaScale }}
           id="waitlist"
-          className="bg-black text-white py-16 sm:py-24"
+          className="bg-background text-text py-16 sm:py-24"
         >
           <div className="container mx-auto px-4 sm:px-6 text-center">
             <h2 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8">
@@ -235,5 +236,6 @@ export default function QuratrLandingPage() {
         <ArrowRight className="transform rotate-[-90deg] w-5 h-5 sm:w-6 sm:h-6" />
       </motion.div>
     </div>
+    </Providers>
   );
 }
