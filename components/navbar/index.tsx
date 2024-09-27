@@ -13,12 +13,9 @@ const CustomNavbar: React.FC = () => {
   const { scrollYProgress } = useScroll();
   const headerOpacity = useTransform(scrollYProgress, [0, 0.1], [1, 0.8]);
   const { theme } = useTheme();
-  useEffect(
-    () => {
-      console.log(theme)
-    },
-    [theme]
-  );
+  useEffect(() => {
+    console.log(theme);
+  }, [theme]);
   const themeLogo = theme === "light" ? QuratrLogoDark : QuratrLogo;
 
   return (
@@ -42,8 +39,12 @@ const CustomNavbar: React.FC = () => {
                 height={35}
                 className="-translate-y-[0.2rem] translate-x-[0.2rem]"
               />
-              <h1 className="text-2xl p-0 ml-0 font-bold"
-                style={{marginLeft: "0px"}}>uratr</h1>
+              <h1
+                className="text-2xl p-0 ml-0 font-bold"
+                style={{ marginLeft: "0px" }}
+              >
+                uratr
+              </h1>
             </motion.div>
           </a>
           <div className="hidden md:flex space-x-1">
@@ -64,21 +65,18 @@ const CustomNavbar: React.FC = () => {
               </motion.a>
             ))}
             <ThemeSwitcher />
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-[#fed4e4] text-black px-4 py-2 rounded-full transition-colors text-sm font-medium"
-              onClick={() => {
-                document
-                  .getElementById("waitlist")
-                  ?.scrollIntoView({ behavior: "smooth" });
-              }}
-            >
-              <p>Join the Waitlist</p>
-            </motion.button>
+            <a href="/waitlist">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-[#fed4e4] text-black px-4 py-2 rounded-full transition-colors text-sm font-medium"
+              >
+                <p>Join the Waitlist</p>
+              </motion.button>
+            </a>
           </div>
           <div className="md:hidden">
-            <ThemeSwitcher className="fixed top-2 right-12"/>
+            <ThemeSwitcher className="fixed top-2 right-12" />
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -107,12 +105,14 @@ const CustomNavbar: React.FC = () => {
                 className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                {item}
+                {item.slice(1)}
               </a>
             ))}
-            <button className="bg-black text-white px-4 py-2 rounded-full transition-colors text-sm font-medium mt-2">
-              Get Started
-            </button>
+            <a href="/waitlist">
+              <button className="bg-black text-white px-4 py-2 rounded-full transition-colors text-sm font-medium mt-2">
+                Get Started
+              </button>
+            </a>
           </div>
         </motion.div>
       )}
