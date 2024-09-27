@@ -1,10 +1,11 @@
 'use client';
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCheck } from 'lucide-react';
 import Navbar from "@/components/navbar/index";
 import Footer from "@/components/footer/index";
 import { Providers } from '../providers';
+import { createClient } from '@/utils/supabase/client';
 
 const questions = [
   {
@@ -86,10 +87,48 @@ const questions = [
 
 const FeedbackForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [answers, setAnswers] = useState({});
+  const [answers, setAnswers] = useState({
+    '1': '',
+    '2': '',
+    '3': '',
+    '4': '',
+    '5': '',
+    '6': '',
+    '7': '',
+    '8': '',
+    '9': '',
+    '10': '',
+    '11': '',
+    '12': '',
+    '13': '',
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);  
+
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const isCurrentStepValid = () => {
+    const currentQuestion = questions[currentStep];
+    const answer = answers[currentQuestion.id.toString() as keyof typeof answers];
+    
+    switch (currentQuestion.type) {
+      case 'email':
+        return validateEmail(answer);
+      case 'text':
+      case 'textarea':
+        return answer.trim() !== '';
+      case 'radio':
+        return answer !== '';
+      default:
+        return true;
+    }
+  };
 
   const handleNext = () => {
-    if (currentStep < questions.length - 1) {
+    if (isCurrentStepValid() && currentStep < questions.length - 1) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -104,9 +143,62 @@ const FeedbackForm = () => {
     setAnswers({ ...answers, [questionId]: answer });
   };
 
-  const handleSubmit = () => {
-    console.log('Form submitted:', answers);
-    // Here you would typically send the answers to your backend
+  const handleSubmit = async () => {
+    if (!answers['1'] || !validateEmail(answers['1'])) return;
+
+    setIsSubmitting(true);
+
+    try {
+      const supabase = createClient();
+      
+      const feedbackData: Record<string, string> = {
+        email: answers['1'],
+        '2': answers['2'],
+        '3': answers['3'],
+        '4': answers['4'],
+        '5': answers['5'],
+        '6': answers['6'],
+        '7': answers['7'],
+        '8': answers['8'],
+        '9': answers['9'],
+        '10': answers['10'],
+        '11': answers['11'],
+        '12': answers['12'],
+        '13': answers['13'],
+      };
+
+      const { data, error } = await supabase
+        .from('feedback')
+        .insert([feedbackData]);
+
+      if (error) throw error;
+
+      console.log('Feedback submitted successfully:', data);
+      setIsSubmitted(true);
+      // Reset form or navigate to a thank you page
+    } catch (error) {
+      console.error('Error submitting feedback:', error);
+      // Handle error (e.g., show error message to user)
+    } finally {
+      setIsSubmitting(false);
+      setCurrentStep(0);
+      setIsSubmitted(false);
+      setAnswers({
+        '1': '',
+        '2': '',
+        '3': '',
+        '4': '',
+        '5': '',
+        '6': '',
+        '7': '',
+        '8': '',
+        '9': '',
+        '10': '',
+        '11': '',
+        '12': '',
+        '13': '',
+      });
+    }
   };
 
   const renderQuestion = (question: { id: number; question: string; type: string; options?: undefined; } | { id: number; question: string; type: string; options: string[]; }) => {
@@ -116,7 +208,7 @@ const FeedbackForm = () => {
         return (
           <input
             type={question.type}
-            value={answers[question.id as keyof typeof answers] || ''}
+            value={answers[question.id.toString() as keyof typeof answers] || ''}
             onChange={(e) => handleAnswer(question.id, e.target.value)}
             className="w-full p-2 border border-gray-300 rounded-md"
             required={question.type === 'email'}
@@ -129,7 +221,7 @@ const FeedbackForm = () => {
               <label key={option} className="flex items-center space-x-2">
                 <input
                   type="radio"
-                  checked={answers[question.id as keyof typeof answers] === option}
+                  checked={answers[String(question.id) as keyof typeof answers] === option}
                   onChange={() => handleAnswer(question.id, option)}
                   className="form-radio h-5 w-5 text-[#fed4e4]"
                 />
@@ -141,7 +233,7 @@ const FeedbackForm = () => {
       case 'textarea':
         return (
           <textarea
-            value={answers[question.id as keyof typeof answers] || ''}
+            value={answers[String(question.id) as keyof typeof answers] || ''}
             onChange={(e) => handleAnswer(question.id, e.target.value)}
             className="w-full p-2 border border-gray-300 rounded-md"
             rows={4}
@@ -158,7 +250,7 @@ const FeedbackForm = () => {
         <Navbar />
         <main className="pt-[68px]">
           <div className="container mx-auto px-4 sm:px-6 py-16 sm:py-24">
-            <div className="bg-background p-8 rounded-lg shadow-lg w-full max-w-2xl mx-auto">
+            <div className="bg-background p-8 rounded-lg shadow-lg dark:shadow-gray-800 w-full max-w-2xl mx-auto">
               <h1 className="text-3xl font-bold mb-6 text-center">Quratr Feedback</h1>
               <AnimatePresence mode="wait">
                 <motion.div
@@ -181,19 +273,62 @@ const FeedbackForm = () => {
                   <ArrowLeft className="mr-2" /> Previous
                 </button>
                 {currentStep === questions.length - 1 ? (
-                  <button
+                  <motion.button
                     onClick={handleSubmit}
-                    className="bg-[#fed4e4] text-black px-4 py-2 rounded-full flex items-center"
+                    disabled={isSubmitting || !isCurrentStepValid()}
+                    whileHover={{ scale: isCurrentStepValid() ? 1.05 : 1 }}
+                    whileTap={{ scale: isCurrentStepValid() ? 0.95 : 1 }}
+                    className={`bg-[#fed4e4] text-black px-6 py-2 rounded-full transition-all ${
+                      isCurrentStepValid()
+                        ? "hover:scale-110"
+                        : "opacity-50 cursor-not-allowed"
+                    }`}
                   >
-                    Submit
-                  </button>
+                    <AnimatePresence mode="wait" initial={false}>
+                      {isSubmitting ? (
+                        <motion.span
+                          key="submitting"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                        >
+                          Submitting...
+                        </motion.span>
+                      ) : isSubmitted ? (
+                        <motion.span
+                          key="submitted"
+                          initial={{ opacity: 0, scale: 0.5 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.5 }}
+                        >
+                          <CheckCheck className="w-5 h-5" />
+                        </motion.span>
+                      ) : (
+                        <motion.span
+                          key="default"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                        >
+                          Submit
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
+                  </motion.button>
                 ) : (
-                  <button
+                  <motion.button
                     onClick={handleNext}
-                    className="bg-[#fed4e4] text-black px-4 py-2 rounded-full flex items-center"
+                    disabled={!isCurrentStepValid()}
+                    whileHover={{ scale: isCurrentStepValid() ? 1.05 : 1 }}
+                    whileTap={{ scale: isCurrentStepValid() ? 0.95 : 1 }}
+                    className={`bg-[#fed4e4] text-black px-4 py-2 rounded-full flex items-center transition-all ${
+                      isCurrentStepValid()
+                        ? "hover:scale-110"
+                        : "opacity-50 cursor-not-allowed"
+                    }`}
                   >
                     Next <ArrowRight className="ml-2" />
-                  </button>
+                  </motion.button>
                 )}
               </div>
             </div>
