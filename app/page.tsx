@@ -1,7 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  AnimatePresence,
+} from "framer-motion";
 import { ArrowRight, Smartphone, Users, Zap, CheckCheck } from "lucide-react";
 import Navbar from "@/components/navbar/index";
 import Image from "next/image";
@@ -24,25 +29,38 @@ export default function QuratrLandingPage() {
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isEmailValid, setIsEmailValid] = useState(false);
+
+  const validateEmail = (email: string) => {
+    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return re.test(String(email).toLowerCase());
+  };
 
   useEffect(() => {
     if (isSubmitted) {
       const timer = setTimeout(() => {
         setIsSubmitted(false);
-      },3000);
+      }, 3000);
       return () => clearTimeout(timer);
     }
   }, [isSubmitted]);
 
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newEmail = e.target.value;
+    setEmail(newEmail);
+    setIsEmailValid(validateEmail(newEmail));
+  };
+
   const handleWaitlistSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    console.log('email', email);
+    if (!isEmailValid) return;
+
     setIsSubmitting(true);
 
     try {
       // Initialize Supabase client
       const supabase = createClient();
+
       const { data, error } = await supabase
         .from("waitlist")
         .insert([{ email: email }]);
@@ -56,6 +74,7 @@ export default function QuratrLandingPage() {
       console.error("Error adding to waitlist:", error);
     } finally {
       setIsSubmitting(false);
+      setIsEmailValid(false);
     }
   };
 
@@ -121,7 +140,7 @@ export default function QuratrLandingPage() {
               </motion.div>
             </div>
           </motion.section>
-              {/*  */}
+          {/*  */}
           <motion.section
             id="features"
             className="bg-background text-text py-16 sm:py-24"
@@ -242,51 +261,56 @@ export default function QuratrLandingPage() {
                 Join Quratr today and start discovering personalized adventures.
               </p>
               <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="bg-[#fed4e4] px-4 py-2 rounded-full text-black w-full sm:w-1/4"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <motion.button
-              onClick={handleWaitlistSubmit}
-              disabled={isSubmitting}
-              className="bg-[#fed4e4] text-black px-6 py-2 rounded-full hover:scale-110 transition-all disabled:opacity-50"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <AnimatePresence mode="wait" initial={false}>
-                {isSubmitting ? (
-                  <motion.span
-                    key="submitting"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                  >
-                    Joining...
-                  </motion.span>
-                ) : isSubmitted ? (
-                  <motion.span
-                    key="submitted"
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.5 }}
-                  >
-                    <CheckCheck className="w-5 h-5" />
-                  </motion.span>
-                ) : (
-                  <motion.span
-                    key="default"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                  >
-                    Join Waitlist
-                  </motion.span>
-                )}
-              </AnimatePresence>
-            </motion.button>
-          </div>
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  className="bg-[#fed4e4] px-4 py-2 rounded-full text-black w-full sm:w-1/4"
+                  onChange={handleEmailChange}
+                  value={email}
+                />
+                <motion.button
+                  onClick={handleWaitlistSubmit}
+                  disabled={isSubmitting || !isEmailValid}
+                  whileHover={{ scale: isEmailValid ? 1.05 : 1 }}
+                  whileTap={{ scale: isEmailValid ? 0.95 : 1 }}
+                  className={`bg-[#fed4e4] text-black px-6 py-2 rounded-full transition-all ${
+                    isEmailValid
+                      ? "hover:scale-110"
+                      : "opacity-50 cursor-not-allowed"
+                  }`}
+                >
+                  <AnimatePresence mode="wait" initial={false}>
+                    {isSubmitting ? (
+                      <motion.span
+                        key="submitting"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                      >
+                        Joining...
+                      </motion.span>
+                    ) : isSubmitted ? (
+                      <motion.span
+                        key="submitted"
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.5 }}
+                      >
+                        <CheckCheck className="w-5 h-5" />
+                      </motion.span>
+                    ) : (
+                      <motion.span
+                        key="default"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                      >
+                        Join Waitlist
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </motion.button>
+              </div>
             </div>
           </motion.section>
           {/* <BackgroundLinesDemo /> */}
