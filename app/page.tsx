@@ -1,13 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
-import { createClient } from "@/utils/supabase/client";
 import {
   motion,
   useScroll,
   useTransform,
-  AnimatePresence,
 } from "framer-motion";
-import { ArrowRight, Smartphone, Users, Zap, CheckCheck } from "lucide-react";
+import { ArrowRight, Smartphone, Users, Zap } from "lucide-react";
 import Navbar from "@/components/navbar/index";
 import Image from "next/image";
 import { Providers } from "./providers";
@@ -26,57 +24,6 @@ export default function QuratrLandingPage() {
   const heroScale = useTransform(scrollYProgress, [0, 0.2], [1, 0.9]);
   const aboutOpacity = useTransform(scrollYProgress, [0.4, 0.6], [0, 1]);
   const ctaScale = useTransform(scrollYProgress, [0.6, 0.8], [0.8, 1]);
-  const [email, setEmail] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isEmailValid, setIsEmailValid] = useState(false);
-
-  const validateEmail = (email: string) => {
-    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return re.test(String(email).toLowerCase());
-  };
-
-  useEffect(() => {
-    if (isSubmitted) {
-      const timer = setTimeout(() => {
-        setIsSubmitted(false);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [isSubmitted]);
-
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newEmail = e.target.value;
-    setEmail(newEmail);
-    setIsEmailValid(validateEmail(newEmail));
-  };
-
-  const handleWaitlistSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!isEmailValid) return;
-
-    setIsSubmitting(true);
-
-    try {
-      // Initialize Supabase client
-      const supabase = createClient();
-
-      const { data, error } = await supabase
-        .from("waitlist")
-        .insert([{ email: email }]);
-
-      if (error) throw error;
-
-      console.log("Successfully added to waitlist:", data);
-      setEmail("");
-      setIsSubmitted(true);
-    } catch (error) {
-      console.error("Error adding to waitlist:", error);
-    } finally {
-      setIsSubmitting(false);
-      setIsEmailValid(false);
-    }
-  };
 
   return (
     <Providers>
@@ -88,8 +35,6 @@ export default function QuratrLandingPage() {
             id="hero"
             style={{
               scale: heroScale,
-              // Remove the backgroundImage property
-              // Add video as background
               position: "relative",
               overflow: "hidden",
             }}
@@ -133,10 +78,12 @@ export default function QuratrLandingPage() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.7, delay: 0.4 }}
               >
-                <button className="bg-[#fed4e4] text-black hover:scale-110 text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-full transition-all inline-flex items-center group">
-                  Start Exploring
-                  <ArrowRight className="ml-2 group-hover:animate-bounceHorizontal transition-transform duration-300" />
-                </button>
+                <a href="/waitlist">
+                  <button className="bg-[#fed4e4] text-black hover:scale-110 text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-full transition-all inline-flex items-center group">
+                    Start Exploring
+                    <ArrowRight className="ml-2 group-hover:animate-bounceHorizontal transition-transform duration-300" />
+                  </button>
+                </a>
               </motion.div>
             </div>
           </motion.section>
@@ -225,9 +172,9 @@ export default function QuratrLandingPage() {
                     highly curated recommendations for the modern,
                     experience-driven generation.
                   </p>
-                  <button className="bg-[#fed4e4] text-black px-6 sm:px-8 py-2 sm:py-3 rounded-full hover:scale-110 transition-all">
+                  {/* <button className="bg-[#fed4e4] text-black px-6 sm:px-8 py-2 sm:py-3 rounded-full hover:scale-110 transition-all">
                     Learn More
-                  </button>
+                  </button> */}
                 </motion.div>
                 <motion.div
                   initial={{ opacity: 0, x: 50 }}
@@ -260,57 +207,14 @@ export default function QuratrLandingPage() {
               <p className="text-lg sm:text-xl mb-8 sm:mb-12">
                 Join Quratr today and start discovering personalized adventures.
               </p>
-              <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="bg-[#fed4e4] px-4 py-2 rounded-full text-black w-full sm:w-1/4"
-                  onChange={handleEmailChange}
-                  value={email}
-                />
-                <motion.button
-                  onClick={handleWaitlistSubmit}
-                  disabled={isSubmitting || !isEmailValid}
-                  whileHover={{ scale: isEmailValid ? 1.05 : 1 }}
-                  whileTap={{ scale: isEmailValid ? 0.95 : 1 }}
-                  className={`bg-[#fed4e4] text-black px-6 py-2 rounded-full transition-all ${
-                    isEmailValid
-                      ? "hover:scale-110"
-                      : "opacity-50 cursor-not-allowed"
-                  }`}
-                >
-                  <AnimatePresence mode="wait" initial={false}>
-                    {isSubmitting ? (
-                      <motion.span
-                        key="submitting"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                      >
-                        Joining...
-                      </motion.span>
-                    ) : isSubmitted ? (
-                      <motion.span
-                        key="submitted"
-                        initial={{ opacity: 0, scale: 0.5 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.5 }}
-                      >
-                        <CheckCheck className="w-5 h-5" />
-                      </motion.span>
-                    ) : (
-                      <motion.span
-                        key="default"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                      >
-                        Join Waitlist
-                      </motion.span>
-                    )}
-                  </AnimatePresence>
-                </motion.button>
-              </div>
+              <motion.a
+                href="/waitlist"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-[#fed4e4] text-black px-6 py-2 rounded-full transition-all inline-block hover:scale-110"
+              >
+                Join the Waitlist
+              </motion.a>
             </div>
           </motion.section>
           {/* <BackgroundLinesDemo /> */}
