@@ -40,21 +40,22 @@ const CustomNavbar: React.FC = () => {
                 alt="Quratr logo"
                 width={35}
                 height={35}
-                className="-translate-y-[0.1rem] translate-x-[0.2rem]"
+                className="-translate-y-[0.2rem] translate-x-[0.2rem]"
               />
-              uratr
+              <h1 className="text-2xl p-0 ml-0 font-bold"
+                style={{marginLeft: "0px"}}>uratr</h1>
             </motion.div>
           </a>
           <div className="hidden md:flex space-x-1">
-            {["Features", "About"].map((item) => (
+            {["#Features", "#About", "/Feedback"].map((item) => (
               <motion.a
                 key={item}
-                href={`#${item.toLowerCase()}`}
+                href={`${item.toLowerCase()}`}
                 className="text-text px-3 py-2 rounded-md text-sm font-medium transition-colors relative group"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {item}
+                {item.slice(1)}
                 <motion.span
                   className="absolute bottom-0 left-0 w-full h-0.5 bg-white origin-left transform scale-x-0 transition-transform group-hover:scale-x-100"
                   initial={false}
@@ -73,7 +74,7 @@ const CustomNavbar: React.FC = () => {
                   ?.scrollIntoView({ behavior: "smooth" });
               }}
             >
-              Join the Waitlist
+              <p>Join the Waitlist</p>
             </motion.button>
           </div>
           <div className="md:hidden">
@@ -99,10 +100,10 @@ const CustomNavbar: React.FC = () => {
           className="md:hidden bg-white py-4 border-t border-gray-100"
         >
           <div className="container mx-auto px-4 flex flex-col space-y-2">
-            {["Features", "About"].map((item) => (
+            {["#Features", "#About", "/Feedback"].map((item) => (
               <a
                 key={item}
-                href={`#${item.toLowerCase()}`}
+                href={`${item.toLowerCase()}`}
                 className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >

@@ -27,19 +27,26 @@
   /* Add more variables as needed */
 }
 
-body {
-  font-family: "Roboto Mono", monospace;
-}
-
 html {
   scroll-behavior: smooth;
   /* Hide scrollbars for all browsers */
   ::-webkit-scrollbar {
     display: none;
   }
-
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+}
+
+body {
+  font-family: 'Roboto Mono', monospace !important;
+}
+
+p {
+  font-family: 'Roboto Mono', monospace !important;
+}
+
+a {
+  font-family: 'Roboto Mono', monospace !important;
 }
 
 h1,
