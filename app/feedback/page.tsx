@@ -80,7 +80,7 @@ const questions = [
   },
   {
     id: 13,
-    question: "We want to hear, tell me more about what you think of us.....",
+    question: "We want to hear, tell us more about what you think of us.....",
     type: 'textarea',
   },
 ];
