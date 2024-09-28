@@ -38,7 +38,7 @@ const Footer: React.FC = () => {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="#features"
+                  href="/#features"
                   className="text-gray-400 transition-colors"
                 >
                   Features
@@ -46,7 +46,7 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <Link
-                  href="#about"
+                  href="/#about"
                   className="text-gray-400 transition-colors"
                 >
                   About
@@ -54,10 +54,18 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <Link
-                  href="#waitlist"
+                  href="/waitlist"
                   className="text-gray-400 transition-colors"
                 >
                   Waitlist
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/feedback"
+                  className="text-gray-400 transition-colors"
+                >
+                  Feedback
                 </Link>
               </li>
               {/* <li><Link href="#" className="text-gray-400 transition-colors">Clients</Link></li> */}
@@ -71,7 +79,7 @@ const Footer: React.FC = () => {
               {/* <li><Link href="#" className="text-gray-400 transition-colors flex items-center"><Facebook className="w-5 h-5 mr-2" /> Facebook</Link></li> */}
               <li>
                 <Link
-                  href="#"
+                  href="https://www.instagram.com/quratr.app"
                   className="text-gray-400 transition-colors flex items-center"
                 >
                   <Instagram className="w-5 h-5 mr-2" /> Instagram
