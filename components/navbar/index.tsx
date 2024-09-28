@@ -48,15 +48,15 @@ const CustomNavbar: React.FC = () => {
             </motion.div>
           </a>
           <div className="hidden md:flex space-x-1">
-            {["#Features", "#About", "/Feedback"].map((item) => (
+            {["#Features", "#About", "Feedback"].map((item) => (
               <motion.a
                 key={item}
-                href={`${item.toLowerCase()}`}
+                href={`/${item.toLowerCase()}`}
                 className="text-text px-3 py-2 rounded-md text-sm font-medium transition-colors relative group"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {item.slice(1)}
+                {item.replace("#", "").replace("/", "")}
                 <motion.span
                   className="absolute bottom-0 left-0 w-full h-0.5 bg-white origin-left transform scale-x-0 transition-transform group-hover:scale-x-100"
                   initial={false}
@@ -101,11 +101,11 @@ const CustomNavbar: React.FC = () => {
             {["#Features", "#About", "/Feedback"].map((item) => (
               <a
                 key={item}
-                href={`${item.toLowerCase()}`}
+                href={`/${item.toLowerCase()}`}
                 className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                {item.slice(1)}
+                {item.replace("#", "").replace("/", "")}
               </a>
             ))}
             <a href="/waitlist">
