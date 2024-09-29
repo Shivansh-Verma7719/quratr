@@ -1,6 +1,6 @@
 // app/components/ThemeSwitcher.tsx
 "use client";
-
+import { Switch } from "@nextui-org/switch";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Sun, Moon } from "lucide-react";
@@ -16,13 +16,21 @@ export function ThemeSwitcher({ className }: { className?: string }) {
   if (!mounted) return null;
 
   return (
-    <div className={`${className ? className : "fixed top-4 right-4"}`}>
-      <button
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="p-2 rounded-full bg-white dark:bg-gray-800 text-white transition duration-300 ease-in-out transform hover:scale-110"
+    <div className={`${className ? className : "fixed top-[1.1rem] right-2"}`}>
+      <Switch
+        defaultSelected={theme === "dark"}
+        size="lg"
+        color="primary"
+        onChange={() => setTheme(theme === "dark" ? "light" : "dark")}
+        thumbIcon={({ isSelected, className }) =>
+          isSelected ? (
+            <Moon className={className} />
+          ) : (
+            <Sun className={className} />
+          )
+        }
       >
-      {theme === "dark" ? <Sun size={24} /> : <Moon size={24} fill="black" />}
-      </button>
+      </Switch>
     </div>
   );
 }

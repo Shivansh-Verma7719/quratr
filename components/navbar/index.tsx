@@ -76,7 +76,7 @@ const CustomNavbar: React.FC = () => {
             </a>
           </div>
           <div className="md:hidden">
-            <ThemeSwitcher className="fixed top-2 right-12" />
+            <ThemeSwitcher className="fixed top-4 right-12" />
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -85,7 +85,6 @@ const CustomNavbar: React.FC = () => {
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </motion.button>
-            {/* <ThemeSwitcher /> */}
           </div>
         </div>
       </nav>
