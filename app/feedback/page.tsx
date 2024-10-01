@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, ArrowRight, CheckCheck } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle } from 'lucide-react';
 import Navbar from "@/components/navbar/index";
 import Footer from "@/components/footer/index";
 import { Providers } from '../providers';
@@ -110,25 +110,35 @@ const FeedbackForm = () => {
     return emailRegex.test(email);
   };
 
-  const isCurrentStepValid = () => {
-    const currentQuestion = questions[currentStep];
-    const answer = answers[currentQuestion.id.toString() as keyof typeof answers];
-    
-    switch (currentQuestion.type) {
-      case 'email':
-        return validateEmail(answer);
-      case 'text':
-      case 'textarea':
-        return answer.trim() !== '';
-      case 'radio':
-        return answer !== '';
-      default:
-        return true;
+  const getQuestionsForStep = (step: number) => {
+    if (step === 0) {
+      return [questions[0]];
     }
+    const startIndex = 1 + (step - 1) * 2;
+    return questions.slice(startIndex, startIndex + 2);
+  };
+
+  const isCurrentStepValid = () => {
+    const currentQuestions = getQuestionsForStep(currentStep);
+    return currentQuestions.every(question => {
+      const answer = answers[question.id.toString() as keyof typeof answers];
+      
+      switch (question.type) {
+        case 'email':
+          return validateEmail(answer);
+        case 'text':
+        case 'textarea':
+          return answer.trim() !== '';
+        case 'radio':
+          return answer !== '';
+        default:
+          return true;
+      }
+    });
   };
 
   const handleNext = () => {
-    if (isCurrentStepValid() && currentStep < questions.length - 1) {
+    if (isCurrentStepValid() && currentStep < Math.ceil((questions.length - 1) / 2)) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -175,29 +185,11 @@ const FeedbackForm = () => {
 
       console.log('Feedback submitted successfully:', data);
       setIsSubmitted(true);
-      // Reset form or navigate to a thank you page
     } catch (error) {
       console.error('Error submitting feedback:', error);
       // Handle error (e.g., show error message to user)
     } finally {
       setIsSubmitting(false);
-      setCurrentStep(0);
-      setIsSubmitted(false);
-      setAnswers({
-        '1': '',
-        '2': '',
-        '3': '',
-        '4': '',
-        '5': '',
-        '6': '',
-        '7': '',
-        '8': '',
-        '9': '',
-        '10': '',
-        '11': '',
-        '12': '',
-        '13': '',
-      });
     }
   };
 
@@ -244,94 +236,98 @@ const FeedbackForm = () => {
     }
   };
 
+  const renderQuestions = () => {
+    const currentQuestions = getQuestionsForStep(currentStep);
+    return (
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentStep}
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -50 }}
+          transition={{ duration: 0.3 }}
+        >
+          {currentQuestions.map(question => (
+            <div key={question.id} className="mb-6">
+              <h2 className="text-xl font-semibold mb-4">{question.question}</h2>
+              {renderQuestion(question)}
+            </div>
+          ))}
+        </motion.div>
+      </AnimatePresence>
+    );
+  };
+
   return (
     <Providers>
       <div className="min-h-screen font-sans overflow-x-hidden bg-background text-text">
         <Navbar />
         <main className="pt-[68px]">
           <div className="container mx-auto px-4 sm:px-6 py-16 sm:py-24">
-            <div className="bg-background p-8 rounded-lg shadow-lg dark:shadow-gray-800 w-full max-w-2xl mx-auto">
-              <h1 className="text-3xl font-bold mb-6 text-center">Quratr Feedback</h1>
-              <AnimatePresence mode="wait">
+            <AnimatePresence mode="wait">
+              {isSubmitted ? (
                 <motion.div
-                  key={currentStep}
-                  initial={{ opacity: 0, x: 50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -50 }}
-                  transition={{ duration: 0.3 }}
+                  key="success"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  className="bg-green-100 p-8 rounded-lg shadow-lg w-full max-w-2xl mx-auto text-center"
                 >
-                  <h2 className="text-xl font-semibold mb-4">{questions[currentStep].question}</h2>
-                  {renderQuestion(questions[currentStep])}
+                  <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+                  <h2 className="text-2xl font-bold text-green-700 mb-2">Thank You!</h2>
+                  <p className="text-green-600">Your feedback has been submitted successfully.</p>
                 </motion.div>
-              </AnimatePresence>
-              <div className="mt-8 flex justify-between">
-                <button
-                  onClick={handlePrevious}
-                  disabled={currentStep === 0}
-                  className="bg-gray-200 text-gray-600 px-4 py-2 rounded-full flex items-center disabled:opacity-50"
+              ) : (
+                <motion.div
+                  key="form"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  className="bg-background p-8 rounded-lg shadow-lg dark:shadow-gray-800 w-full max-w-2xl mx-auto"
                 >
-                  <ArrowLeft className="mr-2" /> Previous
-                </button>
-                {currentStep === questions.length - 1 ? (
-                  <motion.button
-                    onClick={handleSubmit}
-                    disabled={isSubmitting || !isCurrentStepValid()}
-                    whileHover={{ scale: isCurrentStepValid() ? 1.05 : 1 }}
-                    whileTap={{ scale: isCurrentStepValid() ? 0.95 : 1 }}
-                    className={`bg-[#fed4e4] text-black px-6 py-2 rounded-full transition-all ${
-                      isCurrentStepValid()
-                        ? "hover:scale-110"
-                        : "opacity-50 cursor-not-allowed"
-                    }`}
-                  >
-                    <AnimatePresence mode="wait" initial={false}>
-                      {isSubmitting ? (
-                        <motion.span
-                          key="submitting"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                        >
-                          Submitting...
-                        </motion.span>
-                      ) : isSubmitted ? (
-                        <motion.span
-                          key="submitted"
-                          initial={{ opacity: 0, scale: 0.5 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          exit={{ opacity: 0, scale: 0.5 }}
-                        >
-                          <CheckCheck className="w-5 h-5" />
-                        </motion.span>
-                      ) : (
-                        <motion.span
-                          key="default"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                        >
-                          Submit
-                        </motion.span>
-                      )}
-                    </AnimatePresence>
-                  </motion.button>
-                ) : (
-                  <motion.button
-                    onClick={handleNext}
-                    disabled={!isCurrentStepValid()}
-                    whileHover={{ scale: isCurrentStepValid() ? 1.05 : 1 }}
-                    whileTap={{ scale: isCurrentStepValid() ? 0.95 : 1 }}
-                    className={`bg-[#fed4e4] text-black px-4 py-2 rounded-full flex items-center transition-all ${
-                      isCurrentStepValid()
-                        ? "hover:scale-110"
-                        : "opacity-50 cursor-not-allowed"
-                    }`}
-                  >
-                    Next <ArrowRight className="ml-2" />
-                  </motion.button>
-                )}
-              </div>
-            </div>
+                  <h1 className="text-3xl font-bold mb-6 text-center">Quratr Feedback</h1>
+                  {renderQuestions()}
+                  <div className="mt-8 flex justify-between">
+                    <button
+                      onClick={handlePrevious}
+                      disabled={currentStep === 0}
+                      className="bg-gray-200 text-gray-600 px-4 py-2 rounded-full flex items-center disabled:opacity-50"
+                    >
+                      <ArrowLeft className="mr-2" /> Previous
+                    </button>
+                    {currentStep === Math.ceil((questions.length - 1) / 2) ? (
+                      <motion.button
+                        onClick={handleSubmit}
+                        disabled={isSubmitting || !isCurrentStepValid()}
+                        whileHover={{ scale: isCurrentStepValid() ? 1.05 : 1 }}
+                        whileTap={{ scale: isCurrentStepValid() ? 0.95 : 1 }}
+                        className={`bg-[#fed4e4] text-black px-6 py-2 rounded-full transition-all ${
+                          isCurrentStepValid()
+                            ? "hover:scale-110"
+                            : "opacity-50 cursor-not-allowed"
+                        }`}
+                      >
+                        {isSubmitting ? 'Submitting...' : 'Submit'}
+                      </motion.button>
+                    ) : (
+                      <motion.button
+                        onClick={handleNext}
+                        disabled={!isCurrentStepValid()}
+                        whileHover={{ scale: isCurrentStepValid() ? 1.05 : 1 }}
+                        whileTap={{ scale: isCurrentStepValid() ? 0.95 : 1 }}
+                        className={`bg-[#fed4e4] text-black px-4 py-2 rounded-full flex items-center transition-all ${
+                          isCurrentStepValid()
+                            ? "hover:scale-110"
+                            : "opacity-50 cursor-not-allowed"
+                        }`}
+                      >
+                        Next <ArrowRight className="ml-2" />
+                      </motion.button>
+                    )}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </main>
         <Footer />

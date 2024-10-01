@@ -3,7 +3,7 @@ import Link from "next/link";
 import QuratrLogo from "@/public/images/logo.png";
 import Image from "next/image";
 // import { Facebook, Instagram, Twitter, Linkedin } from 'lucide-react'
-import { Instagram } from "lucide-react";
+import { Instagram, Linkedin } from "lucide-react";
 import QuratrLogoDark from "@/public/images/logo_dark.png";
 import { useTheme } from "next-themes";
 
@@ -68,9 +68,38 @@ const Footer: React.FC = () => {
                   Feedback
                 </Link>
               </li>
-              {/* <li><Link href="#" className="text-gray-400 transition-colors">Clients</Link></li> */}
-              {/* <li><Link href="#" className="text-gray-400 transition-colors">Pricing</Link></li> */}
-              {/* <li><Link href="#" className="text-gray-400 transition-colors">Blog</Link></li> */}
+              <li>
+                <Link
+                  href="/login"
+                  className="text-gray-400 transition-colors"
+                >
+                  Login
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/register"
+                  className="text-gray-400 transition-colors"
+                >
+                  Signup
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/discover"
+                  className="text-gray-400 transition-colors"
+                >
+                  Discover
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/feed"
+                  className="text-gray-400 transition-colors"
+                >
+                  Feed
+                </Link>
+              </li>
             </ul>
           </div>
           <div>
@@ -86,7 +115,7 @@ const Footer: React.FC = () => {
                 </Link>
               </li>
               {/* <li><Link href="#" className="text-gray-400 transition-colors flex items-center"><Twitter className="w-5 h-5 mr-2" /> Twitter</Link></li> */}
-              {/* <li><Link href="#" className="text-gray-400 transition-colors flex items-center"><Linkedin className="w-5 h-5 mr-2" /> LinkedIn</Link></li> */}
+              <li><Link href="#" className="text-gray-400 transition-colors flex items-center"><Linkedin className="w-5 h-5 mr-2" /> LinkedIn</Link></li>
             </ul>
           </div>
           <div>

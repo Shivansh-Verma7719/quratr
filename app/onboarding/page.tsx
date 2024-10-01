@@ -6,7 +6,6 @@ import Navbar from "@/components/navbar/index";
 import Footer from "@/components/footer/index";
 import { Providers } from '../providers';
 import { submitOnboarding } from './helper';
-import { Input } from '@nextui-org/input';
 
 const onboardingQuestions = [
   "You're more of a club kinda person than a starbucks kinda person?",
@@ -101,7 +100,7 @@ const OnboardingPage: React.FC = () => {
             exit={{ opacity: 0, x: -50 }}
           >
             <h2 className="text-2xl font-bold mb-4">Onboarding</h2>
-            <p className="mb-4">Let's get to know you better! Answer the following questions:</p>
+            <p className="mb-4">Let&apos;s get to know you better! Answer the following questions:</p>
           </motion.div>
         );
       default:
