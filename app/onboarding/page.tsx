@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
@@ -160,6 +160,7 @@ const OnboardingPage: React.FC = () => {
   };
 
   return (
+    <Suspense fallback="Loading ...">
     <Providers>
       <div className="min-h-screen font-sans overflow-x-hidden bg-background text-text">
         <Navbar />
@@ -220,6 +221,7 @@ const OnboardingPage: React.FC = () => {
         <Footer />
       </div>
     </Providers>
+    </Suspense>
   );
 };
 
