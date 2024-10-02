@@ -18,12 +18,12 @@ export async function submitOnboarding(formData: OnboardingData) {
     }
 
     const { error: userUpdateError } = await supabase
-        .from('users')
-        .update({
+        .from('profiles')
+        .insert({
+            id: user.id,
             first_name: formData.firstName,
             last_name: formData.lastName,
         })
-        .eq('id', user.id);
 
     if (userUpdateError) {
         console.error(userUpdateError);
@@ -33,7 +33,7 @@ export async function submitOnboarding(formData: OnboardingData) {
     const { error: onboardingError } = await supabase
         .from('onboarding')
         .insert({
-            user_id: user.id,
+            id: user.id,
             '1': formData.onboardingAnswers[0] === 'yes' ? 1 : 0,
             '2': formData.onboardingAnswers[1] === 'yes' ? 1 : 0,
             '3': formData.onboardingAnswers[2] === 'yes' ? 1 : 0,
@@ -46,10 +46,40 @@ export async function submitOnboarding(formData: OnboardingData) {
             '10': formData.onboardingAnswers[9] === 'yes' ? 1 : 0,
         });
 
+    // console.log(onboardingData)
+
     if (onboardingError) {
         console.error(onboardingError);
         redirect("/error");
     }
 
     redirect("/");
+}
+
+export async function checkOnboardingStatus(callbackUrl: string) {
+    const supabase = createClient();
+
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+        redirect("/login");
+    }
+
+    const { data: onboardingData, error: onboardingError } = await supabase
+        .from('onboarding')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+
+    if (onboardingError) {
+        redirect(callbackUrl);
+        return true;
+    }
+    
+    if (onboardingData) {
+        redirect(callbackUrl);
+        return true;
+    }
+
+    return false;
 }

@@ -34,17 +34,17 @@ export async function signup(formData: FormData) {
     return { error: "Failed to sign up" };
 }
 
-export async function dummy(formData: FormData) {
-    // Simulate a 5-second delay
-    await new Promise(resolve => setTimeout(resolve, 5000));
-    console.log(formData);
+// export async function dummy(formData: FormData) {
+//     // Simulate a 5-second delay
+//     await new Promise(resolve => setTimeout(resolve, 5000));
+//     console.log(formData);
 
-    // Simulate a successful operation
-    const success = false;
+//     // Simulate a successful operation
+//     const success = false;
 
-    if (success) {
-        return { message: "Operation completed successfully" };
-    } else {
-        return { error: "Operation failed" };
-    }
-}
+//     if (success) {
+//         return { message: "Operation completed successfully" };
+//     } else {
+//         return { error: "Operation failed" };
+//     }
+// }

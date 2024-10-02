@@ -7,7 +7,7 @@ import QuratrLogo from "@/public/images/logo.png";
 import { ThemeSwitcher } from "../theme-switcher";
 import { useTheme } from "next-themes";
 import QuratrLogoDark from "@/public/images/logo_dark.png";
-import { isSignedIn } from "@/utils/supabase/issignedin";
+import { getPages } from "../pages";
 
 const CustomNavbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,36 +15,16 @@ const CustomNavbar: React.FC = () => {
   const headerOpacity = useTransform(scrollYProgress, [0, 0.1], [1, 0.8]);
   const { theme } = useTheme();
   const themeLogo = theme === "light" ? QuratrLogoDark : QuratrLogo;
-  const [signedIn, setSignedIn] = useState(false);
-
+  const [pages, setPages] = useState<{ name: string; href: string; icon: React.ElementType }[]>([]);
+  
   useEffect(() => {
-    const checkSignInStatus = async () => {
-      const signedInStatus = await isSignedIn();
-      setSignedIn(signedInStatus);
+    const fetchPages = async () => {
+      const pages = await getPages();
+      setPages(pages);
     };
-    checkSignInStatus();
-  }, [signedIn]);
+    fetchPages();
+  }, []);
 
-  
-  const pages = [
-    { name: "Features", href: "/#features" },
-    { name: "About", href: "/#about" },
-    { name: "Feedback", href: "/feedback" },
-    { name: "Discover", href: "/discover" },
-    { name: "Feed", href: "/feed" },
-    { name: "Login", href: "/login" },
-    { name: "Register", href: "/register" },
-  ];
-
-  if (signedIn) {
-    // Remove Login and Register pages
-    pages.splice(pages.findIndex(page => page.name === "Login"), 1);
-    pages.splice(pages.findIndex(page => page.name === "Register"), 1);
-    
-    // Add Signout page
-    pages.push({ name: "Signout", href: "/logout" });
-  }
-  
   return (
     <motion.header
       style={{ opacity: headerOpacity }}

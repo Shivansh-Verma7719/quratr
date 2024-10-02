@@ -1,15 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import QuratrLogo from "@/public/images/logo.png";
 import Image from "next/image";
-// import { Facebook, Instagram, Twitter, Linkedin } from 'lucide-react'
 import { Instagram, Linkedin } from "lucide-react";
 import QuratrLogoDark from "@/public/images/logo_dark.png";
 import { useTheme } from "next-themes";
+import { getPages } from "../pages";
 
 const Footer: React.FC = () => {
   const { theme } = useTheme();
   const themeLogo = theme === "light" ? QuratrLogoDark : QuratrLogo;
+  const [pages, setPages] = useState<{ name: string; href: string; icon: React.ElementType }[]>([]);
+
+  useEffect(() => {
+    const fetchPages = async () => {
+      const pages = await getPages();
+      setPages(pages);
+    };
+    fetchPages();
+  }, []);
 
   return (
     <footer className="bg-background text-text py-12">
@@ -25,8 +34,12 @@ const Footer: React.FC = () => {
                   height={35}
                   className="-translate-y-[0.1rem] translate-x-[0.2rem]"
                 />
-                <h1 className="text-2xl p-0 ml-0 font-bold"
-                style={{marginLeft: "0px"}}>uratr</h1>
+                <h1
+                  className="text-2xl p-0 ml-0 font-bold"
+                  style={{ marginLeft: "0px" }}
+                >
+                  uratr
+                </h1>
               </div>
             </a>
             <p className="text-gray-400 mb-4">
@@ -36,70 +49,16 @@ const Footer: React.FC = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Pages</h3>
             <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/#features"
-                  className="text-gray-400 transition-colors"
-                >
-                  Features
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/#about"
-                  className="text-gray-400 transition-colors"
-                >
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/waitlist"
-                  className="text-gray-400 transition-colors"
-                >
-                  Waitlist
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/feedback"
-                  className="text-gray-400 transition-colors"
-                >
-                  Feedback
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/login"
-                  className="text-gray-400 transition-colors"
-                >
-                  Login
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/register"
-                  className="text-gray-400 transition-colors"
-                >
-                  Signup
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/discover"
-                  className="text-gray-400 transition-colors"
-                >
-                  Discover
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/feed"
-                  className="text-gray-400 transition-colors"
-                >
-                  Feed
-                </Link>
-              </li>
+              {pages.map((page) => (
+                <li key={page.name}>
+                  <Link
+                    href={page.href}
+                    className="text-gray-400 transition-colors"
+                  >
+                    {page.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
           <div>
@@ -115,25 +74,26 @@ const Footer: React.FC = () => {
                 </Link>
               </li>
               {/* <li><Link href="#" className="text-gray-400 transition-colors flex items-center"><Twitter className="w-5 h-5 mr-2" /> Twitter</Link></li> */}
-              <li><Link href="#" className="text-gray-400 transition-colors flex items-center"><Linkedin className="w-5 h-5 mr-2" /> LinkedIn</Link></li>
+              <li>
+                <Link
+                  href="#"
+                  className="text-gray-400 transition-colors flex items-center"
+                >
+                  <Linkedin className="w-5 h-5 mr-2" /> LinkedIn
+                </Link>
+              </li>
             </ul>
           </div>
           <div>
             <h3 className="text-lg font-semibold mb-4">Legal</h3>
             <ul className="space-y-2">
               <li>
-                <Link
-                  href="#"
-                  className="text-gray-400 transition-colors"
-                >
+                <Link href="#" className="text-gray-400 transition-colors">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link
-                  href="#"
-                  className="text-gray-400 transition-colors"
-                >
+                <Link href="#" className="text-gray-400 transition-colors">
                   Terms of Service
                 </Link>
               </li>

@@ -12,12 +12,18 @@ const useNavigation = () => {
   const [isSettingsActive, setIsSettingsActive] = useState(false);
   const [isFeedActive, setIsFeedActive] = useState(false);
   const [isNewActive, setIsNewActive] = useState(false);
+  const [isFeedbackActive, setIsFeedbackActive] = useState(false);
+  const [isLogoutActive, setIsLogoutActive] = useState(false);
 
   useEffect(() => {
     setIsHomeActive(false);
     setIsDiscoverActive(false);
     setIsFeedActive(false);
+    setIsProfileActive(false);
+    setIsSettingsActive(false);
     setIsNewActive(false);
+    setIsFeedbackActive(false);
+    setIsLogoutActive(false);
 
     switch (pathname) {
       case '/':
@@ -38,6 +44,12 @@ const useNavigation = () => {
       case '/settings':
         setIsSettingsActive(true);
         break;
+      case '/feedback':
+        setIsFeedbackActive(true);
+        break;
+      case '/logout':
+        setIsLogoutActive(true);
+        break;
       default:
         // Handle any other cases here
         break;
@@ -51,6 +63,8 @@ const useNavigation = () => {
     isNewActive,
     isProfileActive,
     isSettingsActive,
+    isFeedbackActive,
+    isLogoutActive,
   };
 };
 

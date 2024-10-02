@@ -1,11 +1,12 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Navbar from "@/components/navbar/index";
 import Footer from "@/components/footer/index";
 import { Providers } from '../providers';
-import { submitOnboarding } from './helper';
+import { submitOnboarding, checkOnboardingStatus } from './helper';
 
 const onboardingQuestions = [
   "You're more of a club kinda person than a starbucks kinda person?",
@@ -21,12 +22,22 @@ const onboardingQuestions = [
 ];
 
 const OnboardingPage: React.FC = () => {
+
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     onboardingAnswers: Array(10).fill('')
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const callbackUrl = useSearchParams().get("callbackUrl") as string;
+
+  useEffect(() => { 
+    if (callbackUrl) {
+      console.log(callbackUrl);
+      checkOnboardingStatus(callbackUrl);
+    }
+  }, [callbackUrl]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -59,9 +70,11 @@ const OnboardingPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     if (step === 11) {
       await submitOnboarding(formData);
     }
+    setIsLoading(false);
   };
 
   const renderStep = () => {
@@ -193,6 +206,7 @@ const OnboardingPage: React.FC = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   type="submit"
+                  disabled={isLoading}
                   className="bg-green-500 text-white px-4 py-2 rounded-full flex items-center ml-auto"
                 >
                   Submit

@@ -61,12 +61,7 @@ export async function updateSession(request: NextRequest) {
     "/onboarding",
   ];
 
-  const onboardedPages = [
-    "/discover",
-    "/feed/",
-    "/profile",
-    "/settings",
-  ];
+  const onboardedPages = ["/discover", "/feed/", "/profile", "/settings"];
 
   const user = await supabase.auth.getUser();
 
@@ -87,12 +82,15 @@ export async function updateSession(request: NextRequest) {
 
   if (isOnboardedPage && !user.error) {
     const { data: onboardingData, error: onboardingError } = await supabase
-      .from('onboarding')
-      .select('id')
-      .eq('id', user.data.user?.id)
+      .from("onboarding")
+      .select("id")
+      .eq("id", user.data.user?.id)
+      .single();
+
+    console.log(onboardingError)
 
     if (onboardingError || !onboardingData) {
-      return NextResponse.redirect(new URL("/onboarding", request.url));
+      return NextResponse.redirect(new URL("/onboarding?callbackUrl=" + request.url, request.url));
     }
   }
 
