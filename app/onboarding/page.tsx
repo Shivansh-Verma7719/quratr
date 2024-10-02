@@ -164,6 +164,7 @@ const OnboardingPage: React.FC = () => {
       <div className="min-h-screen font-sans overflow-x-hidden bg-background text-text">
         <Navbar />
         <main className="pt-[68px] container mx-auto px-4 sm:px-6 py-16 sm:py-24">
+        <React.Suspense fallback={<div>Loading...</div>}>
           <form onSubmit={handleSubmit} className="max-w-md mx-auto">
             <div className="mb-8 bg-gray-200 h-2 rounded-full">
               <motion.div
@@ -214,6 +215,7 @@ const OnboardingPage: React.FC = () => {
               )}
             </div>
           </form>
+          </React.Suspense>
         </main>
         <Footer />
       </div>
