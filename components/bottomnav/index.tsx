@@ -4,15 +4,21 @@ import React from "react";
 import Link from "next/link";
 import useNavigation from "@/hook/use-navigation";
 import useScrollingEffect from "@/hook/use-scroll";
-import { Home, DoorOpen, Newspaper, BadgePlus } from "lucide-react";
+import { Home, DoorOpen, Newspaper, BadgePlus, User, Settings } from "lucide-react";
 import { useTheme } from "next-themes";
 
 const BottomNav = () => {
   const scrollDirection = useScrollingEffect(); // Use the custom hook
   const navClass = scrollDirection === "up" ? "" : "opacity-25 duration-500";
 
-  const { isHomeActive, isDiscoverActive, isFeedActive, isNewActive } =
-    useNavigation();
+  const {
+    isHomeActive,
+    isDiscoverActive,
+    isFeedActive,
+    isNewActive,
+    isProfileActive,
+    isSettingsActive,
+  } = useNavigation();
 
   const { theme } = useTheme();
 
@@ -64,6 +70,28 @@ const BottomNav = () => {
             />
           ) : (
             <BadgePlus width="32" height="32" stroke="gray" />
+          )}
+        </Link>
+        <Link href="/profile" className="flex items-center">
+          {isProfileActive ? (
+            <User
+              width="32"
+              height="32"
+              stroke={theme === "dark" ? "white" : "black"}
+            />
+          ) : (
+            <User width="32" height="32" stroke="gray" />
+          )}
+        </Link>
+        <Link href="/settings" className="flex items-center">
+          {isSettingsActive ? (
+            <Settings
+              width="32"
+              height="32"
+              stroke={theme === "dark" ? "white" : "black"}
+            />
+          ) : (
+            <Settings width="32" height="32" stroke="gray" />
           )}
         </Link>
       </div>

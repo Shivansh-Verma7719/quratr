@@ -30,6 +30,7 @@
     "react-dom": "^18",
     "react-password-strength-bar": "^0.4.1",
     "react-tinder-card": "^1.6.4",
+    "sharp": "^0.33.5",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7"
   },

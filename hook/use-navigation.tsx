@@ -8,6 +8,8 @@ const useNavigation = () => {
   const pathname = usePathname();
   const [isHomeActive, setIsHomeActive] = useState(false);
   const [isDiscoverActive, setIsDiscoverActive] = useState(false);
+  const [isProfileActive, setIsProfileActive] = useState(false);
+  const [isSettingsActive, setIsSettingsActive] = useState(false);
   const [isFeedActive, setIsFeedActive] = useState(false);
   const [isNewActive, setIsNewActive] = useState(false);
 
@@ -30,6 +32,12 @@ const useNavigation = () => {
       case '/feed/new':
         setIsNewActive(true);
         break;
+      case '/profile':
+        setIsProfileActive(true);
+        break;
+      case '/settings':
+        setIsSettingsActive(true);
+        break;
       default:
         // Handle any other cases here
         break;
@@ -41,6 +49,8 @@ const useNavigation = () => {
     isDiscoverActive,
     isFeedActive,
     isNewActive,
+    isProfileActive,
+    isSettingsActive,
   };
 };
 
