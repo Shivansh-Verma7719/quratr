@@ -1,17 +1,19 @@
 // import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
-import { NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const supabase = createClient();
+  const redirectTo = request.nextUrl.clone();
 
   const { error } = await supabase.auth.signOut();
 
   if (error) {
     console.log(error);
-    return NextResponse.redirect('/error');
+    redirectTo.pathname = "/error";
+    return NextResponse.redirect(redirectTo);
   }
 
-  const redirectTo = "/error";
+  redirectTo.pathname = "/";
   return NextResponse.redirect(redirectTo);
 }
