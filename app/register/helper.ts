@@ -1,5 +1,6 @@
 "use server";
 import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
 
 type FormData = {
   username: string;
@@ -36,7 +37,8 @@ export async function signup(formData: FormData) {
   }
 
   if (userData && userData.user) {
-    return { message: "Redirecting to onboarding", error: null };
+    redirect("/onboarding");
+    return { error: null };
   }
 
   return { error: "An unexpected error occurred" };

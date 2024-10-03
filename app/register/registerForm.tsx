@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { signup } from "./helper";
-import { useRouter } from "next/navigation";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
@@ -17,7 +16,6 @@ import {
 import PasswordStrengthBar from "react-password-strength-bar";
 
 const RegisterForm: React.FC = () => {
-  const router = useRouter();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -55,8 +53,7 @@ const RegisterForm: React.FC = () => {
       if (response.error) {
         setError(response.error || "");
       } else {
-        setSuccess(response.message || "");
-        router.push("/onboarding");
+        setSuccess("Redirecting...");
       }
       setIsLoading(false);
     }
