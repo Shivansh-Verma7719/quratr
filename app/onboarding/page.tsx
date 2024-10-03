@@ -1,6 +1,5 @@
 'use client';
-import React, { useState, useEffect, Suspense } from 'react';
-import { useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Navbar from "@/components/navbar/index";
@@ -25,43 +24,26 @@ const OnboardingPage: React.FC = () => {
 
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
     onboardingAnswers: Array(10).fill('')
   });
   const [isLoading, setIsLoading] = useState(false);
-  const callbackUrl = useSearchParams().get("callbackUrl") as string;
 
-  useEffect(() => { 
-    if (callbackUrl) {
-      console.log(callbackUrl);
-      checkOnboardingStatus(callbackUrl);
-    }
-  }, [callbackUrl]);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  useEffect(() => {
+    checkOnboardingStatus();
+  }, []);
 
   const handleOnboardingAnswer = (answer: string) => {
     const newAnswers = [...formData.onboardingAnswers];
-    newAnswers[step - 2] = answer;
+    newAnswers[step] = answer;
     setFormData({ ...formData, onboardingAnswers: newAnswers });
   };
 
   const validateStep = () => {
-    switch (step) {
-      case 0:
-        return formData.firstName.trim() !== '' && formData.lastName.trim() !== '';
-      case 1:
-        return true; // Onboarding intro step
-      default:
-        return formData.onboardingAnswers[step - 2] !== '';
-    }
+    return formData.onboardingAnswers[step] !== '';
   };
 
   const handleNext = () => {
-    if (validateStep() && step < 11) setStep(step + 1);
+    if (validateStep() && step < 9) setStep(step + 1);
   };
 
   const handlePrevious = () => {
@@ -71,96 +53,54 @@ const OnboardingPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    if (step === 11) {
+    if (step === 9) {
       await submitOnboarding(formData);
     }
     setIsLoading(false);
   };
 
   const renderStep = () => {
-    switch (step) {
-      case 0:
-        return (
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -50 }}
-          >
-            <h2 className="text-2xl font-bold mb-4">Your Name</h2>
-            <input
-              type="text"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleInputChange}
-              placeholder="First Name"
-              className="w-full p-2 mb-4 border rounded"
-            />
-            <input
-              type="text"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleInputChange}
-              placeholder="Last Name"
-              className="w-full p-2 mb-4 border rounded"
-            />
-          </motion.div>
-        );
-      case 1:
-        return (
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -50 }}
-          >
-            <h2 className="text-2xl font-bold mb-4">Onboarding</h2>
-            <p className="mb-4">Let&apos;s get to know you better! Answer the following questions:</p>
-          </motion.div>
-        );
-      default:
-        if (step >= 2 && step <= 11) {
-          const questionIndex = step - 2;
-          return (
-            <motion.div
-              key={step}
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -50 }}
+    if (step >= 0 && step <= 9) {
+      return (
+        <motion.div
+          key={step}
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -50 }}
+        >
+          <h2 className="text-xl font-bold mb-4">{onboardingQuestions[step]}</h2>
+          <div className="flex justify-center space-x-4">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => handleOnboardingAnswer('Yes')}
+              className={`px-4 py-2 rounded ${
+                formData.onboardingAnswers[step] === 'Yes'
+                  ? 'bg-green-500 text-white'
+                  : 'bg-gray-200'
+              }`}
             >
-              <h2 className="text-xl font-bold mb-4">{onboardingQuestions[questionIndex]}</h2>
-              <div className="flex justify-center space-x-4">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => handleOnboardingAnswer('Yes')}
-                  className={`px-4 py-2 rounded ${
-                    formData.onboardingAnswers[questionIndex] === 'Yes'
-                      ? 'bg-green-500 text-white'
-                      : 'bg-gray-200'
-                  }`}
-                >
-                  Yes
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => handleOnboardingAnswer('No')}
-                  className={`px-4 py-2 rounded ${
-                    formData.onboardingAnswers[questionIndex] === 'No'
-                      ? 'bg-red-500 text-white'
-                      : 'bg-gray-200'
-                  }`}
-                >
-                  No
-                </motion.button>
-              </div>
-            </motion.div>
-          );
-        }
+              Yes
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => handleOnboardingAnswer('No')}
+              className={`px-4 py-2 rounded ${
+                formData.onboardingAnswers[step] === 'No'
+                  ? 'bg-red-500 text-white'
+                  : 'bg-gray-200'
+              }`}
+            >
+              No
+            </motion.button>
+          </div>
+        </motion.div>
+      );
     }
   };
 
   return (
-    <Suspense fallback="Loading ...">
     <Providers>
       <div className="min-h-screen font-sans overflow-x-hidden bg-background text-text">
         <Navbar />
@@ -171,7 +111,7 @@ const OnboardingPage: React.FC = () => {
               <motion.div
                 className="bg-blue-500 h-2 rounded-full"
                 initial={{ width: 0 }}
-                animate={{ width: `${(step / 11) * 100}%` }}
+                animate={{ width: `${((step + 1) / 10) * 100}%` }}
                 transition={{ duration: 0.5 }}
               ></motion.div>
             </div>
@@ -190,7 +130,7 @@ const OnboardingPage: React.FC = () => {
                   <ArrowLeft className="mr-2" /> Previous
                 </motion.button>
               )}
-              {step < 11 ? (
+              {step < 9 ? (
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -221,7 +161,6 @@ const OnboardingPage: React.FC = () => {
         <Footer />
       </div>
     </Providers>
-    </Suspense>
   );
 };
 

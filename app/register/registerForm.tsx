@@ -12,12 +12,15 @@ import {
   LockIcon,
   CheckCheck,
   ShieldAlert,
+  UserPen
 } from "lucide-react";
 import PasswordStrengthBar from "react-password-strength-bar";
 
 const RegisterForm: React.FC = () => {
   const router = useRouter();
   const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
     username: "",
     email: "",
     password: "",
@@ -35,6 +38,8 @@ const RegisterForm: React.FC = () => {
 
   const validateForm = () => {
     return (
+      formData.firstName.trim() !== "" &&
+      formData.lastName.trim() !== "" &&
       formData.username.trim() !== "" &&
       /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) &&
       formData.password.length >= 8 &&
@@ -60,6 +65,36 @@ const RegisterForm: React.FC = () => {
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto">
       <h2 className="text-2xl font-bold mb-4">Create Your Account</h2>
+      <Input
+        type="text"
+        isRequired
+        isClearable
+        variant="bordered"
+        label="First Name"
+        value={formData.firstName}
+        startContent={
+          <UserPen className="text-2xl text-default-400 pointer-events-none" />
+        }
+        labelPlacement="outside"
+        onChange={handleInputChange}
+        name="firstName"
+        className="w-full p-2 mb-4"
+      />
+      <Input
+        type="text"
+        isRequired
+        isClearable
+        variant="bordered"
+        label="Last Name"
+        value={formData.lastName}
+        startContent={
+          <UserPen className="text-2xl text-default-400 pointer-events-none" />
+        }
+        labelPlacement="outside"
+        onChange={handleInputChange}
+        name="lastName"
+        className="w-full p-2 mb-4"
+      />
       <Input
         type="text"
         isRequired

@@ -3,8 +3,6 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 
 type OnboardingData = {
-    firstName: string;
-    lastName: string;
     onboardingAnswers: string[];
 }
 
@@ -15,19 +13,6 @@ export async function submitOnboarding(formData: OnboardingData) {
 
     if (!user) {
         redirect("/login");
-    }
-
-    const { error: userUpdateError } = await supabase
-        .from('profiles')
-        .insert({
-            id: user.id,
-            first_name: formData.firstName,
-            last_name: formData.lastName,
-        })
-
-    if (userUpdateError) {
-        console.error(userUpdateError);
-        redirect("/error");
     }
 
     const { error: onboardingError } = await supabase
@@ -46,7 +31,15 @@ export async function submitOnboarding(formData: OnboardingData) {
             '10': formData.onboardingAnswers[9] === 'yes' ? 1 : 0,
         });
 
-    // console.log(onboardingData)
+    const { error: profileError } = await supabase
+        .from('profiles')
+        .update({ is_onboarded: true })
+        .eq('id', user.id);
+
+    if (profileError) {
+        console.error(profileError);
+        redirect("/error");
+    }
 
     if (onboardingError) {
         console.error(onboardingError);
@@ -56,7 +49,7 @@ export async function submitOnboarding(formData: OnboardingData) {
     redirect("/");
 }
 
-export async function checkOnboardingStatus(callbackUrl: string) {
+export async function checkOnboardingStatus() {
     const supabase = createClient();
 
     const { data: { user } } = await supabase.auth.getUser();
@@ -66,19 +59,17 @@ export async function checkOnboardingStatus(callbackUrl: string) {
     }
 
     const { data: onboardingData, error: onboardingError } = await supabase
-        .from('onboarding')
-        .select('*')
+        .from('profiles')
+        .select('is_onboarded')
         .eq('id', user.id)
         .single();
+    
+    if (onboardingData && onboardingData.is_onboarded) {
+        return redirect("/discover");
+    }
 
     if (onboardingError) {
-        redirect(callbackUrl);
-        return true;
-    }
-    
-    if (onboardingData) {
-        redirect(callbackUrl);
-        return true;
+        redirect("/error");
     }
 
     return false;

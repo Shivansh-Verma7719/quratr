@@ -82,15 +82,17 @@ export async function updateSession(request: NextRequest) {
 
   if (isOnboardedPage && !user.error) {
     const { data: onboardingData, error: onboardingError } = await supabase
-      .from("onboarding")
-      .select("id")
+      .from("profiles")
+      .select("is_onboarded")
       .eq("id", user.data.user?.id)
       .single();
 
-    console.log(onboardingError)
-
-    if (onboardingError || !onboardingData) {
-      return NextResponse.redirect(new URL("/onboarding?callbackUrl=" + request.url, request.url));
+    if (onboardingError) {
+      console.error(onboardingError);
+      return NextResponse.redirect("/error");
+    }
+    if (onboardingData && !onboardingData.is_onboarded) {
+      return NextResponse.redirect(new URL("/onboarding", request.url));
     }
   }
 
