@@ -3,8 +3,6 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 import { NextApiRequest, NextApiResponse } from 'next';
 
-"use server";
-
 export async function logout() {
     const supabase = createClient();
   
