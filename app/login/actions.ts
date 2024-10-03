@@ -1,5 +1,6 @@
 "use server";
 import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
 
 export async function login(data: { email: string; password: string }) {
   const supabase = createClient();
@@ -14,5 +15,5 @@ export async function login(data: { email: string; password: string }) {
     return error.message;
   }
 
-  return "Success";
+  return redirect("/discover");
 }
