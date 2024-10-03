@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { login } from "./actions";
 import { Input } from "@nextui-org/input";
-import { useRouter } from "next/navigation";
 import { Button } from "@nextui-org/button";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import {
@@ -15,8 +14,6 @@ import {
 import Link from "next/link";
 
 const LoginForm: React.FC = () => {
-
-  const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
