@@ -7,7 +7,15 @@ import { useState, useEffect } from "react";
 import TinderCard from "react-tinder-card";
 import { Card, CardFooter } from "@nextui-org/card";
 import Image from "next/image";
-import heroCard from "@/public/images/landing/2.jpg";
+// import { getUser, getUserPreferences, getAllPlaces, sortPlacesByPreferences } from "./helpers";
+
+interface Card {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  matchScore: number;
+}
 
 export default function DiscoverPage() {
   function useIsMobile() {
@@ -27,6 +35,21 @@ export default function DiscoverPage() {
     return isMobile;
   }
 
+  // const renderCards = async () => {
+  //   const user = await getUser();
+  //   const preferences = await getUserPreferences(user?.user.id as string);
+  //   const places = await getAllPlaces();
+  //   const sortedPlaces = places ? await sortPlacesByPreferences(places, preferences) : [];
+  //   const cards = sortedPlaces.map((place) => ({
+  //     id: place.id,
+  //     title: place.name,
+  //     description: place.description,
+  //     image: place.image,
+  //     matchScore: place.matchScore,
+  //   }));
+  //   return cards;
+  // }
+
   const onSwipe = (direction: string) => {
     if (direction === "right") {
       console.log("Match");
@@ -35,12 +58,25 @@ export default function DiscoverPage() {
     }
   };
 
-  const cards = Array.from({ length: 10 }, (_, index) => ({
-    id: index,
-    image: heroCard,
-    title: `Card ${index + 1}`,
-    description: `Description for Card ${index + 1}`,
-  }));
+  const [cards, setCards] = useState<Card[]>([]);
+
+  useEffect(() => {
+    const fetchCards = async () => {
+      // const fetchedCards = await renderCards();
+      const cards = [
+        {
+          id: "1",
+          title: "Card 1",
+          description: "Description 1",
+          image: "https://via.placeholder.com/150",
+          matchScore: 1,
+        },
+      ];
+      setCards(cards);
+    };
+
+    fetchCards();
+  }, []);
 
   return (
     <Providers>
@@ -54,9 +90,9 @@ export default function DiscoverPage() {
               preventSwipe={["up", "down"]}
               className="absolute top-0 left-0 h-full w-full"
             >
-              <Card 
-                isFooterBlurred 
-                radius='lg' 
+              <Card
+                isFooterBlurred
+                radius="lg"
                 className="border-none h-full w-full pointer-events-none"
                 style={{ zIndex: cards.length - index }}
               >
