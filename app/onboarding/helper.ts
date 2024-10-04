@@ -1,6 +1,6 @@
-"use client";
+"use server";
 import { redirect } from "next/navigation";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/utils/supabase/server";
 
 type OnboardingData = {
     onboardingAnswers: string[];
@@ -19,16 +19,16 @@ export async function submitOnboarding(formData: OnboardingData) {
         .from('onboarding')
         .insert({
             id: user.id,
-            '1': formData.onboardingAnswers[0] === 'yes' ? 1 : 0,
-            '2': formData.onboardingAnswers[1] === 'yes' ? 1 : 0,
-            '3': formData.onboardingAnswers[2] === 'yes' ? 1 : 0,
-            '4': formData.onboardingAnswers[3] === 'yes' ? 1 : 0,
-            '5': formData.onboardingAnswers[4] === 'yes' ? 1 : 0,
-            '6': formData.onboardingAnswers[5] === 'yes' ? 1 : 0,
-            '7': formData.onboardingAnswers[6] === 'yes' ? 1 : 0,
-            '8': formData.onboardingAnswers[7] === 'yes' ? 1 : 0,
-            '9': formData.onboardingAnswers[8] === 'yes' ? 1 : 0,
-            '10': formData.onboardingAnswers[9] === 'yes' ? 1 : 0,
+            '1': formData.onboardingAnswers[0] === 'Yes' ? 1 : 0,
+            '2': formData.onboardingAnswers[1] === 'Yes' ? 1 : 0,
+            '3': formData.onboardingAnswers[2] === 'Yes' ? 1 : 0,
+            '4': formData.onboardingAnswers[3] === 'Yes' ? 1 : 0,
+            '5': formData.onboardingAnswers[4] === 'Yes' ? 1 : 0,
+            '6': formData.onboardingAnswers[5] === 'Yes' ? 1 : 0,
+            '7': formData.onboardingAnswers[6] === 'Yes' ? 1 : 0,
+            '8': formData.onboardingAnswers[7] === 'Yes' ? 1 : 0,
+            '9': formData.onboardingAnswers[8] === 'Yes' ? 1 : 0,
+            '10': formData.onboardingAnswers[9] === 'Yes' ? 1 : 0,
         });
 
     const { error: profileError } = await supabase
@@ -46,7 +46,7 @@ export async function submitOnboarding(formData: OnboardingData) {
         redirect("/error");
     }
 
-    redirect("/");
+    redirect("/discover");
 }
 
 export async function checkOnboardingStatus() {

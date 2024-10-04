@@ -1,54 +1,54 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import CustomNavbar from "@/components/navbar";
 import BottomNav from "@/components/bottomnav";
 import { Providers } from "../providers";
-import { useState, useEffect } from "react";
 import TinderCard from "react-tinder-card";
-import { Card, CardFooter } from "@nextui-org/card";
+import { Card, CardBody, CardFooter } from "@nextui-org/card";
 import Image from "next/image";
-// import { getUser, getUserPreferences, getAllPlaces, sortPlacesByPreferences } from "./helpers";
+import { sortPlacesByPreferences } from "./helpers";
+import { Rating } from "@smastrom/react-rating";
+import "@smastrom/react-rating/style.css";
+import { Chip } from "@nextui-org/chip";
+import { CircleCheck } from "lucide-react";
 
 interface Card {
   id: string;
-  title: string;
-  description: string;
+  name: string;
   image: string;
   matchScore: number;
+  tags: string;
+  rating: number;
+  location: string;
+  group_experience: string;
 }
 
 export default function DiscoverPage() {
-  function useIsMobile() {
-    const [isMobile, setIsMobile] = useState(false);
+  const [cards, setCards] = useState<Card[]>([]);
+  const [isMobile, setIsMobile] = useState(false);
 
-    useEffect(() => {
-      const checkIsMobile = () => {
-        setIsMobile(window.innerWidth < 748);
-      };
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 748);
+    };
 
-      checkIsMobile();
-      window.addEventListener("resize", checkIsMobile);
+    checkIsMobile();
+    window.addEventListener("resize", checkIsMobile);
 
-      return () => window.removeEventListener("resize", checkIsMobile);
-    }, []);
+    return () => window.removeEventListener("resize", checkIsMobile);
+  }, []);
 
-    return isMobile;
-  }
+  useEffect(() => {
+    const fetchCards = async () => {
+      const sortedPlaces = await sortPlacesByPreferences();
+      if (sortedPlaces) {
+        console.log(sortedPlaces);
+        setCards(sortedPlaces as Card[]);
+      }
+    };
 
-  // const renderCards = async () => {
-  //   const user = await getUser();
-  //   const preferences = await getUserPreferences(user?.user.id as string);
-  //   const places = await getAllPlaces();
-  //   const sortedPlaces = places ? await sortPlacesByPreferences(places, preferences) : [];
-  //   const cards = sortedPlaces.map((place) => ({
-  //     id: place.id,
-  //     title: place.name,
-  //     description: place.description,
-  //     image: place.image,
-  //     matchScore: place.matchScore,
-  //   }));
-  //   return cards;
-  // }
+    fetchCards();
+  }, []);
 
   const onSwipe = (direction: string) => {
     if (direction === "right") {
@@ -58,29 +58,9 @@ export default function DiscoverPage() {
     }
   };
 
-  const [cards, setCards] = useState<Card[]>([]);
-
-  useEffect(() => {
-    const fetchCards = async () => {
-      // const fetchedCards = await renderCards();
-      const cards = [
-        {
-          id: "1",
-          title: "Card 1",
-          description: "Description 1",
-          image: "https://via.placeholder.com/150",
-          matchScore: 1,
-        },
-      ];
-      setCards(cards);
-    };
-
-    fetchCards();
-  }, []);
-
   return (
     <Providers>
-      {useIsMobile() ? <div /> : <CustomNavbar />}
+      {!isMobile && <CustomNavbar />}
       <div className="flex justify-center items-center p-5 h-[calc(100vh_-_64px)] w-full">
         <div className="relative h-full w-full md:w-[600px] md:h-[600px]">
           {cards.map((card, index) => (
@@ -97,20 +77,37 @@ export default function DiscoverPage() {
                 style={{ zIndex: cards.length - index }}
               >
                 <Image
-                  alt={card.title}
+                  alt={card.name}
                   className="object-cover w-full h-full md:w-[600px] md:h-[600px]"
                   src={card.image}
+                  width={600}
+                  height={600}
                 />
+                <CardBody className="absolute top-0 left-0 w-auto">
+                  <Chip variant="faded">
+                    {card.tags}
+                  </Chip> 
+                </CardBody>
                 <CardFooter className="flex flex-col items-start before:bg-white/10 border-white/20 border-1 overflow-hidden py-2 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
-                  <p className="text-4xl text-white/80 mb-1">{card.title}</p>
-                  <p className="text-2xl text-white/80">{card.description}</p>
+                  <p className="text-4xl text-white m-0">{card.name}</p>
+                  <Rating
+                    style={{ maxWidth: 250 }}
+                    value={card.rating}
+                    readOnly={true}
+                  />
+                  <p className="text-2xl text-white m-0">{card.location}</p>
+                  {card.group_experience === "1" && (
+                    <Chip variant="faded" className="-ml-1" startContent={<CircleCheck size={18} />} color="success">
+                      Group Experience
+                    </Chip>
+                  )}
                 </CardFooter>
               </Card>
             </TinderCard>
           ))}
         </div>
       </div>
-      {useIsMobile() ? <BottomNav /> : <div />}
+      {isMobile && <BottomNav />}
     </Providers>
   );
 }

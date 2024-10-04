@@ -1,61 +1,63 @@
 "use server";
 import { createClient } from "@/utils/supabase/server";
 
-export async function getUser() {
-  const supabase = createClient();
-  const { data, error } = await supabase.auth.getUser();
-  if (error) {
-    console.error("Error fetching user:", error);
-    return null;
-  }
-  return data;
+interface Place {
+  id: string;
+  name: string;
+  description: string;
+  image: string;
+  [key: string]: string | number | boolean | null | undefined;
 }
 
-export async function getUserPreferences(id: string) {
+export async function sortPlacesByPreferences() {
   const supabase = createClient();
-  const { data, error } = await supabase
+
+  // Get user
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+  if (userError) {
+    console.error("Error fetching user:", userError);
+    return null;
+  }
+
+  // Get user preferences
+  const { data: preferencesData, error: preferencesError } = await supabase
     .from("onboarding")
     .select("*")
-    .eq("id", id);
-  if (error) {
-    console.error("Error fetching user preferences:", error);
+    .eq("id", userData.user.id)
+    .single();
+
+  if (preferencesError) {
+    console.error("Error fetching user preferences:", preferencesError);
     return null;
   }
-  console.log(data);
-  return data;
-}
 
-export async function getAllPlaces() {
-  const supabase = createClient();
-  const { data, error } = await supabase.from("places").select("*");
-  if (error) {
-    console.error("Error fetching places:", error);
+  // Get all places
+  const { data: placesData, error: placesError } = await supabase.from("places").select("*");
+  if (placesError) {
+    console.error("Error fetching places:", placesError);
     return null;
   }
-  return data;
-}
 
-interface Place {
-  name: string;
-  address?: string;
-  [key: string]: string | number | boolean | null | undefined;
-}
-
-interface Preferences {
-  [key: string]: string | number | boolean | null | undefined;
-}
-
-export async function sortPlacesByPreferences(places: Place[], preferences: Preferences) {
-  const sortedPlaces = places.map(place => {
+  // Sort places by preferences in descending order
+  const sortedPlaces = placesData.map((place: Place) => {
     let matchScore = 0;
     for (let i = 1; i <= 10; i++) {
-      if (place[i.toString()] === preferences[i.toString()]) {
+      if (place[i.toString()] === preferencesData[i.toString()]) {
         matchScore++;
       }
     }
     return { ...place, matchScore };
   });
 
-  sortedPlaces.sort((a, b) => b.matchScore - a.matchScore);
-  return sortedPlaces;
+  sortedPlaces.sort((a: Place, b: Place) => (a.matchScore as number) - (b.matchScore as number));
+  return sortedPlaces.map((place: Place) => ({
+    id: place.id,
+    name: place.name,
+    image: place.image,
+    tags: place.tags,
+    rating: place.rating,
+    location: place.location,
+    group_experience: place.group_experience,
+    matchScore: place.matchScore,
+  }));
 }

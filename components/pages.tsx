@@ -43,11 +43,11 @@ const BottomPages = () => {
     isHomeActive,
     isDiscoverActive,
     isFeedActive,
-    isNewActive,
+    // isNewActive,
     isProfileActive,
     isSettingsActive,
-    isFeedbackActive,
-    isLogoutActive,
+    // isFeedbackActive,
+    // isLogoutActive,
   } = useNavigation();
 
   const pages = [
@@ -70,12 +70,6 @@ const BottomPages = () => {
       active: isFeedActive,
     },
     {
-      name: "New",
-      href: "/feed/new",
-      icon: BadgePlus,
-      active: isNewActive,
-    },
-    {
       name: "Profile",
       href: "/profile",
       icon: User,
@@ -87,18 +81,18 @@ const BottomPages = () => {
       icon: Settings,
       active: isSettingsActive,
     },
-    {
-      name: "Feedback",
-      href: "/feedback",
-      icon: MessageCircleReply,
-      active: isFeedbackActive,
-    },
-    {
-      name: "Logout",
-      href: "/logout",
-      icon: LogOut,
-      active: isLogoutActive,
-    },
+    // {
+    //   name: "Feedback",
+    //   href: "/feedback",
+    //   icon: MessageCircleReply,
+    //   active: isFeedbackActive,
+    // },
+    // {
+    //   name: "Logout",
+    //   href: "/logout",
+    //   icon: LogOut,
+    //   active: isLogoutActive,
+    // },
   ];
   return pages;
 };

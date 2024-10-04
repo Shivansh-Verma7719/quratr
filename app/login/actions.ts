@@ -17,3 +17,13 @@ export async function login(data: { email: string; password: string }) {
 
   return redirect("/discover");
 }
+
+export async function isLoggedIn() {
+  const supabase = createClient();
+
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (user) {
+    return redirect("/discover");
+  }
+}

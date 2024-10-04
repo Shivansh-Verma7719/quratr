@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { login } from "./actions";
+import React, { useState, useEffect } from "react";
+import { login, isLoggedIn } from "./actions";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
@@ -27,6 +27,13 @@ const LoginForm: React.FC = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      await isLoggedIn();
+    };
+    checkLoginStatus();
+  }, []);
 
   const validateForm = () => {
     return (

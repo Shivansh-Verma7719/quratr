@@ -21,7 +21,6 @@ const onboardingQuestions = [
 ];
 
 const OnboardingPage: React.FC = () => {
-
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
     onboardingAnswers: Array(10).fill('')
@@ -52,11 +51,12 @@ const OnboardingPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    if (step === 9) {
+    if (step === 9 && validateAllSteps()) {
+      setIsLoading(true);
+      console.log(formData);
       await submitOnboarding(formData);
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   const renderStep = () => {
@@ -98,6 +98,10 @@ const OnboardingPage: React.FC = () => {
         </motion.div>
       );
     }
+  };
+
+  const validateAllSteps = () => {
+    return formData.onboardingAnswers.every(answer => answer !== '');
   };
 
   return (
@@ -148,8 +152,10 @@ const OnboardingPage: React.FC = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   type="submit"
-                  disabled={isLoading}
-                  className="bg-green-500 text-white px-4 py-2 rounded-full flex items-center ml-auto"
+                  disabled={isLoading || !validateAllSteps()}
+                  className={`bg-green-500 text-white px-4 py-2 rounded-full flex items-center ml-auto ${
+                    !validateAllSteps() ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
                 >
                   Submit
                 </motion.button>

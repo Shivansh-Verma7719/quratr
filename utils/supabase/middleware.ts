@@ -70,17 +70,18 @@ export async function updateSession(request: NextRequest) {
     request.nextUrl.pathname.startsWith(page)
   );
 
-  if (isProtectedPage && user.error) {
+  if (isProtectedPage && !user.data.user) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  // Check if the page is onboarded
+  // Check if the user is onboarded
 
   const isOnboardedPage = onboardedPages.some((page) =>
     request.nextUrl.pathname.startsWith(page)
   );
 
-  if (isOnboardedPage && !user.error) {
+  if (isOnboardedPage) {
+    // console.log(user.data.user?.id);
     const { data: onboardingData, error: onboardingError } = await supabase
       .from("profiles")
       .select("is_onboarded")
@@ -88,8 +89,9 @@ export async function updateSession(request: NextRequest) {
       .single();
 
     if (onboardingError) {
+      console.log("middleware error");
       console.error(onboardingError);
-      return NextResponse.redirect("/error");
+      return NextResponse.redirect(new URL("/error", request.url));
     }
     if (onboardingData && !onboardingData.is_onboarded) {
       return NextResponse.redirect(new URL("/onboarding", request.url));
