@@ -61,7 +61,7 @@ export default function DiscoverPage() {
   return (
     <Providers>
       {!isMobile && <CustomNavbar />}
-      <div className="flex justify-center items-start md:items-center p-5 h-[calc(100vh_-_84px)] w-full">
+      <div className="flex justify-center items-start md:items-center p-7 h-[calc(100vh_-_84px)] w-full">
         <div className="relative h-full w-full md:w-[600px] md:h-[600px]">
           {cards.map((card, index) => (
             <TinderCard
