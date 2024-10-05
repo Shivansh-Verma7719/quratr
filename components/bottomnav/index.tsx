@@ -14,7 +14,7 @@ const BottomNav = () => {
 
   return (
     <div
-      className={`fixed bottom-0 w-full py-4 z-10 bg-background border-t border-zinc-200 shadow-lg sm:hidden ${navClass}`}
+      className={`fixed bottom-0 w-full py-2 z-10 bg-background border-t border-zinc-200 shadow-lg sm:hidden ${navClass}`}
     >
       <div className="flex flex-row justify-around items-center bg-transparent w-full">
         {pages.map((page, index) => (
