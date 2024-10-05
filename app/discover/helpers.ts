@@ -7,6 +7,7 @@ interface Place {
   description: string;
   image: string;
   [key: string]: string | number | boolean | null | undefined;
+  isLastCard?: boolean;
 }
 
 export async function sortPlacesByPreferences() {
@@ -59,5 +60,6 @@ export async function sortPlacesByPreferences() {
     location: place.location,
     group_experience: place.group_experience,
     matchScore: place.matchScore,
+    isLastCard: false
   }));
 }
