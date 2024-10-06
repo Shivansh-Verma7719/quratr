@@ -58,7 +58,7 @@ export async function checkOnboardingStatus() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return { error: "User not found" };
+    return { success: false, error: "User not found" };
   }
 
   const { data: onboardingData, error: onboardingError } = await supabase
@@ -68,12 +68,12 @@ export async function checkOnboardingStatus() {
     .single();
 
   if (onboardingData && onboardingData.is_onboarded) {
-    return "/discover";
+    return { success: true, error: null };
   }
 
   if (onboardingError) {
-    return "/error";
+    return { success: false, error: onboardingError };
   }
 
-  return "/onboarding";
+  return { success: false, error: "Onboarding not found" };
 }

@@ -31,7 +31,13 @@ const OnboardingPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    checkOnboardingStatus();
+    const checkStatus = async () => {
+      const response = await checkOnboardingStatus();
+      if (response.success === true) {
+        router.push("/discover");
+      }
+    };
+    checkStatus();
   }, []);
 
   const handleOnboardingAnswer = (answer: string) => {
