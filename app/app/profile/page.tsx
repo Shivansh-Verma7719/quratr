@@ -70,7 +70,7 @@ export default function ProfilePage() {
                     >
                       Edit Profile
                     </Button>
-                    <Button
+                    {/* <Button
                       as="a"
                       href="/logout" // Update this to the correct logout URL or function
                       color="secondary"
@@ -79,7 +79,7 @@ export default function ProfilePage() {
                       variant="flat"
                     >
                       Logout
-                    </Button>
+                    </Button> */}
                   </div>
                 </CardHeader>
                 <CardBody>
