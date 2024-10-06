@@ -1,6 +1,6 @@
-"use server";
+"use client";
 import { redirect } from "next/navigation";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/client";
 
 type OnboardingData = {
     onboardingAnswers: string[];
@@ -10,15 +10,12 @@ export async function submitOnboarding(formData: OnboardingData) {
     const supabase = createClient();
 
     const { data: { user } } = await supabase.auth.getUser();
-
-    if (!user) {
-        redirect("/login");
-    }
+    console.log(formData);
 
     const { error: onboardingError } = await supabase
         .from('onboarding')
         .insert({
-            id: user.id,
+            id: user?.id,
             '1': formData.onboardingAnswers[0] === 'Yes' ? 1 : 0,
             '2': formData.onboardingAnswers[1] === 'Yes' ? 1 : 0,
             '3': formData.onboardingAnswers[2] === 'Yes' ? 1 : 0,
@@ -34,19 +31,19 @@ export async function submitOnboarding(formData: OnboardingData) {
     const { error: profileError } = await supabase
         .from('profiles')
         .update({ is_onboarded: true })
-        .eq('id', user.id);
+        .eq('id', user?.id);
 
     if (profileError) {
-        console.error(profileError);
-        redirect("/error");
+        console.log(profileError);
+        return { error: profileError };
     }
 
     if (onboardingError) {
-        console.error(onboardingError);
-        redirect("/error");
+        console.log(onboardingError);
+        return { error: onboardingError };
     }
 
-    redirect("/discover");
+    return { success: true, error: null };
 }
 
 export async function checkOnboardingStatus() {
@@ -65,12 +62,12 @@ export async function checkOnboardingStatus() {
         .single();
     
     if (onboardingData && onboardingData.is_onboarded) {
-        return redirect("/discover");
+        return '/discover';
     }
 
     if (onboardingError) {
-        redirect("/error");
+        return '/error';
     }
 
-    return false;
+    return '/onboarding';
 }

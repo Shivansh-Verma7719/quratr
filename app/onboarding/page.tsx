@@ -6,6 +6,8 @@ import Navbar from "@/components/navbar/index";
 import Footer from "@/components/footer/index";
 import { Providers } from '../providers';
 import { submitOnboarding, checkOnboardingStatus } from './helper';
+import { useRouter } from 'next/navigation';
+import { Button } from '@nextui-org/button';
 
 const onboardingQuestions = [
   "You're more of a club kinda person than a starbucks kinda person?",
@@ -21,6 +23,7 @@ const onboardingQuestions = [
 ];
 
 const OnboardingPage: React.FC = () => {
+  const router = useRouter();
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
     onboardingAnswers: Array(10).fill('')
@@ -53,8 +56,13 @@ const OnboardingPage: React.FC = () => {
     e.preventDefault();
     if (step === 9 && validateAllSteps()) {
       setIsLoading(true);
-      console.log(formData);
-      await submitOnboarding(formData);
+      const result = await submitOnboarding(formData);
+      if (result.error !== null) {
+        console.log(result.error);
+      }
+      else {
+        router.push('/discover');
+      }
       setIsLoading(false);
     }
   };
@@ -148,17 +156,18 @@ const OnboardingPage: React.FC = () => {
                   Next <ArrowRight className="ml-2" />
                 </motion.button>
               ) : (
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                <Button
                   type="submit"
+                  color="primary"
+                  variant="flat"
+                  size="lg"
                   disabled={isLoading || !validateAllSteps()}
                   className={`bg-green-500 text-white px-4 py-2 rounded-full flex items-center ml-auto ${
                     !validateAllSteps() ? 'opacity-50 cursor-not-allowed' : ''
                   }`}
                 >
                   Submit
-                </motion.button>
+                </Button>
               )}
             </div>
           </form>
