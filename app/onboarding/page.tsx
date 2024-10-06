@@ -57,7 +57,7 @@ const OnboardingPage: React.FC = () => {
     if (step === 9 && validateAllSteps()) {
       setIsLoading(true);
       const result = await submitOnboarding(formData);
-      if (result.error !== null) {
+      if (result.success === false) {
         console.log(result.error);
       }
       else {

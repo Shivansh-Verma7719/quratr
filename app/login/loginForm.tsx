@@ -11,9 +11,11 @@ import {
   CheckCheck,
   ShieldAlert,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 const LoginForm: React.FC = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -47,10 +49,11 @@ const LoginForm: React.FC = () => {
     if (validateForm()) {
       setIsLoading(true);
       const response = await login(formData);
-      if (response !== "Success") {
-        setError(response || "");
+      if (response.success === false) {
+        setError(response.error || "");
       } else {
         setSuccess("Login successful");
+        router.push("/discover");
       }
       setIsLoading(false);
     }

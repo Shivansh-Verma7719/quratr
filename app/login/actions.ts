@@ -1,6 +1,5 @@
 "use server";
 import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
 
 export async function login(data: { email: string; password: string }) {
   const supabase = createClient();
@@ -12,10 +11,10 @@ export async function login(data: { email: string; password: string }) {
 
   if (error) {
     console.log(error.message);
-    return error.message;
+    return { success: false, error: error.message };
   }
 
-  return redirect("/discover");
+  return { success: true, error: null };
 }
 
 export async function isLoggedIn() {
@@ -24,6 +23,6 @@ export async function isLoggedIn() {
   const { data: { user } } = await supabase.auth.getUser();
 
   if (user) {
-    return redirect("/discover");
+    return { success: true, error: null };
   }
 }

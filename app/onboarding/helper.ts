@@ -15,7 +15,7 @@ export async function submitOnboarding(formData: OnboardingData) {
 
   if (userError || !user) {
     console.log("User not found", userError);
-    return { error: userError };
+    return { success: false, error: userError };
   }
   console.log("User:", user.id);
   console.log(formData);
@@ -41,12 +41,12 @@ export async function submitOnboarding(formData: OnboardingData) {
 
   if (profileError) {
     console.log(profileError);
-    return { error: profileError };
+    return { success: false, error: profileError };
   }
 
   if (onboardingError) {
     console.log(onboardingError);
-    return { error: onboardingError };
+    return { success: false, error: onboardingError };
   }
 
   return { success: true, error: null };
