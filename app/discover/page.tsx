@@ -6,12 +6,11 @@ import { Providers } from "../providers";
 import TinderCard from "react-tinder-card";
 import { Card, CardBody, CardFooter } from "@nextui-org/card";
 import Image from "next/image";
-import { sortPlacesByPreferences } from "./helpers";
+import { sortPlacesByPreferences, likePlace, dislikePlace } from "./helpers";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 import { Chip } from "@nextui-org/chip";
 import { CircleCheck, PartyPopper } from "lucide-react";
-
 
 interface Card {
   id: string;
@@ -45,32 +44,30 @@ export default function DiscoverPage() {
       const sortedPlaces = await sortPlacesByPreferences();
       if (sortedPlaces) {
         const lastCard: Card = {
-          id: 'last-card',
-          name: 'All Caught Up!',
-          image: '',
+          id: "last-card",
+          name: "All Caught Up!",
+          image: "",
           matchScore: 0,
-          tags: '',
+          tags: "",
           rating: 0,
-          location: '',
-          group_experience: '',
-          isLastCard: true
+          location: "",
+          group_experience: "",
+          isLastCard: true,
         };
-        setCards([lastCard, ...sortedPlaces as Card[]]);
+        setCards([lastCard, ...(sortedPlaces as Card[])]);
       }
     };
 
     fetchCards();
   }, []);
 
-  const onSwipe = (direction: string) => {
+  const onSwipe = (direction: string, cardId: string) => {
     if (direction === "right") {
-      console.log("Match");
+      likePlace(cardId);
     } else if (direction === "left") {
-      console.log("No match");
+      dislikePlace(cardId);
     }
   };
-
-  // console.log(cards);
 
   return (
     <Providers>
@@ -80,8 +77,12 @@ export default function DiscoverPage() {
           {cards.map((card, index) => (
             <TinderCard
               key={card.id}
-              onSwipe={onSwipe}
-              preventSwipe={card.isLastCard ? ['up', 'down', 'left', 'right'] : ['up', 'down']}
+              onSwipe={(direction) => onSwipe(direction, card.id)}
+              preventSwipe={
+                card.isLastCard
+                  ? ["up", "down", "left", "right"]
+                  : ["up", "down"]
+              }
               className="absolute top-0 left-0 h-full w-full"
             >
               <Card
@@ -95,7 +96,8 @@ export default function DiscoverPage() {
                     <h2 className="text-2xl font-bold mb-4">All Caught Up!</h2>
                     <PartyPopper size={100} />
                     <p className="text-center px-4">
-                      Sit back and relax while we get you more experiences to swipe on.
+                      Sit back and relax while we get you more experiences to
+                      swipe on.
                     </p>
                   </div>
                 ) : (
@@ -108,9 +110,7 @@ export default function DiscoverPage() {
                       height={600}
                     />
                     <CardBody className="absolute top-0 left-0 w-auto">
-                      <Chip variant="faded">
-                        {card.tags}
-                      </Chip> 
+                      <Chip variant="faded">{card.tags}</Chip>
                     </CardBody>
                     <CardFooter className="flex flex-col items-start before:bg-white/10 border-white/20 border-1 overflow-hidden py-2 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
                       <p className="text-4xl text-white m-0">{card.name}</p>
@@ -121,7 +121,12 @@ export default function DiscoverPage() {
                       />
                       <p className="text-2xl text-white m-0">{card.location}</p>
                       {card.group_experience === "1" && (
-                        <Chip variant="faded" className="-ml-1" startContent={<CircleCheck size={18} />} color="success">
+                        <Chip
+                          variant="faded"
+                          className="-ml-1"
+                          startContent={<CircleCheck size={18} />}
+                          color="success"
+                        >
                           Group Experience
                         </Chip>
                       )}

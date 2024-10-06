@@ -9,18 +9,16 @@ const useNavigation = () => {
   const [isHomeActive, setIsHomeActive] = useState(false);
   const [isDiscoverActive, setIsDiscoverActive] = useState(false);
   const [isProfileActive, setIsProfileActive] = useState(false);
-  const [isSettingsActive, setIsSettingsActive] = useState(false);
   const [isFeedActive, setIsFeedActive] = useState(false);
   const [isNewActive, setIsNewActive] = useState(false);
   const [isFeedbackActive, setIsFeedbackActive] = useState(false);
   const [isLogoutActive, setIsLogoutActive] = useState(false);
-
+  const [isCuratedActive, setIsCuratedActive] = useState(false);
   useEffect(() => {
     setIsHomeActive(false);
     setIsDiscoverActive(false);
     setIsFeedActive(false);
     setIsProfileActive(false);
-    setIsSettingsActive(false);
     setIsNewActive(false);
     setIsFeedbackActive(false);
     setIsLogoutActive(false);
@@ -41,8 +39,8 @@ const useNavigation = () => {
       case '/profile':
         setIsProfileActive(true);
         break;
-      case '/settings':
-        setIsSettingsActive(true);
+      case '/curated':
+        setIsCuratedActive(true);
         break;
       case '/feedback':
         setIsFeedbackActive(true);
@@ -62,7 +60,7 @@ const useNavigation = () => {
     isFeedActive,
     isNewActive,
     isProfileActive,
-    isSettingsActive,
+    isCuratedActive,
     isFeedbackActive,
     isLogoutActive,
   };

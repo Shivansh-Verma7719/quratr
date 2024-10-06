@@ -9,6 +9,7 @@ import {
   BadgePlus,
   LogOut,
   User,
+  ListChecks,
   MessageCircleReply,
   Settings,
 } from "lucide-react";
@@ -45,7 +46,7 @@ const BottomPages = () => {
     isFeedActive,
     // isNewActive,
     isProfileActive,
-    isSettingsActive,
+    isCuratedActive,
     // isFeedbackActive,
     // isLogoutActive,
   } = useNavigation();
@@ -64,6 +65,12 @@ const BottomPages = () => {
       active: isDiscoverActive,
     },
     {
+      name: 'Curated',
+      href: '/curated',
+      icon: ListChecks,
+      active: isCuratedActive,
+    },
+    {
       name: "Feed",
       href: "/feed",
       icon: Newspaper,
@@ -75,12 +82,8 @@ const BottomPages = () => {
       icon: User,
       active: isProfileActive,
     },
-    {
-      name: "Settings",
-      href: "/settings",
-      icon: Settings,
-      active: isSettingsActive,
-    },
+
+
     // {
     //   name: "Feedback",
     //   href: "/feedback",
