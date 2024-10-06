@@ -55,8 +55,8 @@ const LoginForm: React.FC = () => {
       if (response.success === false) {
         setError(response.error || "");
       } else {
-        setSuccess("Login successful");
         router.push("/discover");
+        setSuccess("Login successful");
       }
       setIsLoading(false);
     }
