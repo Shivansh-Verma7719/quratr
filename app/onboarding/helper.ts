@@ -17,8 +17,6 @@ export async function submitOnboarding(formData: OnboardingData) {
     console.log("User not found", userError);
     return { success: false, error: userError };
   }
-  console.log("User:", user.id);
-  console.log(formData);
 
   const { error: onboardingError } = await supabase.from("onboarding").insert({
     id: user.id,

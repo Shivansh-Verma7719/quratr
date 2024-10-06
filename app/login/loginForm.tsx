@@ -32,7 +32,10 @@ const LoginForm: React.FC = () => {
 
   useEffect(() => {
     const checkLoginStatus = async () => {
-      await isLoggedIn();
+      const response = await isLoggedIn();
+      if (response.success === true) {
+        router.push("/discover");
+      }
     };
     checkLoginStatus();
   }, []);

@@ -25,4 +25,5 @@ export async function isLoggedIn() {
   if (user) {
     return { success: true, error: null };
   }
+  return { success: false, error: "User not found" };
 }
