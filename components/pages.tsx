@@ -17,6 +17,7 @@ import { createClient } from "@/utils/supabase/client";
 const isLoggedIn = async () => {
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  console.log("User data:", user);
   return user;
 };
 
