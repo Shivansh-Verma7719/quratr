@@ -15,6 +15,8 @@ export async function login(data: { email: string; password: string }) {
     console.log(error.message);
     return { success: false, error: error.message };
   }
+  const { data: { user: tuser } } = await supabase.auth.getUser();
+  console.log("User data:", tuser);
 
   return { success: true, error: null };
 }

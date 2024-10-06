@@ -3,6 +3,7 @@ import { login, isLoggedIn } from "./actions";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
+import { createClient } from "@/utils/supabase/client";
 import {
   EyeIcon,
   EyeOffIcon,
@@ -55,6 +56,11 @@ const LoginForm: React.FC = () => {
       if (response.success === false) {
         setError(response.error || "");
       } else {
+        console.log("Login successful");
+        const supabase = createClient();
+        const { data, error } = await supabase.auth.getUser();
+        console.log("User data:", data);
+        console.log("User error:", error);
         router.push("/app/experience/discover");
         setSuccess("Login successful");
       }
