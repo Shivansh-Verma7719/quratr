@@ -34,6 +34,7 @@ const LoginForm: React.FC = () => {
   useEffect(() => {
     const checkLoginStatus = async () => {
       const response = await isLoggedIn();
+      console.log("Login status:", response);
       if (response.success === true) {
         router.push("/app/experience/discover");
       }
