@@ -1,6 +1,4 @@
 "use client";
-import useNavigation from "@/hook/use-navigation";
-
 import {
   Home,
   DoorOpen,
@@ -38,7 +36,6 @@ const getPages = async () => {
       { name: "Discover", href: "/app/experience/discover", icon: BadgePlus },
       { name: "Feed", href: "/app/feed", icon: Newspaper },
       { name: "Profile", href: "/app/profile", icon: User },
-      { name: "Settings", href: "/settings", icon: Settings },
       { name: "Feedback", href: "/feedback", icon: MessageCircleReply },
       { name: "Logout", href: "/logout", icon: LogOut },
     ];
@@ -47,47 +44,32 @@ const getPages = async () => {
 };
 
 const BottomPages = () => {
-  const {
-    isHomeActive,
-    isDiscoverActive,
-    isFeedActive,
-    // isNewActive,
-    isProfileActive,
-    isCuratedActive,
-    // isFeedbackActive,
-    // isLogoutActive,
-  } = useNavigation();
 
   const pages = [
     {
       name: "Home",
       href: "/",
       icon: Home,
-      active: isHomeActive,
     },
     {
       name: "Discover",
       href: "/app/experience/discover",
       icon: BadgePlus,
-      active: isDiscoverActive,
     },
     {
       name: 'Curated',
       href: '/app/experience/curated',
       icon: ListChecks,
-      active: isCuratedActive,
-    },
+      },
     {
       name: "Feed",
       href: "/app/feed",
       icon: Newspaper,
-      active: isFeedActive,
     },
     {
       name: "Profile",
       href: "/app/profile",
       icon: User,
-      active: isProfileActive,
     },
   ];
   return pages;
