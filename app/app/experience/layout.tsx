@@ -22,7 +22,7 @@ export default async function RootLayout({
   const onboarded = await isOnboarded();
 
   if (!onboarded) {
-    redirect('/onboarding');
+    redirect('/app/onboarding');
   }
   return (
     <html lang="en">

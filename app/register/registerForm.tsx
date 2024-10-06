@@ -56,7 +56,7 @@ const RegisterForm: React.FC = () => {
         setError(response.error || "");
       } else {
         setSuccess("Redirecting...");
-        router.push("/onboarding");
+        router.push("/app/onboarding");
       }
       setIsLoading(false);
     }

@@ -34,7 +34,7 @@ const LoginForm: React.FC = () => {
     const checkLoginStatus = async () => {
       const response = await isLoggedIn();
       if (response.success === true) {
-        router.push("/discover");
+        router.push("/app/experience/discover");
       }
     };
     checkLoginStatus();
@@ -55,7 +55,7 @@ const LoginForm: React.FC = () => {
       if (response.success === false) {
         setError(response.error || "");
       } else {
-        router.push("/discover");
+        router.push("/app/experience/discover");
         setSuccess("Login successful");
       }
       setIsLoading(false);
