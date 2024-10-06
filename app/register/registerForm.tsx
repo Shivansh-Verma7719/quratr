@@ -3,6 +3,7 @@ import { signup } from "./helper";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
+import { useRouter } from "next/navigation";
 import {
   EyeIcon,
   EyeOffIcon,
@@ -16,6 +17,7 @@ import {
 import PasswordStrengthBar from "react-password-strength-bar";
 
 const RegisterForm: React.FC = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -50,10 +52,11 @@ const RegisterForm: React.FC = () => {
     if (validateForm()) {
       setIsLoading(true);
       const response = await signup(formData);
-      if (response.error) {
+      if (response.success === false) {
         setError(response.error || "");
       } else {
         setSuccess("Redirecting...");
+        router.push("/onboarding");
       }
       setIsLoading(false);
     }

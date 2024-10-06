@@ -1,6 +1,5 @@
 "use server";
 import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
 
 type FormData = {
   username: string;
@@ -19,8 +18,8 @@ export async function signup(formData: FormData) {
   });
 
   if (signUpError) {
-    console.error(signUpError);
-    return { error: signUpError.message };
+    console.log(signUpError);
+    return { success: false, error: signUpError.message };
   }
 
   const { error: profileError } = await supabase.from("profiles").insert({
@@ -32,29 +31,13 @@ export async function signup(formData: FormData) {
   });
 
   if (profileError) {
-    console.error(profileError);
-    return { error: profileError.message };
+    console.log(profileError);
+    return { success: false, error: profileError.message };
   }
 
   if (userData && userData.user) {
-    redirect("/onboarding");
-    return { error: null };
+    return { success: true, error: null };
   }
 
-  return { error: "An unexpected error occurred" };
+  return { success: false, error: "An unexpected error occurred" };
 }
-
-// export async function dummy(formData: FormData) {
-//     // Simulate a 5-second delay
-//     await new Promise(resolve => setTimeout(resolve, 5000));
-//     console.log(formData);
-
-//     // Simulate a successful operation
-//     const success = false;
-
-//     if (success) {
-//         return { message: "Operation completed successfully" };
-//     } else {
-//         return { error: "Operation failed" };
-//     }
-// }
