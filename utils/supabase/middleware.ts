@@ -57,11 +57,11 @@ export async function updateSession(request: NextRequest) {
     "/discover",
     "/feed/",
     "/profile",
-    "/settings",
+    "/feed/new",
     "/onboarding",
   ];
 
-  const onboardedPages = ["/discover", "/feed/", "/profile", "/settings"];
+  const onboardedPages = ["/discover", "/feed/", "/feed/new"];
 
   const user = await supabase.auth.getUser();
 
@@ -81,7 +81,6 @@ export async function updateSession(request: NextRequest) {
   );
 
   if (isOnboardedPage) {
-    // console.log(user.data.user?.id);
     const { data: onboardingData, error: onboardingError } = await supabase
       .from("profiles")
       .select("is_onboarded")
@@ -89,7 +88,6 @@ export async function updateSession(request: NextRequest) {
       .single();
 
     if (onboardingError) {
-      console.log("middleware error");
       console.error(onboardingError);
       return NextResponse.redirect(new URL("/error", request.url));
     }
