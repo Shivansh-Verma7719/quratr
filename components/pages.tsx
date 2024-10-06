@@ -1,5 +1,4 @@
 "use client";
-import { isSignedIn } from "@/utils/supabase/issignedin";
 import useNavigation from "@/hook/use-navigation";
 
 import {
@@ -13,6 +12,13 @@ import {
   MessageCircleReply,
   Settings,
 } from "lucide-react";
+import { createClient } from "@/utils/supabase/client";
+
+const isLoggedIn = async () => {
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  return user;
+};
 
 const getPages = async () => {
   let pages = [
@@ -25,7 +31,7 @@ const getPages = async () => {
     { name: "Register", href: "/register", icon: Settings },
   ];
 
-  if (await isSignedIn()) {
+  if (await isLoggedIn()) {
     pages = [
       { name: "Home", href: "/", icon: Home },
       { name: "Discover", href: "/discover", icon: BadgePlus },
