@@ -34,7 +34,7 @@ const OnboardingPage: React.FC = () => {
     const checkStatus = async () => {
       const response = await checkOnboardingStatus();
       if (response.success === true) {
-        router.push("/discover");
+        router.push("/app/experience/discover");
       }
     };
     checkStatus();
@@ -66,7 +66,7 @@ const OnboardingPage: React.FC = () => {
       if (result.success === false) {
         console.log(result.error);
       } else {
-        router.push("/discover");
+        router.push("/app/experience/discover");
       }
       setIsLoading(false);
     }
