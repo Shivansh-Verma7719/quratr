@@ -1,6 +1,11 @@
 import { createClient } from "@/utils/supabase/server";
+import { NextRequest } from "next/server";
 
-export async function isOnboarded() {
+export async function isOnboarded(request: NextRequest) {
+  const onboardedPages = ["/discover", "/feed/", "/feed/new", "/profile/edit"];
+  const urlPath = new URL(request.url).pathname;
+  const isOnboardedPage = onboardedPages.some(page => urlPath.startsWith(page));
+
   const supabase = createClient();
   const { data: { user }, error: userError } = await supabase.auth.getUser();
 
@@ -20,5 +25,5 @@ export async function isOnboarded() {
     return false;
   }
 
-  return profileData?.is_onboarded || false;
+  return profileData?.is_onboarded && isOnboardedPage;
 }

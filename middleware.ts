@@ -5,7 +5,7 @@ import { isOnboarded } from "@/utils/check_status/isOnboarded";
 
 export async function middleware(request: NextRequest) {
   const isUserLoggedIn = await isLoggedIn(request);
-  const isUserOnboarded = await isOnboarded();
+  const isUserOnboarded = await isOnboarded(request);
 
   if (!isUserLoggedIn) {
     const loginUrl = new URL("/login", request.url);
