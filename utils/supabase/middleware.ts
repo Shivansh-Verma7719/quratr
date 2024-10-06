@@ -3,10 +3,8 @@ import { NextResponse, type NextRequest } from "next/server";
 
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({
-    request: {
-      headers: request.headers,
-    },
-  });
+    request,
+  })
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -53,6 +51,9 @@ export async function updateSession(request: NextRequest) {
       },
     }
   );
+
+  const user = await supabase.auth.getUser();
+
   const protectedPages = [
     "/discover",
     "/feed/",
@@ -62,8 +63,6 @@ export async function updateSession(request: NextRequest) {
   ];
 
   const onboardedPages = ["/discover", "/feed/", "/feed/new"];
-
-  const user = await supabase.auth.getUser();
 
   // Check if the page is protected
   const isProtectedPage = protectedPages.some((page) =>
@@ -91,6 +90,7 @@ export async function updateSession(request: NextRequest) {
       console.error(onboardingError);
       return NextResponse.redirect(new URL("/error", request.url));
     }
+    
     if (onboardingData && !onboardingData.is_onboarded) {
       return NextResponse.redirect(new URL("/onboarding", request.url));
     }
