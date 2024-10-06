@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Providers } from "../providers";
+import { Providers } from "@/app/providers";
 import CustomNavbar from "@/components/navbar";
 import BottomNav from "@/components/bottomnav";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
@@ -62,7 +62,7 @@ export default function ProfilePage() {
                   <div className="flex flex-col gap-2">
                     <Button
                       as="a"
-                      href="/profile/edit"
+                      href="/app/profile/experince/profile_edit"
                       color="primary"
                       radius="full"
                       size="sm"

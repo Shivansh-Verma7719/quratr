@@ -10,7 +10,7 @@ import { Chip } from "@nextui-org/chip";
 import { CircleCheck } from "lucide-react";
 import CustomNavbar from "@/components/navbar";
 import BottomNav from "@/components/bottomnav";
-import { Providers } from "../providers";
+import { Providers } from "@/app/providers";
 import {
   Modal,
   ModalContent,
@@ -77,10 +77,12 @@ export default function CuratedPage() {
   };
 
   const handleWhatsAppRedirect = (placeName: string) => {
-    const discountCode = generateDiscountCode(placeName);   
+    const discountCode = generateDiscountCode(placeName);
     const message = `Here is your discount code: ${discountCode}`;
     const phoneNumber = "+919717095684";
-    const url = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+    const url = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(
+      message
+    )}`;
     window.open(url, "_blank");
   };
 
@@ -150,7 +152,10 @@ export default function CuratedPage() {
             <ModalBody>
               <p className="text-white">{currentPlace.name}</p>
               <div className="bg-background p-2 rounded mt-2">
-                <p className="text-white">Click the button below to send your discount code via WhatsApp:</p>
+                <p className="text-white">
+                  Click the button below to send your discount code via
+                  WhatsApp:
+                </p>
                 <Button
                   color="secondary"
                   onClick={() => handleWhatsAppRedirect(currentPlace.name)}
@@ -160,9 +165,7 @@ export default function CuratedPage() {
                   Send via WhatsApp
                 </Button>
               </div>
-              <p className="text-white mt-4">
-                WhatsApp it to +91 9717095684
-              </p>
+              <p className="text-white mt-4">WhatsApp it to +91 9717095684</p>
             </ModalBody>
             <ModalFooter>
               <Button

@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Providers } from "../../providers";
+import { Providers } from "@/app/providers";
 import CustomNavbar from "@/components/navbar";
 import BottomNav from "@/components/bottomnav";
 import { motion } from "framer-motion";

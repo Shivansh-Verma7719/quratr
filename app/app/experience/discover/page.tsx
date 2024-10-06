@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import CustomNavbar from "@/components/navbar";
 import BottomNav from "@/components/bottomnav";
-import { Providers } from "../providers";
+import { Providers } from "@/app/providers";
 import TinderCard from "react-tinder-card";
 import { Card, CardBody, CardFooter } from "@nextui-org/card";
 import Image from "next/image";

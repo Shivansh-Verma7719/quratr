@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useRef } from "react";
-import { Providers } from "../../providers";
+import { Providers } from "@/app/providers";
 import Image from "next/image";
 import CustomNavbar from "@/components/navbar";
 import BottomNav from "@/components/bottomnav";
@@ -52,7 +52,7 @@ export default function NewPostPage() {
         setPostText("");
         setSelectedImage(null);
         setPreviewUrl(null);
-        router.push('/profile');
+        router.push('/app/profile');
       } else {
         alert("Failed to create post. Please try again.");
       }

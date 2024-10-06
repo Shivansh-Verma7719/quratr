@@ -1,22 +1,7 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { type NextRequest } from "next/server";
 import { updateSession } from "@/utils/supabase/middleware";
-import { isLoggedIn } from "@/utils/check_status/isLogged.in";
-import { isOnboarded } from "@/utils/check_status/isOnboarded";
 
 export async function middleware(request: NextRequest) {
-  const isUserLoggedIn = await isLoggedIn(request);
-  const isUserOnboarded = await isOnboarded(request);
-
-  if (!isUserLoggedIn) {
-    const loginUrl = new URL("/login", request.url);
-    return NextResponse.redirect(loginUrl);
-  }
-
-  if (!isUserOnboarded) {
-    const onboardingUrl = new URL("/onboarding", request.url);
-    return NextResponse.redirect(onboardingUrl);
-  }
-
   return await updateSession(request);
 }
 

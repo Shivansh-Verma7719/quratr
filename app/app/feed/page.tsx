@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import CustomNavbar from "@/components/navbar";
 import BottomNav from "@/components/bottomnav";
-import { Providers } from "../providers";
+import { Providers } from "@/app/providers";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import Image from "next/image";
 import { fetchPosts, Post } from "./helpers";
@@ -76,7 +76,7 @@ export default function FeedPage() {
         >
           <Button
             as={Link}
-            href="/feed/new"
+            href="/app/feed/new"
             color="primary"
             variant="flat"
             aria-label="New Post"
