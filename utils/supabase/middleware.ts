@@ -62,7 +62,7 @@ export async function updateSession(request: NextRequest) {
     "/onboarding",
   ];
 
-  const onboardedPages = ["/discover", "/feed/", "/feed/new"];
+  // const onboardedPages = ["/discover", "/feed/", "/feed/new"];
 
   // Check if the page is protected
   const isProtectedPage = protectedPages.some((page) =>
@@ -73,28 +73,28 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  // Check if the user is onboarded
+  // // Check if the user is onboarded
 
-  const isOnboardedPage = onboardedPages.some((page) =>
-    request.nextUrl.pathname.startsWith(page)
-  );
+  // const isOnboardedPage = onboardedPages.some((page) =>
+  //   request.nextUrl.pathname.startsWith(page)
+  // );
 
-  if (isOnboardedPage) {
-    const { data: onboardingData, error: onboardingError } = await supabase
-      .from("profiles")
-      .select("is_onboarded")
-      .eq("id", user.data.user?.id)
-      .single();
+  // if (isOnboardedPage) {
+  //   const { data: onboardingData, error: onboardingError } = await supabase
+  //     .from("profiles")
+  //     .select("is_onboarded")
+  //     .eq("id", user.data.user?.id)
+  //     .single();
 
-    if (onboardingError) {
-      console.error(onboardingError);
-      return NextResponse.redirect(new URL("/error", request.url));
-    }
-    
-    if (onboardingData && !onboardingData.is_onboarded) {
-      return NextResponse.redirect(new URL("/onboarding", request.url));
-    }
-  }
+  //   if (onboardingError) {
+  //     console.error(onboardingError);
+  //     return NextResponse.redirect(new URL("/error", request.url));
+  //   }
+
+  //   if (onboardingData && !onboardingData.is_onboarded) {
+  //     return NextResponse.redirect(new URL("/onboarding", request.url));
+  //   }
+  // }
 
   return response;
 }
