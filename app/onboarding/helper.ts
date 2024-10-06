@@ -1,6 +1,5 @@
-"use client";
-import { redirect } from "next/navigation";
-import { createClient } from "@/utils/supabase/client";
+"use server";
+import { createClient } from "@/utils/supabase/server";
 
 type OnboardingData = {
   onboardingAnswers: string[];
@@ -61,7 +60,7 @@ export async function checkOnboardingStatus() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/login");
+    return { error: "User not found" };
   }
 
   const { data: onboardingData, error: onboardingError } = await supabase
