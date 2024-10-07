@@ -85,7 +85,7 @@ export async function sortPlacesByPreferences() {
   });
 
   sortedPlaces.sort(
-    (a: Place, b: Place) => (a.matchScore as number) - (b.matchScore as number)
+    (a: Place, b: Place) => (b.matchScore as number) - (a.matchScore as number)
   );
   return sortedPlaces.map((place: Place) => ({
     id: place.id,

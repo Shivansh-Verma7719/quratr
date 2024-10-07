@@ -55,7 +55,8 @@ export default function DiscoverPage() {
           group_experience: "",
           isLastCard: true,
         };
-        setCards([lastCard, ...(sortedPlaces as Card[])]);
+        console.log("sortedPlaces", sortedPlaces);
+        setCards(sortedPlaces as Card[]);
       }
     };
 
@@ -63,13 +64,14 @@ export default function DiscoverPage() {
   }, []);
 
   const onSwipe = (direction: string, cardId: string, index: number) => {
+    console.log("onSwipe", direction, " ", cardId, " ", index);
     if (direction === "right") {
-      likePlace(cardId);
+      // likePlace(cardId);
     } else if (direction === "left") {
-      dislikePlace(cardId);
+      // dislikePlace(cardId);
     }
 
-    if (index === currentIndex - 3) {
+    if (index === 1) {
       setCurrentIndex((prevIndex) => prevIndex + 10);
     }
   };
@@ -77,9 +79,9 @@ export default function DiscoverPage() {
   return (
     <Providers>
       {!isMobile && <CustomNavbar />}
-      <div className="flex justify-center items-start md:items-center py-7 px-5 h-[calc(100vh_-_84px)] w-full">
+      <div className="flex justify-center items-start md:items-center py-9 px-5 h-[calc(100vh_-_84px)] w-full">
         <div className="relative h-full w-full md:w-[600px] md:h-[600px]">
-          {cards.slice(0, currentIndex).map((card, index) => (
+          {cards.slice(0, currentIndex).reverse().map((card, index) => (
             <TinderCard
               key={card.id}
               onSwipe={(direction) => onSwipe(direction, card.id, index)}
@@ -135,6 +137,7 @@ export default function DiscoverPage() {
                           Group Experience
                         </Chip>
                       )}
+                      <p>{card.matchScore}</p>
                     </CardFooter>
                   </>
                 )}
@@ -143,7 +146,7 @@ export default function DiscoverPage() {
           ))}
         </div>
       </div>
-      {isMobile && <BottomNav />}
+      <BottomNav />
     </Providers>
   );
 }
