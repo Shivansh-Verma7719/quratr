@@ -16,11 +16,15 @@ const BottomNav = () => {
       <div className="flex flex-row justify-around items-center bg-transparent w-full">
         {pages.map((page, index) => (
           <Link key={index} href={page.href} className="flex items-center">
-            <page.icon
-              width="32"
-              height="32"
-              stroke={theme === "dark" ? "white" : "black"}
-            />
+            {page.active ? (
+              <page.icon
+                width="32"
+                height="32"
+                stroke={theme === "dark" ? "white" : "black"}
+              />
+            ) : (
+              <page.icon width="32" height="32" stroke="gray" />
+            )}
           </Link>
         ))}
       </div>

@@ -91,7 +91,7 @@ const OnboardingPage: React.FC = () => {
               onClick={() => handleOnboardingAnswer("Yes")}
               className={`px-4 py-2 rounded ${
                 formData.onboardingAnswers[step] === "Yes"
-                  ? "bg-green-500 text-white"
+                  ? "bg-green-500 text-black"
                   : "bg-gray-200"
               }`}
             >
@@ -103,7 +103,7 @@ const OnboardingPage: React.FC = () => {
               onClick={() => handleOnboardingAnswer("No")}
               className={`px-4 py-2 rounded ${
                 formData.onboardingAnswers[step] === "No"
-                  ? "bg-red-500 text-white"
+                  ? "bg-red-500 text-black"
                   : "bg-gray-200"
               }`}
             >
