@@ -27,6 +27,7 @@ interface Card {
 export default function DiscoverPage() {
   const [cards, setCards] = useState<Card[]>([]);
   const [isMobile, setIsMobile] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(10);
 
   useEffect(() => {
     const checkIsMobile = () => {
@@ -61,23 +62,45 @@ export default function DiscoverPage() {
     fetchCards();
   }, []);
 
-  const onSwipe = (direction: string, cardId: string) => {
+  const onSwipe = (direction: string, cardId: string, index: number) => {
     if (direction === "right") {
       likePlace(cardId);
     } else if (direction === "left") {
       dislikePlace(cardId);
     }
+
+    // Load more cards after the 5th swipe
+    if (index === currentIndex - 5) {
+      setCurrentIndex((prevIndex) => prevIndex + 10);
+      console.log("Adding 10 cards, current index is now: ", currentIndex);
+    }
   };
+
+  useEffect(() => {
+    const loadMoreCards = async () => {
+      const sortedPlaces = await sortPlacesByPreferences();
+      if (sortedPlaces) {
+        setCards((prevCards) => [
+          ...prevCards,
+          ...(sortedPlaces.slice(currentIndex, currentIndex + 10) as Card[]),
+        ]);
+      }
+    };
+
+    if (currentIndex > cards.length) {
+      loadMoreCards();
+    }
+  }, [currentIndex, cards.length]);
 
   return (
     <Providers>
       {!isMobile && <CustomNavbar />}
       <div className="flex justify-center items-start md:items-center py-7 px-5 h-[calc(100vh_-_84px)] w-full">
         <div className="relative h-full w-full md:w-[600px] md:h-[600px]">
-          {cards.map((card, index) => (
+          {cards.slice(0, currentIndex).map((card, index) => (
             <TinderCard
               key={card.id}
-              onSwipe={(direction) => onSwipe(direction, card.id)}
+              onSwipe={(direction) => onSwipe(direction, card.id, index)}
               preventSwipe={
                 card.isLastCard
                   ? ["up", "down", "left", "right"]

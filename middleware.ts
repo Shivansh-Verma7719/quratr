@@ -3,10 +3,10 @@ import { createClient } from '@/utils/supabase/middleware';
 
 export async function middleware(request: NextRequest) {
   const { supabase, response } = createClient(request);
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  console.log("User data:", user);
+  // const {
+  //   data: { user },
+  // } = await supabase.auth.getUser();
+  // console.log("User data:", user);
   return response;
 }
 

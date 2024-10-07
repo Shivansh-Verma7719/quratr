@@ -62,7 +62,7 @@ export default function ProfilePage() {
                   <div className="flex flex-col gap-2">
                     <Button
                       as="a"
-                      href="/app/profile/experince/profile_edit"
+                      href="/app/experience/profile_edit"
                       color="primary"
                       radius="full"
                       size="sm"
@@ -137,7 +137,7 @@ export default function ProfilePage() {
           ) : (
             <div className="flex flex-col items-center justify-center mt-10">
               <p className="text-xl mb-4">You haven&apos;t made any posts yet.</p>
-              <Link href="/feed/new">
+              <Link href="/app/feed/new">
                 <Button color="primary" variant="flat" size="lg">
                   Create New Post
                 </Button>
