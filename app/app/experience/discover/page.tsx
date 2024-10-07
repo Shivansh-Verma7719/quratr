@@ -69,33 +69,15 @@ export default function DiscoverPage() {
       dislikePlace(cardId);
     }
 
-    // Load more cards after the 5th swipe
-    if (index === currentIndex - 5) {
+    if (index === currentIndex - 3) {
       setCurrentIndex((prevIndex) => prevIndex + 10);
-      console.log("Adding 10 cards, current index is now: ", currentIndex);
     }
   };
-
-  useEffect(() => {
-    const loadMoreCards = async () => {
-      const sortedPlaces = await sortPlacesByPreferences();
-      if (sortedPlaces) {
-        setCards((prevCards) => [
-          ...prevCards,
-          ...(sortedPlaces.slice(currentIndex, currentIndex + 10) as Card[]),
-        ]);
-      }
-    };
-
-    if (currentIndex > cards.length) {
-      loadMoreCards();
-    }
-  }, [currentIndex, cards.length]);
 
   return (
     <Providers>
       {!isMobile && <CustomNavbar />}
-      <div className="flex justify-center items-start md:items-center py-8 px-5 h-[calc(100vh_-_84px)] w-full">
+      <div className="flex justify-center items-start md:items-center py-7 px-5 h-[calc(100vh_-_84px)] w-full">
         <div className="relative h-full w-full md:w-[600px] md:h-[600px]">
           {cards.slice(0, currentIndex).map((card, index) => (
             <TinderCard
