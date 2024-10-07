@@ -130,9 +130,9 @@ export default function DiscoverPage() {
                         <Chip variant="faded">{card.tags}</Chip>
                       </CardBody>
                       <CardFooter className="flex flex-col items-start before:bg-white/10 border-white/20 border-1 overflow-hidden py-2 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
-                        <p className="text-4xl text-white m-0">{card.name}</p>
+                        <p className="text-3xl text-white m-0">{card.name}</p>
                         <Rating
-                          style={{ maxWidth: 250 }}
+                          style={{ maxWidth: 200 }}
                           value={card.rating}
                           readOnly={true}
                         />
