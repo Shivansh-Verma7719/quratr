@@ -28,6 +28,7 @@ export default function DiscoverPage() {
   const [cards, setCards] = useState<Card[]>([]);
   const [isMobile, setIsMobile] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(10);
+  const [zIndex, setZIndex] = useState(0);
 
   useEffect(() => {
     const checkIsMobile = () => {
@@ -55,8 +56,9 @@ export default function DiscoverPage() {
           group_experience: "",
           isLastCard: true,
         };
-        console.log("sortedPlaces", sortedPlaces);
-        setCards(sortedPlaces as Card[]);
+        const newCards = [...sortedPlaces, lastCard];
+        // console.log("sortedPlaces", sortedPlaces);
+        setCards(newCards as Card[]);
       }
     };
 
@@ -64,12 +66,13 @@ export default function DiscoverPage() {
   }, []);
 
   const onSwipe = (direction: string, cardId: string, index: number) => {
-    console.log("onSwipe", direction, " ", cardId, " ", index);
+    console.log("onSwipe", direction, " ", cardId, " ", index, " ", zIndex);
     if (direction === "right") {
-      likePlace(cardId);
+      // likePlace(cardId);
     } else if (direction === "left") {
-      dislikePlace(cardId);
+      // dislikePlace(cardId);
     }
+    setZIndex((prevZIndex) => prevZIndex + 1);
 
     if (index === 1) {
       setCurrentIndex((prevIndex) => prevIndex + 10);
@@ -96,7 +99,7 @@ export default function DiscoverPage() {
                 isFooterBlurred
                 radius="lg"
                 className="border-none h-full w-full pointer-events-none"
-                style={{ zIndex: cards.length - index }}
+                style={{ zIndex: cards.length - zIndex }}
               >
                 {card.isLastCard ? (
                   <div className="flex flex-col items-center justify-center h-full bg-gray-100 dark:bg-gray-800">
