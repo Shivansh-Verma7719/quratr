@@ -93,7 +93,7 @@ export default function DiscoverPage() {
                   ? ["up", "down", "left", "right"]
                   : ["up", "down"]
               }
-              className="absolute top-0 left-0 h-[95%] w-[95%]"
+              className="absolute top-0 left-0 h-[95%] w-[95%] mx-auto"
             >
               <Card
                 isFooterBlurred
@@ -140,7 +140,7 @@ export default function DiscoverPage() {
                           Group Experience
                         </Chip>
                       )}
-                      <p>{card.matchScore}</p>
+                      {/* <p>{card.matchScore}</p> */}
                     </CardFooter>
                   </>
                 )}
