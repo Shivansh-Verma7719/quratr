@@ -25,9 +25,9 @@ export default async function RootLayout({
     redirect('/app/onboarding');
   }
   return (
-    <html lang="en">
+    <html lang="en w-[100vw] h-[100vh]">
       <body
-        className={`antialiased`}
+        className={`w-[100vw] h-[100vh]`}
       >
         {children}
       </body>

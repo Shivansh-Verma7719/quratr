@@ -89,9 +89,9 @@ const OnboardingPage: React.FC = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => handleOnboardingAnswer("Yes")}
-              className={`px-4 py-2 rounded ${
+              className={`px-4 py-2 rounded text-black ${
                 formData.onboardingAnswers[step] === "Yes"
-                  ? "bg-green-500 text-black"
+                  ? "bg-green-500"
                   : "bg-gray-200"
               }`}
             >
@@ -101,9 +101,9 @@ const OnboardingPage: React.FC = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => handleOnboardingAnswer("No")}
-              className={`px-4 py-2 rounded ${
+              className={`px-4 py-2 rounded text-black ${
                 formData.onboardingAnswers[step] === "No"
-                  ? "bg-red-500 text-black"
+                  ? "bg-red-500"
                   : "bg-gray-200"
               }`}
             >
