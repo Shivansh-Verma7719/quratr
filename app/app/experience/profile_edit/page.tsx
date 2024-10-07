@@ -82,7 +82,7 @@ export default function ProfileEditPage() {
       if (onboardingPreferences) {
         await updateOnboardingPreferences(onboardingPreferences);
       }
-      router.push("/profile");
+      router.push("/app/profile");
     } catch (error) {
       console.error("Error updating profile:", error);
     } finally {
