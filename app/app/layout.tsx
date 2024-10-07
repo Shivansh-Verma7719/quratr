@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "@/app/globals.css";
 import { isLoggedIn } from "@/utils/check_status/isLogged.in";
 import { redirect } from "next/navigation";
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata: Metadata = {
   title: "Home",
@@ -23,6 +24,7 @@ export default async function RootLayout({
       <body
       >
         {children}
+        <SpeedInsights />
       </body>
     </html>
   );

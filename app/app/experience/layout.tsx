@@ -3,6 +3,7 @@ import "@/app/globals.css";
 import { isLoggedIn } from "@/utils/check_status/isLogged.in";
 import { isOnboarded } from "@/utils/check_status/isOnboarded";
 import { redirect } from "next/navigation";
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata: Metadata = {
   title: "Home",
@@ -30,6 +31,7 @@ export default async function RootLayout({
         className={`w-[100vw] h-[100vh]`}
       >
         {children}
+        <SpeedInsights />
       </body>
     </html>
   );
