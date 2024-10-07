@@ -72,7 +72,7 @@ export default function DiscoverPage() {
     } else if (direction === "left") {
       dislikePlace(cardId);
     }
-    setZIndex((prevZIndex) => prevZIndex + 1);
+    setZIndex((prevZIndex) => prevZIndex + 3);
 
     if (index === 1) {
       setCurrentIndex((prevIndex) => prevIndex + 10);
@@ -83,7 +83,7 @@ export default function DiscoverPage() {
     <Providers>
       {!isMobile && <CustomNavbar />}
       <div className="flex justify-center items-start md:items-center py-9 px-5 h-[calc(100vh_-_84px)] w-full">
-        <div className="relative h-full w-full md:w-[600px] md:h-[600px]">
+        <div className="relative h-[95%] w-[95%] md:w-[600px] md:h-[600px]">
           {cards.slice(0, currentIndex).reverse().map((card, index) => (
             <TinderCard
               key={card.id}
@@ -93,7 +93,7 @@ export default function DiscoverPage() {
                   ? ["up", "down", "left", "right"]
                   : ["up", "down"]
               }
-              className="absolute top-0 left-0 h-[95%] w-[95%] mx-auto"
+              className="absolute top-0 left-0 h-full w-full"
             >
               <Card
                 isFooterBlurred
@@ -140,7 +140,6 @@ export default function DiscoverPage() {
                           Group Experience
                         </Chip>
                       )}
-                      {/* <p>{card.matchScore}</p> */}
                     </CardFooter>
                   </>
                 )}
