@@ -68,9 +68,9 @@ export default function DiscoverPage() {
   const onSwipe = (direction: string, cardId: string, index: number) => {
     console.log("onSwipe", direction, " ", cardId, " ", index, " ", zIndex);
     if (direction === "right") {
-      // likePlace(cardId);
+      likePlace(cardId);
     } else if (direction === "left") {
-      // dislikePlace(cardId);
+      dislikePlace(cardId);
     }
     setZIndex((prevZIndex) => prevZIndex + 1);
 
