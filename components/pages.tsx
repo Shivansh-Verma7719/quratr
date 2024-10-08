@@ -37,7 +37,7 @@ const getPages = async () => {
       { name: "Discover", href: "/app/experience/discover", icon: BadgePlus },
       { name: "Feed", href: "/app/feed", icon: Newspaper },
       { name: "Profile", href: "/app/profile", icon: User },
-      { name: "Settings", href: "/settings", icon: Settings },
+      { name: "Curated", href: "/app/experience/curated", icon: ListChecks },
       { name: "Feedback", href: "/feedback", icon: MessageCircleReply },
       { name: "Logout", href: "/logout", icon: LogOut },
     ];
