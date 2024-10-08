@@ -2,12 +2,12 @@ import { nextui } from "@nextui-org/theme";
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  darkMode: 'class', // Ensure class-based dark mode is enabled
+  darkMode: "class", // Ensure class-based dark mode is enabled
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./node_modules/@nextui-org/theme/dist/components/(avatar|button|card|chip|input|link|modal|navbar|toggle|ripple|spinner).js"
+    "./node_modules/@nextui-org/theme/dist/components/(avatar|button|card|chip|input|link|modal|navbar|toggle|ripple|spinner).js",
   ],
   theme: {
     extend: {
@@ -15,7 +15,7 @@ const config: Config = {
         background: "var(--color-background)",
         foreground: "var(--color-foreground)",
         text: "var(--color-text)",
-        textSec: "var(--color-text-secondary)"
+        textSec: "var(--color-text-secondary)",
         /* Add more colors as needed */
       },
       keyframes: {
@@ -29,6 +29,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [nextui()],
+  plugins: [require("@tailwindcss/typography"), nextui()],
 };
 export default config;

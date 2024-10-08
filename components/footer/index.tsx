@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import QuratrLogo from "@/public/images/logo.png";
 import Image from "next/image";
-import { Instagram, Linkedin } from "lucide-react";
+import { Instagram } from "lucide-react";
 import QuratrLogoDark from "@/public/images/logo_dark.png";
 import { useTheme } from "next-themes";
 import { getPages } from "../pages";
@@ -74,27 +74,27 @@ const Footer: React.FC = () => {
                 </Link>
               </li>
               {/* <li><Link href="#" className="text-gray-400 transition-colors flex items-center"><Twitter className="w-5 h-5 mr-2" /> Twitter</Link></li> */}
-              <li>
+              {/* <li>
                 <Link
                   href="#"
                   className="text-gray-400 transition-colors flex items-center"
                 >
                   <Linkedin className="w-5 h-5 mr-2" /> LinkedIn
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
           <div>
             <h3 className="text-lg font-semibold mb-4">Legal</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="#" className="text-gray-400 transition-colors">
+                <Link href="/privacy_policy" className="text-gray-400 transition-colors">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-gray-400 transition-colors">
-                  Terms of Service
+                <Link href="/termsandconditions" className="text-gray-400 transition-colors">
+                  Terms and Conditions
                 </Link>
               </li>
               {/* <li><Link href="#" className="text-gray-400 transition-colors">Cookie Policy</Link></li> */}
