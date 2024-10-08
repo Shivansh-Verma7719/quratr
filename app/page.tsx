@@ -1,11 +1,15 @@
 "use client";
 import { useState, useEffect } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import {
-  motion,
-  useScroll,
-  useTransform,
-} from "framer-motion";
-import { ArrowRight, Smartphone, Users, Zap, TicketPercent } from "lucide-react";
+  ArrowRight,
+  Smartphone,
+  Users,
+  Zap,
+  TicketPercent,
+  SearchX,
+  MouseOff
+} from "lucide-react";
 import Navbar from "@/components/navbar/index";
 import Image from "next/image";
 import { Providers } from "./providers";
@@ -102,9 +106,15 @@ export default function QuratrLandingPage() {
                     icon: (
                       <Smartphone className="w-10 h-10 sm:w-12 sm:h-12 mb-4" />
                     ),
-                    title: "Swipe to Discover",
+                    title: "Swipe to Vibe",
                     description:
-                      "Find your next adventure with our intuitive, Tinder-like interface.",
+                      "Find your next experience with our intuitive, Tinder-like interface.",
+                  },
+                  {
+                    icon: <Users className="w-10 h-10 sm:w-12 sm:h-12 mb-4" />,
+                    title: "Social Experiences with your tribe",
+                    description:
+                      "See what your friends and influencers are loving.",
                   },
                   {
                     icon: <Zap className="w-10 h-10 sm:w-12 sm:h-12 mb-4" />,
@@ -113,16 +123,27 @@ export default function QuratrLandingPage() {
                       "Get personalized recommendations based on your preferences.",
                   },
                   {
-                    icon: <Users className="w-10 h-10 sm:w-12 sm:h-12 mb-4" />,
-                    title: "Social Experiences",
-                    description:
-                      "See what your friends and influencers are loving.",
-                  },
-                  {
-                    icon: <TicketPercent className="w-10 h-10 sm:w-12 sm:h-12 mb-4" />,
+                    icon: (
+                      <TicketPercent className="w-10 h-10 sm:w-12 sm:h-12 mb-4" />
+                    ),
                     title: "Curated Discounts",
                     description:
                       "Get exclusive discounts on the best experiences personalized to you.",
+                  },
+                  {
+                    icon: (
+                      <SearchX className="w-10 h-10 sm:w-12 sm:h-12 mb-4" />
+                    ),
+                    title: "Eliminate Search",
+                    description: "Get what you want right in front of you.",
+                  },
+                  {
+                    icon: (
+                      <MouseOff className="w-10 h-10 sm:w-12 sm:h-12 mb-4" />
+                    ),
+                    title: "Stop scrolling together",
+                    description:
+                      "Share your incentives and go out on group experiences while having the option to discover together too",
                   },
                 ].map((feature, index) => (
                   <motion.div
