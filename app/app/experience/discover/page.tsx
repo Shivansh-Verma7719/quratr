@@ -100,6 +100,8 @@ export default function DiscoverPage() {
                     ? ["up", "down", "left", "right"]
                     : ["up", "down"]
                 }
+                swipeThreshold={100}
+                swipeRequirementType="position"
                 className="absolute top-0 left-0 h-full w-full"
               >
                 <Card
