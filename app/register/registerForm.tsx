@@ -91,7 +91,7 @@ const RegisterForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Create Your Account</h2>
+      <h2 className="text-2xl font-bold mb-4 text-text">Create Your Account</h2>
       <Input
         type="text"
         isRequired
@@ -105,7 +105,7 @@ const RegisterForm: React.FC = () => {
         labelPlacement="outside"
         onChange={handleInputChange}
         name="firstName"
-        className="w-full p-2 mb-4"
+        className="w-full p-2 mb-4 text-text"
       />
       <Input
         type="text"
@@ -120,7 +120,7 @@ const RegisterForm: React.FC = () => {
         labelPlacement="outside"
         onChange={handleInputChange}
         name="lastName"
-        className="w-full p-2 mb-4"
+        className="w-full p-2 mb-4 text-text"
       />
       <Input
         type="text"
@@ -135,7 +135,7 @@ const RegisterForm: React.FC = () => {
         labelPlacement="outside"
         onChange={handleInputChange}
         name="username"
-        className="w-full p-2 mb-4"
+        className="w-full p-2 mb-4 text-text"
       />
       <Input
         type="email"
@@ -147,7 +147,7 @@ const RegisterForm: React.FC = () => {
         name="email"
         labelPlacement="outside"
         onChange={handleInputChange}
-        className="w-full p-2 mb-4"
+        className="w-full p-2 mb-4 text-text"
         startContent={
           <MailIcon className="text-2xl text-default-400 pointer-events-none" />
         }
@@ -178,7 +178,7 @@ const RegisterForm: React.FC = () => {
         value={formData.password}
         onChange={handleInputChange}
         name="password"
-        className="w-full p-2 mb-4"
+        className="w-full p-2 mb-4 text-text"
       />
       <Input
         isRequired
@@ -206,7 +206,7 @@ const RegisterForm: React.FC = () => {
         name="confirmPassword"
         value={formData.confirmPassword}
         onChange={handleInputChange}
-        className="w-full p-2 mb-4"
+        className="w-full p-2 mb-4 text-text"
       />
       <PasswordStrengthBar password={formData.password} />
       <div className="flex items-center mb-4">
