@@ -5,7 +5,7 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
-import { ArrowRight, Smartphone, Users, Zap } from "lucide-react";
+import { ArrowRight, Smartphone, Users, Zap, TicketPercent } from "lucide-react";
 import Navbar from "@/components/navbar/index";
 import Image from "next/image";
 import { Providers } from "./providers";
@@ -117,6 +117,12 @@ export default function QuratrLandingPage() {
                     title: "Social Experiences",
                     description:
                       "See what your friends and influencers are loving.",
+                  },
+                  {
+                    icon: <TicketPercent className="w-10 h-10 sm:w-12 sm:h-12 mb-4" />,
+                    title: "Curated Discounts",
+                    description:
+                      "Get exclusive discounts on the best experiences personalized to you.",
                   },
                 ].map((feature, index) => (
                   <motion.div
