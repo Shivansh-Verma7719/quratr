@@ -70,9 +70,9 @@ const RegisterForm: React.FC = () => {
 
     const token = await executeRecaptcha("register");
 
-    const response = await axios.post("/api/registerFormSubmit", { token });
+    const res = await axios.post("/api/registerFormSubmit", { token });
 
-    if (response.data.success) {
+    if (res.data.success) {
       if (validateForm()) {
         setIsLoading(true);
         const response = await signup(formData);
@@ -85,7 +85,7 @@ const RegisterForm: React.FC = () => {
         setIsLoading(false);
       }
     } else {
-      setError("Please check the captcha your score is " + response.data.score);
+      setError("Please check the captcha your score is " + res.data.score);
     }
   };
 
