@@ -8,6 +8,7 @@ interface Place {
   image: string;
   [key: string]: string | number | boolean | null | undefined;
   isLastCard?: boolean;
+  address: string;
 }
 
 export async function sortPlacesByPreferences() {
@@ -97,6 +98,8 @@ export async function sortPlacesByPreferences() {
     group_experience: place.group_experience,
     matchScore: place.matchScore,
     isLastCard: false,
+    address: place.address,
+    description: "Hello",
   }));
 }
 

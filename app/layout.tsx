@@ -4,7 +4,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: "Home",
-  description: "Quratr - Your ultimate platform for curated experinces.",
+  description: "Quratr - Your ultimate platform for curated experiecd nces.",
 };
 
 export default function RootLayout({
@@ -13,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html>
       <body
       >
         {children}

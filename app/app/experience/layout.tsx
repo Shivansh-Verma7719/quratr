@@ -26,10 +26,8 @@ export default async function RootLayout({
     redirect('/app/onboarding');
   }
   return (
-    <html lang="en w-[100vw] h-[100vh]">
-      <body
-        className={`w-[100vw] h-[100vh]`}
-      >
+    <html lang="en">
+      <body>
         {children}
         <SpeedInsights />
       </body>
