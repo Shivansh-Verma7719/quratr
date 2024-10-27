@@ -55,5 +55,6 @@ export default function manifest(): MetadataRoute.Manifest {
         url: "/app/profile",
       },
     ],
+    orientation: "portrait",
   };
 }
