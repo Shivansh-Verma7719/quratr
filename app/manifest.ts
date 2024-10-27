@@ -1,5 +1,5 @@
-import { MetadataRoute } from 'next'
- 
+import { MetadataRoute } from "next";
+
 export default function manifest(): MetadataRoute.Manifest {
   return {
     id: "/",
@@ -27,5 +27,6 @@ export default function manifest(): MetadataRoute.Manifest {
         type: "image/png",
       },
     ],
-  }
+    display_override: ["window-controls-overlay", "standalone", "browser"],
+  };
 }
