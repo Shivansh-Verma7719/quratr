@@ -147,12 +147,12 @@ export default function CuratedPage() {
         >
           <ModalContent>
             <ModalHeader>
-              <h2 className="text-white">Redeem Discount</h2>
+              <h2 className="text-text">Redeem Discount</h2>
             </ModalHeader>
             <ModalBody>
-              <p className="text-white">{currentPlace.name}</p>
+              <p className="text-text">{currentPlace.name}</p>
               <div className="bg-background p-2 rounded mt-2">
-                <p className="text-white">
+                <p className="text-text">
                   Click the button below to send your discount code via
                   WhatsApp:
                 </p>
@@ -165,7 +165,7 @@ export default function CuratedPage() {
                   Send via WhatsApp
                 </Button>
               </div>
-              <p className="text-white mt-4">WhatsApp it to +91 9717095684</p>
+              <p className="text-text mt-4">WhatsApp it to +91 9717095684</p>
             </ModalBody>
             <ModalFooter>
               <Button
