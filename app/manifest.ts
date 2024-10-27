@@ -56,5 +56,7 @@ export default function manifest(): MetadataRoute.Manifest {
       },
     ],
     orientation: "portrait",
+    prefer_related_applications: false,
+    categories: ["social", "entertainment", "lifestyle", "personalization"],
   };
 }
