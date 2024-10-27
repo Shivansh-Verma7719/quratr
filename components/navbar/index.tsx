@@ -45,6 +45,9 @@ const CustomNavbar: React.FC = () => {
                 width={35}
                 height={35}
                 className="-translate-y-[0.2rem] translate-x-[0.2rem]"
+                priority={false}
+                loading="eager"
+                unoptimized
               />
               <h1
                 className="text-2xl p-0 ml-0 font-bold"

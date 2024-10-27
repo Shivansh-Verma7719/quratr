@@ -3,18 +3,19 @@ import { useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
   ArrowRight,
-  Smartphone,
-  Users,
-  Zap,
-  TicketPercent,
-  SearchX,
-  MouseOff
+  // Smartphone,
+  // Users,
+  // Zap,
+  // TicketPercent,
+  // SearchX,
+  // MouseOff
 } from "lucide-react";
 import Navbar from "@/components/navbar/index";
 import Image from "next/image";
 import { Providers } from "./providers";
 import Footer from "@/components/footer/index";
 import discoveryImage from "@/public/images/landing/2.jpg";
+import FeatureSection from "@/components/featureSection";
 
 export default function QuratrLandingPage() {
   const [scrollY, setScrollY] = useState(0);
@@ -92,7 +93,8 @@ export default function QuratrLandingPage() {
             </div>
           </motion.section>
           {/*  */}
-          <motion.section
+          <FeatureSection />
+          {/* <motion.section
             id="features"
             className="bg-background text-text py-16 sm:py-24"
           >
@@ -175,7 +177,7 @@ export default function QuratrLandingPage() {
                 ))}
               </div>
             </div>
-          </motion.section>
+          </motion.section> */}
 
           <motion.section
             style={{ opacity: aboutOpacity }}

@@ -12,12 +12,12 @@
   /* Add more variables as needed */
 }
 
-* {
+/* * {
   transition-property: color, background-color, border-color,
     text-decoration-color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
-}
+} */
 
 .dark {
   --color-background: #0a0a0a;
@@ -38,15 +38,23 @@ html {
 }
 
 body {
-  font-family: 'Roboto Mono', monospace !important;
+  font-family: "Roboto Mono", monospace !important;
 }
 
 p {
-  font-family: 'Roboto Mono', monospace !important;
+  font-family: "Roboto Mono", monospace !important;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition-duration: 0ms !important;
 }
 
 a {
-  font-family: 'Roboto Mono', monospace !important;
+  font-family: "Roboto Mono", monospace !important;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition-duration: 0ms !important;
 }
 
 h1,
@@ -57,8 +65,8 @@ h5,
 h6 {
   transition-property: color, background-color, border-color,
     text-decoration-color, fill, stroke;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition-duration: 0ms !important;
   font-family: "League Spartan", sans-serif;
 }
 
