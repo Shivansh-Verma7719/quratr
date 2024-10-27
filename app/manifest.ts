@@ -37,7 +37,7 @@ export default function manifest(): MetadataRoute.Manifest {
       {
         name: "Your Curations",
         short_name: "Curations",
-        url: "/app/experience/curations",
+        url: "/app/experience/curated",
       },
       {
         name: "Feed",
