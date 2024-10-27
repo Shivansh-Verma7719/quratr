@@ -28,5 +28,32 @@ export default function manifest(): MetadataRoute.Manifest {
       },
     ],
     display_override: ["window-controls-overlay", "standalone", "browser"],
+    shortcuts: [
+      {
+        name: "Swipe to vibe",
+        short_name: "Discover",
+        url: "/app/experience/discover",
+      },
+      {
+        name: "Your Curations",
+        short_name: "Curations",
+        url: "/app/experience/curations",
+      },
+      {
+        name: "Feed",
+        short_name: "Feed",
+        url: "/app/feed",
+      },
+      {
+        name: "New Post",
+        short_name: "Post",
+        url: "/app/feed/new",
+      },
+      {
+        name: "Profile",
+        short_name: "Profile",
+        url: "/app/profile",
+      },
+    ],
   };
 }
