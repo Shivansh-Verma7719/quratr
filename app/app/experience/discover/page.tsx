@@ -144,7 +144,7 @@ export default function DiscoverPage() {
                         e.currentTarget.dataset.touchStartTime || "0",
                         10
                       );
-                      if (touchEndTime - touchStartTime < 200) {
+                      if (touchEndTime - touchStartTime < 150) {
                         // Adjust this threshold as needed
                         handleCardFlip(card.id);
                       }
@@ -180,6 +180,7 @@ export default function DiscoverPage() {
                               src={card.image}
                               width={600}
                               height={600}
+                              priority={true}
                             />
                             <CardBody className="absolute top-0 left-0 w-auto">
                               <Chip variant="faded">{card.tags}</Chip>
