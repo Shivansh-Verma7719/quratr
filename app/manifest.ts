@@ -63,6 +63,7 @@ export default function manifest(): MetadataRoute.Manifest {
     ],
     orientation: "portrait",
     prefer_related_applications: false,
+    related_applications: [],
     categories: ["social", "entertainment", "lifestyle", "personalization"],
   };
 }
