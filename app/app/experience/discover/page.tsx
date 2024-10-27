@@ -10,9 +10,10 @@ import { sortPlacesByPreferences, likePlace, dislikePlace } from "./helpers";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 import { Chip } from "@nextui-org/chip";
-import { CircleCheck, PartyPopper } from "lucide-react";
+import { CircleCheck, PartyPopper, MapPin, HomeIcon } from "lucide-react";
 import ReactCardFlip from "react-card-flip";
 import { motion } from "framer-motion";
+
 interface Card {
   id: string;
   name: string;
@@ -212,7 +213,7 @@ export default function DiscoverPage() {
 
                       {/* Back of the card */}
                       <Card
-                        isFooterBlurred
+                        isBlurred
                         radius="lg"
                         className="border-none h-full w-full"
                       >
@@ -224,31 +225,68 @@ export default function DiscoverPage() {
                             <PartyPopper size={100} />
                           </div>
                         ) : (
-                          <CardBody className="flex flex-col justify-between h-full p-0">
-                            <motion.div
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              exit={{ opacity: 0 }}
-                              transition={{ duration: 0.3 }}
-                              className="h-full w-full bg-gradient-to-br from-black to-purple-500 rounded-lg p-6 flex flex-col justify-between"
-                            >
-                              <div>
-                                <motion.h2
-                                  initial={{ y: -20 }}
-                                  animate={{ y: 0 }}
-                                  className="text-3xl font-bold mb-4 text-white"
-                                >
-                                  {card.name}
-                                </motion.h2>
-                                <Chip variant="faded">{card.tags}</Chip>
+                          <>
+                            <div
+                              className="h-full w-full"
+                              style={{
+                                backgroundImage: `url(${card.image})`,
+                                backgroundSize: "cover",
+                                backgroundPosition: "center",
+                                filter: "blur(12px)",
+                              }}
+                            ></div>
+                            <CardBody className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-25">
+                              <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.3 }}
+                                className="h-full w-full rounded-lg p-6 flex flex-col justify-between"
+                              >
+                                <div>
+                                  <motion.h2
+                                    initial={{ y: -20 }}
+                                    animate={{ y: 0 }}
+                                    className="text-3xl font-bold mb-4 text-white"
+                                  >
+                                    {card.name}
+                                  </motion.h2>
+                                  <Chip
+                                    variant="faded"
+                                    className="text-white bg-opacity-70"
+                                  >
+                                    {card.tags}
+                                  </Chip>
+                                  <motion.div
+                                    initial={{ y: 20 }}
+                                    animate={{ y: 0 }}
+                                    transition={{ delay: 0.6 }}
+                                  >
+                                    {card.group_experience === "1" && (
+                                      <Chip
+                                        variant="shadow"
+                                        className="mt-4 text-white bg-opacity-70"
+                                        startContent={<CircleCheck size={18} />}
+                                        color="success"
+                                      >
+                                        Group Experience
+                                      </Chip>
+                                    )}
+                                  </motion.div>
 
-                                <motion.hr
-                                  initial={{ width: 0 }}
-                                  animate={{ width: "100%" }}
-                                  transition={{ delay: 0.1, duration: 0.5 }}
-                                  className="border-t border-gray-300 my-4"
-                                />
-                                {/* <motion.p
+                                  <Rating
+                                    style={{ maxWidth: 200 }}
+                                    value={card.rating}
+                                    readOnly={true}
+                                  />
+
+                                  <motion.hr
+                                    initial={{ width: 0 }}
+                                    animate={{ width: "100%" }}
+                                    transition={{ delay: 0.1, duration: 0.5 }}
+                                    className="border-t border-gray-300 my-4"
+                                  />
+                                  {/* <motion.p
                                   initial={{ opacity: 0 }}
                                   animate={{ opacity: 1 }}
                                   transition={{ delay: 0.2 }}
@@ -256,41 +294,32 @@ export default function DiscoverPage() {
                                 >
                                   {card.description}
                                 </motion.p> */}
-                                <motion.div
-                                  initial={{ opacity: 0 }}
-                                  animate={{ opacity: 1 }}
-                                  transition={{ delay: 0.4 }}
-                                  className="space-y-2"
-                                >
-                                  <p className="text-md text-white">
-                                    <strong>Address:</strong> {card.address}
-                                  </p>
-                                  <p className="text-md text-white">
-                                    <strong>Rating:</strong> {card.rating}
-                                  </p>
-                                  <p className="text-md text-white">
-                                    <strong>Location:</strong> {card.location}
-                                  </p>
-                                </motion.div>
-                              </div>
-                              <motion.div
-                                initial={{ y: 20 }}
-                                animate={{ y: 0 }}
-                                transition={{ delay: 0.6 }}
-                              >
-                                {card.group_experience === "1" && (
-                                  <Chip
-                                    variant="shadow"
-                                    className="mt-4"
-                                    startContent={<CircleCheck size={18} />}
-                                    color="success"
+                                  <motion.div
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ delay: 0.4 }}
+                                    className="space-y-2"
                                   >
-                                    Group Experience
-                                  </Chip>
-                                )}
+                                    <p className="text-md text-white flex items-center">
+                                      <HomeIcon size={18} className="mr-1" />
+                                      <strong className="mr-1">Address: </strong>
+                                      {card.address}
+                                    </p>
+                                    {/* <p className="text-md text-white">
+                                      <strong>Rating:</strong> {card.rating}
+                                    </p> */}
+                                    <p className="text-md text-white flex items-center">
+                                      <MapPin size={18} className="mr-1" />
+                                      <strong className="mr-1">
+                                        Location:
+                                      </strong>
+                                      {card.location}
+                                    </p>
+                                  </motion.div>
+                                </div>
                               </motion.div>
-                            </motion.div>
-                          </CardBody>
+                            </CardBody>
+                          </>
                         )}
                       </Card>
                     </ReactCardFlip>

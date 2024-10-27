@@ -1,8 +1,6 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-
-import { usePathname } from 'next/navigation';
+"use client";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 const useNavigation = () => {
   const pathname = usePathname();
@@ -27,19 +25,19 @@ const useNavigation = () => {
       case '/':
         setIsHomeActive(true);
         break;
-      case '/discover':
+      case '/app/experience/discover':
         setIsDiscoverActive(true);
         break;
-      case '/feed':
+      case '/app/feed':
         setIsFeedActive(true);
         break;
-      case '/feed/new':
+      case '/app/feed/new':
         setIsNewActive(true);
         break;
-      case '/profile':
+      case '/app/profile':
         setIsProfileActive(true);
         break;
-      case '/curated':
+      case '/app/experience/curated':
         setIsCuratedActive(true);
         break;
       case '/feedback':
