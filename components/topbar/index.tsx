@@ -8,10 +8,19 @@ import { useTheme } from "next-themes";
 import QuratrLogoDark from "@/public/images/logo_dark.png";
 import QuratrLogo from "@/public/images/logo_small.png";
 import Link from "next/link";
+import { checkLoggedIn } from "./helpers";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const Topbar = () => {
   const { theme } = useTheme();
   const themeLogo = theme === "light" ? QuratrLogoDark : QuratrLogo;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    checkLoggedIn().then((loggedIn) => setIsLoggedIn(loggedIn));
+    setIsLoggedIn(false);
+  }, []);
 
   return (
     <Navbar
@@ -20,16 +29,21 @@ const Topbar = () => {
       height="4rem"
       shouldHideOnScroll
     >
-      <NavbarContent className="flex justify-center items-center w-full">
-        <NavbarItem className="w-1/3 flex justify-start items-center">
+      <NavbarContent justify="start" className={isLoggedIn ? "hidden" : ""}>
+        <NavbarItem>
           <Link href="/profile">
             <Button isIconOnly variant="light" aria-label="Profile">
-              <UserCircle size={35} />
+              <UserCircle size={35} stroke="gray" />
             </Button>
           </Link>
         </NavbarItem>
+      </NavbarContent>
 
-        <NavbarItem className="w-1/3 flex justify-center items-center">
+      <NavbarContent
+        className={isLoggedIn ? "mx-auto" : ""}
+        justify="center"
+      >
+        <NavbarItem>
           <Link href="/">
             <Image
               src={themeLogo}
@@ -40,11 +54,13 @@ const Topbar = () => {
             />
           </Link>
         </NavbarItem>
+      </NavbarContent>
 
-        <NavbarItem className="w-1/3 flex justify-end items-start">
+      <NavbarContent justify="end" className={isLoggedIn ? "hidden" : ""}>
+        <NavbarItem>
           <Link href="/profile/edit">
             <Button isIconOnly variant="light" aria-label="Settings">
-              <Settings size={35} />
+              <Settings size={35} stroke="gray" />
             </Button>
           </Link>
         </NavbarItem>

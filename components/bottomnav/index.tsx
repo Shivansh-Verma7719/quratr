@@ -4,7 +4,9 @@ import { useTheme } from "next-themes";
 import {
   Home,
   ListChecks,
+  LogIn,
   Newspaper,
+  NotebookPen,
   PlusCircle,
   // Settings,
   // LogIn,
@@ -13,7 +15,7 @@ import {
 import { IconSwipe } from "@tabler/icons-react";
 import { Link } from "@nextui-org/link";
 import { usePathname } from "next/navigation";
-// import { checkLoggedIn } from "./helpers";
+import { checkLoggedIn } from "./helpers";
 
 interface Page {
   name: string;
@@ -43,7 +45,7 @@ function BottomNav() {
     const fetchPages = async () => {
       let pages: Page[] = [];
 
-      // if (await checkLoggedIn()) {
+      if (await checkLoggedIn()) {
         pages = [
           {
             name: "Home",
@@ -76,18 +78,18 @@ function BottomNav() {
             active: isPostActive,
           },
         ];
-      // } else {
-      //   pages = [
-      //     { name: "Home", href: "/", icon: Home, active: isHomeActive },
-        //   { name: "Login", href: "/login", icon: LogIn, active: isLoginActive },
-        //   {
-        //     name: "Register",
-        //     href: "/register",
-        //     icon: NotebookPen,
-        //     active: isRegisterActive,
-        //   },
-        // ];
-      // }
+      } else {
+        pages = [
+          { name: "Home", href: "/", icon: Home, active: isHomeActive },
+          { name: "Login", href: "/login", icon: LogIn, active: isLoginActive },
+          {
+            name: "Register",
+            href: "/register",
+            icon: NotebookPen,
+            active: isRegisterActive,
+          },
+        ];
+      }
 
       setPages(pages);
     };
@@ -106,10 +108,10 @@ function BottomNav() {
   const { theme } = useTheme();
 
   return (
-    <div className={`fixed bottom-0 w-full py-4 z-10 bg-background md:hidden`}>
+    <div className={`fixed bottom-0 w-full py-4 z-40 bg-background md:hidden`}>
       <div className="flex flex-row justify-around items-center bg-transparent w-full">
         {pages.map((page, index) => (
-          <Link key={index} href={page.href} className="flex items-center">
+          <Link key={index} href={page.href} className="flex items-center z-50">
             {page.active ? (
               page.name === "Discover" ? (
                 <IconSwipe color={theme === "dark" ? "white" : "black"} size={34} />
