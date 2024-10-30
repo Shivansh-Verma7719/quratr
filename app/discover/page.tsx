@@ -1,8 +1,5 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
-import CustomNavbar from "@/components/navbar";
-import BottomNav from "@/components/bottomnav";
-import { Providers } from "@/app/providers";
 import TinderCard from "react-tinder-card";
 import { Card, CardBody, CardFooter } from "@nextui-org/card";
 import Image from "next/image";
@@ -30,7 +27,7 @@ interface Card {
 
 export default function DiscoverPage() {
   const [cards, setCards] = useState<Card[]>([]);
-  const [isMobile, setIsMobile] = useState(false);
+  // const [isMobile, setIsMobile] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(10);
   const [zIndex, setZIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -38,16 +35,16 @@ export default function DiscoverPage() {
     {}
   );
 
-  useEffect(() => {
-    const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < 748);
-    };
+  // useEffect(() => {
+  //   const checkIsMobile = () => {
+  //     setIsMobile(window.innerWidth < 748);
+  //   };
 
-    checkIsMobile();
-    window.addEventListener("resize", checkIsMobile);
+  //   checkIsMobile();
+  //   window.addEventListener("resize", checkIsMobile);
 
-    return () => window.removeEventListener("resize", checkIsMobile);
-  }, []);
+  //   return () => window.removeEventListener("resize", checkIsMobile);
+  // }, []);
 
   const fetchCards = useCallback(async () => {
     setIsLoading(true);
@@ -104,9 +101,8 @@ export default function DiscoverPage() {
   };
 
   return (
-    <Providers>
-      {!isMobile && <CustomNavbar />}
-      <div className="flex justify-center items-start md:items-center py-9 px-5 h-[calc(100vh_-_84px)] w-full overflow-hidden">
+    <>
+      <div className="flex justify-center items-start py-4 px-5 h-[calc(100vh_-_84px)] w-full overflow-hidden">
         <div className="relative h-[95%] w-[95%] md:w-[600px] md:h-[600px]">
           {isLoading ? (
             <div className="flex items-center justify-center h-full">
@@ -330,7 +326,7 @@ export default function DiscoverPage() {
           )}
         </div>
       </div>
-      <BottomNav />
-    </Providers>
+      {/* <BottomNav /> */}
+    </>
   );
 }

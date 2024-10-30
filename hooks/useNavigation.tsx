@@ -12,6 +12,8 @@ const useNavigation = () => {
   const [isFeedbackActive, setIsFeedbackActive] = useState(false);
   const [isLogoutActive, setIsLogoutActive] = useState(false);
   const [isCuratedActive, setIsCuratedActive] = useState(false);
+  const [isLoginActive, setIsLoginActive] = useState(false);
+  const [isRegisterActive, setIsRegisterActive] = useState(false);
   useEffect(() => {
     setIsHomeActive(false);
     setIsDiscoverActive(false);
@@ -20,9 +22,11 @@ const useNavigation = () => {
     setIsNewActive(false);
     setIsFeedbackActive(false);
     setIsLogoutActive(false);
-
+    setIsCuratedActive(false);
+    setIsLoginActive(false);
+    setIsRegisterActive(false);
     switch (pathname) {
-      case '/':
+      case "/":
         setIsHomeActive(true);
         break;
       case '/app/experience/discover':
@@ -46,6 +50,12 @@ const useNavigation = () => {
       case '/logout':
         setIsLogoutActive(true);
         break;
+      case "/login":
+        setIsLoginActive(true);
+        break;
+      case "/register":
+        setIsRegisterActive(true);
+        break;
       default:
         // Handle any other cases here
         break;
@@ -61,6 +71,8 @@ const useNavigation = () => {
     isCuratedActive,
     isFeedbackActive,
     isLogoutActive,
+    isLoginActive,
+    isRegisterActive,
   };
 };
 

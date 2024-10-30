@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import Navbar from "@/components/navbar/index";
+// import Navbar from "@/components/navbar/index";
 import Footer from "@/components/footer/index";
 import { Providers } from "../providers";
 
@@ -8,8 +8,8 @@ const TermsAndConditionsPage: React.FC = () => {
   return (
     <Providers>
       <div className="min-h-screen font-sans overflow-x-hidden bg-white text-text">
-        <Navbar />
-        <main className="pt-[68px] container mx-auto px-4 sm:px-6 py-16 sm:py-24">
+        {/* <Navbar /> */}
+        <main className="container mx-auto px-4 sm:px-6 py-16 sm:py-24">
           <div className="prose prose-sm sm:prose lg:prose-lg xl:prose-xl mx-auto">
             <h1>
               <b>TERMS AND CONDITIONS</b>

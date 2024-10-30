@@ -8,9 +8,7 @@ import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 import { Chip } from "@nextui-org/chip";
 import { CircleCheck } from "lucide-react";
-import CustomNavbar from "@/components/navbar";
-import BottomNav from "@/components/bottomnav";
-import { Providers } from "@/app/providers";
+
 import {
   Modal,
   ModalContent,
@@ -32,7 +30,7 @@ interface Place {
 
 export default function CuratedPage() {
   const [places, setPlaces] = useState<Place[]>([]);
-  const [isMobile, setIsMobile] = useState(false);
+  // const [isMobile, setIsMobile] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPlace, setCurrentPlace] = useState<Place | null>(null);
   const [username, setUsername] = useState<string | null>(null);
@@ -50,9 +48,9 @@ export default function CuratedPage() {
     fetchAndSetUsername();
   }, []);
   useEffect(() => {
-    const checkIsMobile = () => setIsMobile(window.innerWidth < 748);
-    checkIsMobile();
-    window.addEventListener("resize", checkIsMobile);
+    // const checkIsMobile = () => setIsMobile(window.innerWidth < 748);
+    // checkIsMobile();
+    // window.addEventListener("resize", checkIsMobile);
 
     const loadLikedPlaces = async () => {
       const likedPlaces = await fetchLikedPlaces();
@@ -63,7 +61,7 @@ export default function CuratedPage() {
 
     loadLikedPlaces();
 
-    return () => window.removeEventListener("resize", checkIsMobile);
+    // return () => window.removeEventListener("resize", checkIsMobile);
   }, []);
 
   const generateDiscountCode = (placeName: string) => {
@@ -87,9 +85,8 @@ export default function CuratedPage() {
   };
 
   return (
-    <Providers>
-      {!isMobile && <CustomNavbar />}
-      <div className="flex justify-center items-start py-7 px-5 min-h-screen w-full bg-background">
+    <>
+      <div className="flex justify-center items-start py-2 px-5 min-h-screen w-full bg-background">
         <div className="w-full max-w-2xl">
           <h2 className="text-2xl font-bold mb-4 text-center">
             Your Curated Places
@@ -137,7 +134,6 @@ export default function CuratedPage() {
           ))}
         </div>
       </div>
-      {isMobile && <BottomNav />}
 
       {currentPlace && (
         <Modal
@@ -179,6 +175,6 @@ export default function CuratedPage() {
           </ModalContent>
         </Modal>
       )}
-    </Providers>
+    </>
   );
 }

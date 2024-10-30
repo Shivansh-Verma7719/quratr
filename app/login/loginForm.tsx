@@ -36,7 +36,7 @@ const LoginForm: React.FC = () => {
       const response = await isLoggedIn();
       console.log("Login status:", response);
       if (response.success === true) {
-        router.push("/app/experience/discover");
+        router.push("/discover");
       }
     };
     checkLoginStatus();
@@ -62,7 +62,7 @@ const LoginForm: React.FC = () => {
         const { data, error } = await supabase.auth.getUser();
         console.log("User data:", data);
         console.log("User error:", error);
-        router.push("/app/experience/discover");
+        router.push("/discover");
         setSuccess("Login successful");
       }
       setIsLoading(false);
@@ -71,7 +71,9 @@ const LoginForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Login to Your Account</h2>
+      <h2 className="text-2xl text-text font-bold mb-4 text-center">
+        Login to Your Account
+      </h2>
       <Input
         type="email"
         isRequired

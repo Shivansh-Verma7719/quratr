@@ -1,10 +1,10 @@
-import { createClient } from "@/utils/supabase/server";
+"use client";
+import { createClient } from "@/utils/supabase/client";
 
-export async function isLoggedIn() {
+export const checkLoggedIn = async () => {
   const supabase = createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
   return !!user;
-}
+};

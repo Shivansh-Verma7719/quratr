@@ -2,9 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import Navbar from "@/components/navbar/index";
 import Footer from "@/components/footer/index";
-import { Providers } from "../../providers";
 import { submitOnboarding, checkOnboardingStatus } from "./helper";
 import { useRouter } from "next/navigation";
 import { Button } from "@nextui-org/button";
@@ -34,7 +32,7 @@ const OnboardingPage: React.FC = () => {
     const checkStatus = async () => {
       const response = await checkOnboardingStatus();
       if (response.success === true) {
-        router.push("/app/experience/discover");
+        router.push("/discover");
       }
     };
     checkStatus();
@@ -66,7 +64,7 @@ const OnboardingPage: React.FC = () => {
       if (result.success === false) {
         console.log(result.error);
       } else {
-        router.push("/app/experience/discover");
+        router.push("/discover");
       }
       setIsLoading(false);
     }
@@ -120,67 +118,65 @@ const OnboardingPage: React.FC = () => {
   };
 
   return (
-    <Providers>
-      <div className="min-h-screen font-sans overflow-x-hidden bg-background text-text">
-        <Navbar />
-        <main className="pt-[68px] container mx-auto px-4 sm:px-6 py-16 sm:py-24">
-          <React.Suspense fallback={<div>Loading...</div>}>
-            <form onSubmit={handleSubmit} className="max-w-md mx-auto">
-              <div className="mb-8 bg-gray-200 h-2 rounded-full">
-                <motion.div
-                  className="bg-blue-500 h-2 rounded-full"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${((step + 1) / 10) * 100}%` }}
-                  transition={{ duration: 0.5 }}
-                ></motion.div>
-              </div>
-              <AnimatePresence mode="wait">{renderStep()}</AnimatePresence>
-              <div className="flex justify-between mt-8">
-                {step > 0 && (
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    type="button"
-                    onClick={handlePrevious}
-                    className="bg-gray-300 text-gray-700 px-4 py-2 rounded-full flex items-center"
-                  >
-                    <ArrowLeft className="mr-2" /> Previous
-                  </motion.button>
-                )}
-                {step < 9 ? (
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    type="button"
-                    onClick={handleNext}
-                    className={`bg-blue-500 text-white px-4 py-2 rounded-full flex items-center ml-auto ${
-                      !validateStep() ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
-                    disabled={!validateStep()}
-                  >
-                    Next <ArrowRight className="ml-2" />
-                  </motion.button>
-                ) : (
-                  <Button
-                    type="submit"
-                    color="primary"
-                    variant="flat"
-                    size="lg"
-                    disabled={isLoading || !validateAllSteps()}
-                    className={`bg-green-500 text-white px-4 py-2 rounded-full flex items-center ml-auto ${
-                      !validateAllSteps() ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
-                  >
-                    Submit
-                  </Button>
-                )}
-              </div>
-            </form>
-          </React.Suspense>
-        </main>
-        <Footer />
-      </div>
-    </Providers>
+    <div className="min-h-screen font-sans overflow-x-hidden bg-background text-text">
+      {/* <Navbar /> */}
+      <main className="container mx-auto px-4 sm:px-6 py-16 sm:py-24">
+        <React.Suspense fallback={<div>Loading...</div>}>
+          <form onSubmit={handleSubmit} className="max-w-md mx-auto">
+            <div className="mb-8 bg-gray-200 h-2 rounded-full">
+              <motion.div
+                className="bg-blue-500 h-2 rounded-full"
+                initial={{ width: 0 }}
+                animate={{ width: `${((step + 1) / 10) * 100}%` }}
+                transition={{ duration: 0.5 }}
+              ></motion.div>
+            </div>
+            <AnimatePresence mode="wait">{renderStep()}</AnimatePresence>
+            <div className="flex justify-between mt-8">
+              {step > 0 && (
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  type="button"
+                  onClick={handlePrevious}
+                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded-full flex items-center"
+                >
+                  <ArrowLeft className="mr-2" /> Previous
+                </motion.button>
+              )}
+              {step < 9 ? (
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  type="button"
+                  onClick={handleNext}
+                  className={`bg-blue-500 text-white px-4 py-2 rounded-full flex items-center ml-auto ${
+                    !validateStep() ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  disabled={!validateStep()}
+                >
+                  Next <ArrowRight className="ml-2" />
+                </motion.button>
+              ) : (
+                <Button
+                  type="submit"
+                  color="primary"
+                  variant="flat"
+                  size="lg"
+                  disabled={isLoading || !validateAllSteps()}
+                  className={`bg-green-500 text-white px-4 py-2 rounded-full flex items-center ml-auto ${
+                    !validateAllSteps() ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                >
+                  Submit
+                </Button>
+              )}
+            </div>
+          </form>
+        </React.Suspense>
+      </main>
+      <Footer />
+    </div>
   );
 };
 

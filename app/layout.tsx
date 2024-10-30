@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import CustomNavbar from "@/components/navbar";
+import BottomNav from "@/components/bottomnav";
+import Topbar from "@/components/topbar";
+import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -17,10 +21,16 @@ export default function RootLayout({
       <head>
         <link rel="manifest" href="/manifest.json" />
       </head>
-      <body
-      >
-        {children}
-        <SpeedInsights /> 
+      <body>
+        <Providers>
+          <Topbar />
+          <CustomNavbar />
+          <main className="md:mt-[68px] mt-0 mb-16 md:mb-0 w-full h-full">
+            {children}
+          </main>
+          <BottomNav />
+        </Providers>
+        <SpeedInsights />
       </body>
     </html>
   );

@@ -91,7 +91,9 @@ const RegisterForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto">
-      <h2 className="text-2xl font-bold mb-4 text-text">Create Your Account</h2>
+      <h2 className="text-2xl font-bold mb-4 text-text text-center">
+        Create Your Account
+      </h2>
       <Input
         type="text"
         isRequired
@@ -217,11 +219,11 @@ const RegisterForm: React.FC = () => {
           onChange={handleInputChange}
         />
         <label htmlFor="termsCheckbox" className="ml-2 text-sm">
-          I agree to the{' '}
+          I agree to the{" "}
           <Link href="/terms" className="text-primary hover:underline">
             Terms and Conditions
-          </Link>{' '}
-          and{' '}
+          </Link>{" "}
+          and{" "}
           <Link href="/privacy" className="text-primary hover:underline">
             Privacy Policy
           </Link>

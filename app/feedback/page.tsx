@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ArrowRight, CheckCircle } from 'lucide-react';
-import Navbar from "@/components/navbar/index";
+// import Navbar from "@/components/navbar/index";
 import Footer from "@/components/footer/index";
 import { Providers } from '../providers';
 import { createClient } from '@/utils/supabase/client';
@@ -261,8 +261,8 @@ const FeedbackForm = () => {
   return (
     <Providers>
       <div className="min-h-screen font-sans overflow-x-hidden bg-background text-text">
-        <Navbar />
-        <main className="pt-[68px]">
+        {/* <Navbar /> */}
+        <main>
           <div className="container mx-auto px-4 sm:px-6 py-16 sm:py-24">
             <AnimatePresence mode="wait">
               {isSubmitted ? (

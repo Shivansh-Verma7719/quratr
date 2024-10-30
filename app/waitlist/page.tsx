@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, CheckCheck } from 'lucide-react';
-import Navbar from "@/components/navbar/index";
+// import Navbar from "@/components/navbar/index";
 import Footer from "@/components/footer/index";
 import { Providers } from '../providers';
 import { createClient } from '@/utils/supabase/client';
@@ -54,8 +54,8 @@ const WaitlistForm = () => {
   return (
     <Providers>
       <div className="min-h-screen font-sans overflow-x-hidden bg-background text-text">
-        <Navbar />
-        <main className="pt-[68px]">
+        {/* <Navbar /> */}
+        <main>
           <div className="container mx-auto px-4 sm:px-6 py-16 sm:py-24">
             <div className="bg-background p-8 rounded-lg shadow-lg dark:shadow-gray-800 w-full max-w-2xl mx-auto">
               <h1 className="text-3xl font-bold mb-6 text-center">Join the Quratr Waitlist</h1>

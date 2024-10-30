@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Providers } from "@/app/providers";
-import CustomNavbar from "@/components/navbar";
-import BottomNav from "@/components/bottomnav";
+// import CustomNavbar from "@/components/navbar";
+// import BottomNav from "@/components/bottomnav";
 import { motion } from "framer-motion";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
@@ -34,14 +34,14 @@ export default function ProfileEditPage() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [onboardingPreferences, setOnboardingPreferences] =
     useState<OnboardingPreferences | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
+  // const [isMobile, setIsMobile] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    const checkIsMobile = () => setIsMobile(window.innerWidth < 748);
-    checkIsMobile();
-    window.addEventListener("resize", checkIsMobile);
+    // const checkIsMobile = () => setIsMobile(window.innerWidth < 748);
+    // checkIsMobile();
+    // window.addEventListener("resize", checkIsMobile);
 
     const loadProfileData = async () => {
       const profile = await fetchUserProfile();
@@ -52,7 +52,7 @@ export default function ProfileEditPage() {
 
     loadProfileData();
 
-    return () => window.removeEventListener("resize", checkIsMobile);
+    // return () => window.removeEventListener("resize", checkIsMobile);
   }, []);
 
   const handleProfileChange = (key: keyof UserProfile, value: string) => {
@@ -82,7 +82,7 @@ export default function ProfileEditPage() {
       if (onboardingPreferences) {
         await updateOnboardingPreferences(onboardingPreferences);
       }
-      router.push("/app/profile");
+      router.push("/profile");
     } catch (error) {
       console.error("Error updating profile:", error);
     } finally {
@@ -92,7 +92,7 @@ export default function ProfileEditPage() {
 
   return (
     <Providers>
-      {!isMobile && <CustomNavbar />}
+      {/* {!isMobile && <CustomNavbar />} */}
       <div className="flex justify-center items-start py-7 px-5 min-h-screen w-full bg-background">
         <div className="w-full max-w-2xl">
           <motion.h1
@@ -198,7 +198,7 @@ export default function ProfileEditPage() {
           </form>
         </div>
       </div>
-      {isMobile && <BottomNav />}
+      {/* {isMobile && <BottomNav />} */}
     </Providers>
   );
 }

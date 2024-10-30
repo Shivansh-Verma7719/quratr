@@ -1,8 +1,7 @@
-import { createServerClient, type CookieOptions } from '@supabase/ssr';
-import { type NextRequest, NextResponse } from 'next/server';
+import { createServerClient, type CookieOptions } from "@supabase/ssr";
+import { NextResponse, type NextRequest } from "next/server";
 
-export const createClient = (request: NextRequest) => {
-  // Create an unmodified response
+export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({
     request: {
       headers: request.headers,
@@ -18,7 +17,6 @@ export const createClient = (request: NextRequest) => {
           return request.cookies.get(name)?.value;
         },
         set(name: string, value: string, options: CookieOptions) {
-          // If the cookie is updated, update the cookies for the request and response
           request.cookies.set({
             name,
             value,
@@ -36,10 +34,9 @@ export const createClient = (request: NextRequest) => {
           });
         },
         remove(name: string, options: CookieOptions) {
-          // If the cookie is removed, update the cookies for the request and response
           request.cookies.set({
             name,
-            value: '',
+            value: "",
             ...options,
           });
           response = NextResponse.next({
@@ -49,13 +46,65 @@ export const createClient = (request: NextRequest) => {
           });
           response.cookies.set({
             name,
-            value: '',
+            value: "",
             ...options,
           });
         },
       },
     }
   );
+  const protectedPages = [
+    "/discover",
+    "/curated",
+    "/feed/",
+    "/profile",
+    // "/settings",
+    "/onboarding",
+  ];
 
-  return { supabase, response };
-};
+  const onboardedPages = [
+    "/discover",
+    "/curated",
+    // "/feed/",
+    "/profile/edit",
+    // "/settings",
+  ];
+
+  const user = await supabase.auth.getUser();
+  // console.log(user);
+
+  // Check if the page is protected
+  const isProtectedPage = protectedPages.some((page) =>
+    request.nextUrl.pathname.startsWith(page)
+  );
+
+  if (isProtectedPage && !user.data.user) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+  // Check if the user is onboarded
+
+  const isOnboardedPage = onboardedPages.some((page) =>
+    request.nextUrl.pathname.startsWith(page)
+  );
+
+  if (isOnboardedPage) {
+    // console.log(user.data.user?.id);
+    const { data: onboardingData, error: onboardingError } = await supabase
+      .from("profiles")
+      .select("is_onboarded")
+      .eq("id", user.data.user?.id)
+      .single();
+
+    if (onboardingError) {
+      console.log("middleware error");
+      console.error(onboardingError);
+      return NextResponse.redirect(new URL("/error", request.url));
+    }
+    if (onboardingData && !onboardingData.is_onboarded) {
+      return NextResponse.redirect(new URL("/onboarding", request.url));
+    }
+  }
+
+  return response;
+}

@@ -1,9 +1,6 @@
 "use client";
 import React, { useState, useRef } from "react";
-import { Providers } from "@/app/providers";
 import Image from "next/image";
-import CustomNavbar from "@/components/navbar";
-import BottomNav from "@/components/bottomnav";
 import { motion } from "framer-motion";
 import { Button } from "@nextui-org/button";
 import { Textarea } from "@nextui-org/input";
@@ -12,20 +9,12 @@ import { createNewPost } from "./helper";
 import { useRouter } from "next/navigation";
 
 export default function NewPostPage() {
-  const [isMobile, setIsMobile] = useState(false);
   const [postText, setPostText] = useState("");
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
-
-  React.useEffect(() => {
-    const checkIsMobile = () => setIsMobile(window.innerWidth < 748);
-    checkIsMobile();
-    window.addEventListener("resize", checkIsMobile);
-    return () => window.removeEventListener("resize", checkIsMobile);
-  }, []);
 
   const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -48,7 +37,6 @@ export default function NewPostPage() {
       setIsLoading(true);
       const post = await createNewPost(postText, selectedImage);
       if (post === 'success') {
-        // Reset form and redirect to profile page
         setPostText("");
         setSelectedImage(null);
         setPreviewUrl(null);
@@ -62,9 +50,8 @@ export default function NewPostPage() {
   };
 
   return (
-    <Providers>
-      {!isMobile && <CustomNavbar />}
-      <div className="flex justify-center items-center py-7 px-5 min-h-screen w-full bg-background">
+    <>
+      <div className="flex justify-center items-center py-2 px-5 min-h-screen w-full bg-background">
         <div className="w-full max-w-2xl">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -137,7 +124,6 @@ export default function NewPostPage() {
           </motion.div>
         </div>
       </div>
-      {isMobile && <BottomNav />}
-    </Providers>
+    </>
   );
 }

@@ -1,34 +1,19 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import CustomNavbar from "@/components/navbar";
-import BottomNav from "@/components/bottomnav";
+// import CustomNavbar from "@/components/navbar";
+// import BottomNav from "@/components/bottomnav";
 import { Providers } from "@/app/providers";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import Image from "next/image";
 import { fetchPosts, Post } from "./helpers";
-import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@nextui-org/button";
-import { Plus, ArrowRight } from "lucide-react";
-import Link from "next/link";
+import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
 export default function FeedPage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [scrollY, setScrollY] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [showButton, setShowButton] = useState(true);
-
-  useEffect(() => {
-    const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < 748);
-    };
-
-    checkIsMobile();
-    window.addEventListener("resize", checkIsMobile);
-
-    return () => window.removeEventListener("resize", checkIsMobile);
-  }, []);
 
   useEffect(() => {
     fetchMorePosts();
@@ -37,11 +22,10 @@ export default function FeedPage() {
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY);
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      setShowButton(scrollTop < 100);
-
-      // Check if we've scrolled to the bottom
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+      if (
+        window.innerHeight + window.scrollY >=
+        document.body.offsetHeight - 100
+      ) {
         if (!isLoading && hasMore) {
           fetchMorePosts();
         }
@@ -64,39 +48,11 @@ export default function FeedPage() {
     }
     setIsLoading(false);
   };
-
-  const NewPostButton = () => (
-    <AnimatePresence>
-      {showButton && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.8 }}
-          transition={{ duration: 0.3 }}
-        >
-          <Button
-            as={Link}
-            href="/app/feed/new"
-            color="primary"
-            variant="flat"
-            aria-label="New Post"
-            className={`fixed z-50 shadow-lg ${
-              isMobile ? "top-4 right-4" : "bottom-4 right-4"
-            }`}
-          >
-            <Plus /> New Post
-          </Button>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-
   return (
     <Providers>
-      {!isMobile && <CustomNavbar />}
-      <div className="flex justify-center items-start py-7 px-5 min-h-screen w-full">
-        <div className="w-full max-w-2xl">
-          <NewPostButton />
+      {/* {!isMobile && <CustomNavbar />} */}
+      <div className="flex justify-center items-start px-5 h-full w-full">
+        <div className="w-full">
           {posts.map((post, index) => (
             <motion.div
               key={index}
@@ -116,7 +72,7 @@ export default function FeedPage() {
                   </div>
                 </CardHeader>
                 <CardBody className="px-3 py-0 text-medium text-default-400">
-                  <p>{post.content}</p>
+                  {post.content}
                 </CardBody>
                 <CardFooter className="gap-3">
                   {post.image && (
@@ -135,15 +91,14 @@ export default function FeedPage() {
           ))}
           {isLoading && <h4 className="text-center mb-10">Loading...</h4>}
           {!hasMore && (
-            <p className="text-center mt-2 mb-10">
+            <p className="text-center mt-2">
               <b>Yay! You have seen it all</b>
             </p>
           )}
         </div>
       </div>
-      {isMobile && <BottomNav />}
       <motion.div
-        className="fixed bottom-14 sm:bottom-8 right-5 sm:right-8 bg-opacity-60 bg-[#fed4e4] text-black p-3 sm:p-4 rounded-full shadow-lg cursor-pointer"
+        className="fixed bottom-20 sm:bottom-8 right-5 sm:right-8 bg-opacity-60 bg-[#fed4e4] text-black p-3 sm:p-4 rounded-full shadow-lg cursor-pointer"
         style={{
           opacity: scrollY > 200 ? 1 : 0,
           pointerEvents: scrollY > 200 ? "auto" : "none",
