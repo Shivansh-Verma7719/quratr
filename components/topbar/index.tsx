@@ -29,7 +29,7 @@ const Topbar = () => {
       height="4rem"
       shouldHideOnScroll
     >
-      <NavbarContent justify="start" className={isLoggedIn ? "hidden" : ""}>
+      <NavbarContent justify="start" className={isLoggedIn ? "" : "hidden"}>
         <NavbarItem>
           <Link href="/profile">
             <Button isIconOnly variant="light" aria-label="Profile">
@@ -40,7 +40,7 @@ const Topbar = () => {
       </NavbarContent>
 
       <NavbarContent
-        className={isLoggedIn ? "mx-auto" : ""}
+        className={isLoggedIn ? "" : "mx-auto"}
         justify="center"
       >
         <NavbarItem>
@@ -56,7 +56,7 @@ const Topbar = () => {
         </NavbarItem>
       </NavbarContent>
 
-      <NavbarContent justify="end" className={isLoggedIn ? "hidden" : ""}>
+      <NavbarContent justify="end" className={isLoggedIn ? "" : "hidden"}>
         <NavbarItem>
           <Link href="/profile/edit">
             <Button isIconOnly variant="light" aria-label="Settings">

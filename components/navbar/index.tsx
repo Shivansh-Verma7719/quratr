@@ -28,9 +28,9 @@ const CustomNavbar: React.FC = () => {
   return (
     <motion.header
       style={{ opacity: headerOpacity }}
-      className="hidden md:flex fixed top-0 left-0 right-0 z-50 bg-background text-text bg-opacity-90 backdrop-blur-sm shadow-sm"
+      className="hidden md:block fixed top-0 left-0 right-0 z-50 bg-background text-text bg-opacity-90 backdrop-blur-sm shadow-sm border-b border-gray-700"
     >
-      <nav className="container mx-auto px-4 sm:px-6 py-2">
+      <nav className="container mx-auto px-4 sm:px-6 py-4">
         <div className="flex justify-between items-center">
           <a href="/">
             <motion.div
@@ -75,18 +75,9 @@ const CustomNavbar: React.FC = () => {
               </motion.a>
             ))}
             <ThemeSwitcher />
-            <a href="/waitlist">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-[#fed4e4] text-black px-4 py-2 rounded-full transition-colors text-sm font-medium"
-              >
-                <p>Join the Waitlist</p>
-              </motion.button>
-            </a>
           </div>
           <div className="md:hidden">
-            <ThemeSwitcher className="fixed top-4 right-12" />
+            <ThemeSwitcher className="fixed right-12" />
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -117,11 +108,6 @@ const CustomNavbar: React.FC = () => {
                 {item.name}
               </a>
             ))}
-            <a href="/waitlist">
-              <button className="bg-[#fed4e4] text-black px-4 py-2 rounded-full transition-colors text-sm font-medium mt-2">
-                Join the Waitlist
-              </button>
-            </a>
           </div>
         </motion.div>
       )}

@@ -161,7 +161,7 @@ export default function QuratrLandingPage() {
       <Footer />
 
       <motion.div
-        className="fixed bottom-4 sm:bottom-8 right-4 sm:right-8 bg-[#fed4e4] text-black p-3 sm:p-4 rounded-full shadow-lg cursor-pointer"
+        className="fixed hidden md:block bottom-4 sm:bottom-8 right-4 sm:right-8 bg-[#fed4e4] text-black p-3 sm:p-4 rounded-full shadow-lg cursor-pointer"
         style={{
           opacity: scrollY > 200 ? 1 : 0,
           pointerEvents: scrollY > 200 ? "auto" : "none",

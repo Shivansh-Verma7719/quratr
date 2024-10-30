@@ -5,7 +5,7 @@ import CustomNavbar from "@/components/navbar";
 import BottomNav from "@/components/bottomnav";
 import Topbar from "@/components/topbar";
 import { Providers } from "./providers";
-
+import MobileThemeSwitcher from "@/components/mobileThemeSwitcher";
 export const metadata: Metadata = {
   title: "Home",
   description: "Quratr - Your ultimate platform for curated experiecd nces.",
@@ -28,6 +28,7 @@ export default function RootLayout({
           <main className="md:mt-[68px] mt-0 mb-16 md:mb-0 w-full h-full">
             {children}
           </main>
+          <MobileThemeSwitcher />
           <BottomNav />
         </Providers>
         <SpeedInsights />
