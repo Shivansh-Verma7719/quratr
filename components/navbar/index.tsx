@@ -1,12 +1,9 @@
 "use client";
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import { motion, useTransform, useScroll } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import QuratrLogo from "@/public/images/logo.png";
 import { ThemeSwitcher } from "../theme-switcher";
 import { useTheme } from "next-themes";
-import QuratrLogoDark from "@/public/images/logo_dark.png";
 import { getPages } from "../pages";
 import Logo from "../logos/logo";
 import Logo_Light from "../logos/logo_light";

@@ -2,7 +2,6 @@
 // import { useState, useEffect } from "react";
 import { Navbar, NavbarContent, NavbarItem } from "@nextui-org/navbar";
 import { Button } from "@nextui-org/button";
-import Image from "next/image";
 import { Settings, UserCircle } from "lucide-react";
 import { useTheme } from "next-themes";
 import QuratrLogoDark from "@/components/logos/logo_light";
