@@ -5,8 +5,8 @@ import { Button } from "@nextui-org/button";
 import Image from "next/image";
 import { Settings, UserCircle } from "lucide-react";
 import { useTheme } from "next-themes";
-import QuratrLogoDark from "@/public/images/logo_dark.png";
-import QuratrLogo from "@/public/images/logo_small.png";
+import QuratrLogoDark from "@/components/logos/logo_light";
+import QuratrLogo from "@/components/logos/logo";
 import Link from "next/link";
 import { checkLoggedIn } from "./helpers";
 import { useState } from "react";
@@ -14,13 +14,20 @@ import { useEffect } from "react";
 
 const Topbar = () => {
   const { theme } = useTheme();
-  const themeLogo = theme === "light" ? QuratrLogoDark : QuratrLogo;
+  const ThemeLogo = theme === "dark" ? QuratrLogo : QuratrLogoDark;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     checkLoggedIn().then((loggedIn) => setIsLoggedIn(loggedIn));
     setIsLoggedIn(false);
   }, []);
+
+  if (!mounted) return null;
 
   return (
     <Navbar
@@ -45,13 +52,7 @@ const Topbar = () => {
       >
         <NavbarItem>
           <Link href="/">
-            <Image
-              src={themeLogo}
-              alt="Quratr logo"
-              width={50}
-              height={50}
-              className="translate-y-[-0.1rem]"
-            />
+            <ThemeLogo width={50} height={50} />
           </Link>
         </NavbarItem>
       </NavbarContent>

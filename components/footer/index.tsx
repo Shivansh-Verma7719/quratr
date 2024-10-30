@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import QuratrLogo from "@/public/images/logo.png";
 import Image from "next/image";
 import { Instagram } from "lucide-react";
-import QuratrLogoDark from "@/public/images/logo_dark.png";
 import { useTheme } from "next-themes";
 import { getPages } from "../pages";
+import Logo_Light from "@/components/logos/logo_light";
+import Logo from "@/components/logos/logo";
 
 const Footer: React.FC = () => {
   const { theme } = useTheme();
-  const themeLogo = theme === "light" ? QuratrLogoDark : QuratrLogo;
-  const [pages, setPages] = useState<{ name: string; href: string; icon: React.ElementType }[]>([]);
+  const ThemeLogo = theme === "light" ? Logo_Light : Logo;
+  const [mounted, setMounted] = useState(false);
+  const [pages, setPages] = useState<
+    { name: string; href: string; icon: React.ElementType }[]
+  >([]);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const fetchPages = async () => {
@@ -20,6 +27,8 @@ const Footer: React.FC = () => {
     fetchPages();
   }, []);
 
+  if (!mounted) return null;
+
   return (
     <footer className="bg-background text-text py-12">
       <div className="container mx-auto px-4 sm:px-6">
@@ -27,15 +36,9 @@ const Footer: React.FC = () => {
           <div className="col-span-1 lg:col-span-2">
             <a href="/">
               <div className="flex items-center space-x-2 mb-4 text-2xl font-bold">
-                <Image
-                  src={themeLogo}
-                  alt="Logo"
-                  width={35}
-                  height={35}
-                  className="-translate-y-[0.1rem] translate-x-[0.2rem]"
-                />
+                <ThemeLogo width={35} height={35} />
                 <h1
-                  className="text-2xl p-0 ml-0 font-bold"
+                  className="text-2xl p-0 ml-0 font-bold translate-y-[0.3rem]"
                   style={{ marginLeft: "0px" }}
                 >
                   uratr
@@ -88,12 +91,18 @@ const Footer: React.FC = () => {
             <h3 className="text-lg font-semibold mb-4">Legal</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/privacy_policy" className="text-gray-400 transition-colors">
+                <Link
+                  href="/privacy_policy"
+                  className="text-gray-400 transition-colors"
+                >
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="/termsandconditions" className="text-gray-400 transition-colors">
+                <Link
+                  href="/termsandconditions"
+                  className="text-gray-400 transition-colors"
+                >
                   Terms and Conditions
                 </Link>
               </li>

@@ -8,15 +8,22 @@ import { ThemeSwitcher } from "../theme-switcher";
 import { useTheme } from "next-themes";
 import QuratrLogoDark from "@/public/images/logo_dark.png";
 import { getPages } from "../pages";
+import Logo from "../logos/logo";
+import Logo_Light from "../logos/logo_light";
 
 const CustomNavbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { scrollYProgress } = useScroll();
   const headerOpacity = useTransform(scrollYProgress, [0, 0.1], [1, 0.8]);
   const { theme } = useTheme();
-  const themeLogo = theme === "light" ? QuratrLogoDark : QuratrLogo;
+  const ThemeLogo = theme === "light" ? Logo_Light : Logo;
   const [pages, setPages] = useState<{ name: string; href: string; icon: React.ElementType }[]>([]);
-  
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   useEffect(() => {
     const fetchPages = async () => {
       const pages = await getPages();
@@ -24,6 +31,8 @@ const CustomNavbar: React.FC = () => {
     };
     fetchPages();
   }, []);
+
+  if (!mounted) return null;
 
   return (
     <motion.header
@@ -39,18 +48,9 @@ const CustomNavbar: React.FC = () => {
               transition={{ duration: 0.5 }}
               className="text-2xl flex text-text flex-row font-bold bg-clip-text"
             >
-              <Image
-                src={themeLogo}
-                alt="Quratr logo"
-                width={35}
-                height={35}
-                className="-translate-y-[0.2rem] translate-x-[0.2rem]"
-                priority={false}
-                loading="eager"
-                unoptimized
-              />
+              <ThemeLogo width={35} height={35} />
               <h1
-                className="text-2xl p-0 ml-0 font-bold"
+                className="text-2xl p-0 ml-0 font-bold translate-y-[0.3rem]"
                 style={{ marginLeft: "0px" }}
               >
                 uratr
