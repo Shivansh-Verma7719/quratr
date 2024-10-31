@@ -132,26 +132,26 @@ function BottomNav() {
       initial={{ y: 0 }}
       animate={{ y: isVisible ? 0 : 100 }}
       transition={{ duration: 0.3 }}
-      className={`fixed bottom-0 w-full py-4 z-40 bg-background md:hidden border-t border-gray-700`}
+      className={`fixed bottom-0 w-full py-3 z-40 bg-background md:hidden border-t border-gray-700`}
     >
       <div className="flex flex-row justify-around items-center bg-transparent w-full">
         {pages.map((page, index) => (
           <Link key={index} href={page.href} className="flex items-center z-50">
             {page.active ? (
               page.name === "Discover" ? (
-                <IconSwipe color={theme === "dark" ? "white" : "black"} size={34} />
+                <IconSwipe color={theme === "dark" ? "white" : "black"} size={30} />
               ) : (
                 <page.icon
-                  width="34"
-                  height="34"
+                  width="30"
+                  height="30"
                   stroke={theme === "dark" ? "white" : "black"}
                 />
               )
             ) : (
               page.name === "Discover" ? (
-                <IconSwipe color="gray" size={34} />
+                <IconSwipe color="gray" size={30} />
               ) : (
-                <page.icon width="34" height="34" stroke="gray" />
+                <page.icon width="30" height="30" stroke="gray" />
               )
             )}
           </Link>

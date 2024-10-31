@@ -7,11 +7,11 @@ import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import Image from "next/image";
 import { fetchPosts, Post } from "./helpers";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+// import { ArrowRight } from "lucide-react";
 
 export default function FeedPage() {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [scrollY, setScrollY] = useState(0);
+  // const [scrollY, setScrollY] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -21,7 +21,7 @@ export default function FeedPage() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrollY(window.scrollY);
+      // setScrollY(window.scrollY);
       if (
         window.innerHeight + window.scrollY >=
         document.body.offsetHeight - 100
@@ -97,7 +97,7 @@ export default function FeedPage() {
           )}
         </div>
       </div>
-      <motion.div
+      {/* <motion.div
         className="fixed bottom-20 sm:bottom-8 right-5 sm:right-8 bg-opacity-60 bg-[#fed4e4] text-black p-3 sm:p-4 rounded-full shadow-lg cursor-pointer"
         style={{
           opacity: scrollY > 200 ? 1 : 0,
@@ -108,7 +108,7 @@ export default function FeedPage() {
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       >
         <ArrowRight className="transform rotate-[-90deg] w-5 h-5 sm:w-6 sm:h-6" />
-      </motion.div>
+      </motion.div> */}
     </Providers>
   );
 }

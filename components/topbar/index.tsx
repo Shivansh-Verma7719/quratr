@@ -1,5 +1,4 @@
 "use client";
-// import { useState, useEffect } from "react";
 import { Navbar, NavbarContent, NavbarItem } from "@nextui-org/navbar";
 import { Button } from "@nextui-org/button";
 import { Settings, UserCircle } from "lucide-react";
@@ -32,14 +31,14 @@ const Topbar = () => {
     <Navbar
       className="bg-background md:hidden backdrop-blur-md border-b border-divider"
       maxWidth="full"
-      height="4rem"
+      height="3rem"
       shouldHideOnScroll
     >
       <NavbarContent justify="start" className={isLoggedIn ? "" : "hidden"}>
         <NavbarItem>
           <Link href="/profile">
             <Button isIconOnly variant="light" aria-label="Profile">
-              <UserCircle size={35} stroke="gray" />
+              <UserCircle size={30} stroke="gray" />
             </Button>
           </Link>
         </NavbarItem>
@@ -51,7 +50,7 @@ const Topbar = () => {
       >
         <NavbarItem>
           <Link href="/">
-            <ThemeLogo width={50} height={50} />
+            <ThemeLogo width={40} height={40} />
           </Link>
         </NavbarItem>
       </NavbarContent>
@@ -60,7 +59,7 @@ const Topbar = () => {
         <NavbarItem>
           <Link href="/profile/edit">
             <Button isIconOnly variant="light" aria-label="Settings">
-              <Settings size={35} stroke="gray" />
+              <Settings size={30} stroke="gray" />
             </Button>
           </Link>
         </NavbarItem>

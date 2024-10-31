@@ -41,7 +41,7 @@ export default function MobileThemeSwitcher() {
       initial={{ y: 0 }}
       animate={{ y: isVisible ? 0 : 200 }}
       transition={{ duration: 0.3 }}
-      className="md:hidden fixed bottom-20 right-3 z-40"
+      className="md:hidden fixed bottom-16 right-3 z-40"
     >
       <motion.button
         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
