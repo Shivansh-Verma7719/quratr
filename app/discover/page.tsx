@@ -94,7 +94,7 @@ export default function DiscoverPage() {
   };
 
   const handleCardFlip = (cardId: string) => {
-    console.log("handleCardFlip", cardId);
+    // console.log("handleCardFlip", cardId);
     if (!cards.find((card) => card.id === cardId)?.isLastCard) {
       setFlippedCards((prev) => ({ ...prev, [cardId]: !prev[cardId] }));
     }
@@ -102,7 +102,7 @@ export default function DiscoverPage() {
 
   return (
     <>
-      <div className="flex justify-center items-center py-4 px-5 h-[calc(100vh_-_103px)] w-full overflow-hidden">
+      <div className="flex justify-center items-center py-4 px-5 h-[calc(100vh_-_123px)] w-full overflow-hidden">
         <div className="relative h-[95%] w-[95%] md:w-[600px] md:h-[600px]">
           {isLoading ? (
             <div className="flex items-center justify-center h-full">
@@ -172,11 +172,15 @@ export default function DiscoverPage() {
                           <>
                             <Image
                               alt={card.name}
-                              className="object-cover w-full h-full md:w-[600px] md:h-[600px] pointer-events-none"
+                              className="object-cover w-full h-full md:w-[600px] md:h-[600px]"
                               src={card.image}
                               width={600}
                               height={600}
-                              priority={true}
+                              priority={index < 3}
+                              loading={index < 3 ? "eager" : "lazy"}
+                              quality={75}
+                              placeholder="blur"
+                              blurDataURL={`data:image/svg+xml;base64,...`}
                             />
                             <CardBody className="absolute top-0 left-0 w-auto">
                               <Chip variant="faded">{card.tags}</Chip>

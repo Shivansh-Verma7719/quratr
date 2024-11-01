@@ -1,9 +1,9 @@
 {
-  "id": "/discover",
+  "id": "https://quratr.com/discover",
   "name": "Quratr",
   "short_name": "Quratr",
   "description": "Quratr - Your ultimate platform for curated experiences.",
-  "start_url": "/discover",
+  "start_url": "https://quratr.com/discover",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",
@@ -68,7 +68,7 @@
   "launch_handler": {
     "client_mode": ["navigate-existing", "auto"]
   },
-  "display_override": "window-controls-overlay",
+  "display_override": ["window-controls-overlay"],
   "dir": "ltr",
   "scope": "https://quratr.com"
 }

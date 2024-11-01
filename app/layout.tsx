@@ -6,10 +6,11 @@ import BottomNav from "@/components/bottomnav";
 import Topbar from "@/components/topbar";
 import { Providers } from "./providers";
 import MobileThemeSwitcher from "@/components/mobileThemeSwitcher";
-import Head from "next/head";
+
 export const metadata: Metadata = {
   title: "Home",
   description: "Quratr - Your ultimate platform for curated experiecd nces.",
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
@@ -19,9 +20,6 @@ export default function RootLayout({
 }>) {
   return (
     <html>
-      <Head>
-        <link rel="manifest" href="/manifest.json" />
-      </Head>
       <body>
         <Providers>
           <Topbar />

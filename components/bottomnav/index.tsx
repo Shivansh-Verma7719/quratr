@@ -26,6 +26,7 @@ function BottomNav() {
   const [pages, setPages] = useState<Page[]>([]);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,10 +49,27 @@ function BottomNav() {
   }, [lastScrollY]);
 
   useEffect(() => {
-    const fetchPages = async () => {
+    const fetchLoggedIn = async () => {
+      const loggedIn = await checkLoggedIn();
+      if (loggedIn === undefined) {
+        return;
+      }
+
+      console.log("loggedIn", loggedIn);
+      if (loggedIn) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+    };
+    fetchLoggedIn();
+  }, []);
+
+  useEffect(() => {
+    const fetchPages = () => {
       let pages: Page[] = [];
 
-      if (await checkLoggedIn()) {
+      if (isLoggedIn) {
         pages = [
           {
             name: "Home",
@@ -94,7 +112,7 @@ function BottomNav() {
       setPages(pages);
     };
     fetchPages();
-  }, []);
+  }, [isLoggedIn]);
 
   const { theme } = useTheme();
 

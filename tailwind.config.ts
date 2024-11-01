@@ -7,7 +7,7 @@ const config: Config = {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./node_modules/@nextui-org/theme/dist/components/(avatar|button|card|checkbox|chip|input|link|modal|navbar|toggle|ripple|spinner).js"
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}"
   ],
   theme: {
     extend: {
@@ -29,6 +29,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("@tailwindcss/typography"), nextui()],
+ plugins: [require("@tailwindcss/typography"), nextui()],
 };
 export default config;

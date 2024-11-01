@@ -41,7 +41,7 @@ export default function MobileThemeSwitcher() {
       initial={{ y: 0 }}
       animate={{ y: isVisible ? 0 : 200 }}
       transition={{ duration: 0.3 }}
-      className="md:hidden fixed bottom-16 right-3 z-40"
+      className="md:hidden fixed bottom-14 right-3 z-40"
     >
       <motion.button
         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -61,7 +61,7 @@ export default function MobileThemeSwitcher() {
               exit={{ x: 30, opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <Sun className="w-7 h-7" />
+              <Sun className="w-5 h-5" />
             </motion.div>
           ) : (
             <motion.div
@@ -71,7 +71,7 @@ export default function MobileThemeSwitcher() {
               exit={{ x: 30, opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <Moon className="w-7 h-7" />
+              <Moon className="w-5 h-5" />
             </motion.div>
           )}
         </AnimatePresence>
