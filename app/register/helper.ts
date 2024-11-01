@@ -9,6 +9,14 @@ type FormData = {
   lastName: string;
 };
 
+export async function isLoggedIn() {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  return !!user;
+}
+
 export async function signup(formData: FormData) {
   const supabase = createClient();
 

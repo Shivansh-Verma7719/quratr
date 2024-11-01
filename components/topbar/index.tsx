@@ -2,30 +2,26 @@
 import { Navbar, NavbarContent, NavbarItem } from "@nextui-org/navbar";
 import { Button } from "@nextui-org/button";
 import { Settings, UserCircle } from "lucide-react";
-import { useTheme } from "next-themes";
 import QuratrLogoDark from "@/components/logos/logo_light";
 import QuratrLogo from "@/components/logos/logo";
 import Link from "next/link";
 import { checkLoggedIn } from "./helpers";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const Topbar = () => {
-  const { theme } = useTheme();
-  const ThemeLogo = theme === "dark" ? QuratrLogo : QuratrLogoDark;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  // const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  // useEffect(() => {
+  //   setMounted(true);
+  // }, []);
 
   useEffect(() => {
     checkLoggedIn().then((loggedIn) => setIsLoggedIn(loggedIn));
     setIsLoggedIn(false);
   }, []);
 
-  if (!mounted) return null;
+  // if (!mounted) return null;
 
   return (
     <Navbar
@@ -49,8 +45,16 @@ const Topbar = () => {
         justify="center"
       >
         <NavbarItem>
-          <Link href="/">
-            <ThemeLogo width={40} height={40} />
+          <Link 
+            href="/" 
+            className="relative flex items-center justify-center w-10 h-10"
+          >
+            <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-0 dark:opacity-0">
+              <QuratrLogoDark width={40} height={40} className="w-full h-full" />
+            </div>
+            <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-0 opacity-0 dark:opacity-100">
+              <QuratrLogo width={40} height={40} className="w-full h-full" />
+            </div>
           </Link>
         </NavbarItem>
       </NavbarContent>

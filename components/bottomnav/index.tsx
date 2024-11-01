@@ -19,7 +19,6 @@ interface Page {
   name: string;
   href: string;
   icon: React.ElementType;
-  active: boolean;
 }
 
 function BottomNav() {
@@ -31,35 +30,22 @@ function BottomNav() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      
+
       // Show nav when scrolling up or at top of page
       if (currentScrollY < lastScrollY || currentScrollY < 370) {
         setIsVisible(true);
-      } 
+      }
       // Hide nav when scrolling down
       else if (currentScrollY > lastScrollY) {
         setIsVisible(false);
       }
-      
+
       setLastScrollY(currentScrollY);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
-
-  const checkRouteActive = (path: string) => {
-    return pathname === path;
-  };
-
-  const isHomeActive = checkRouteActive("/");
-  const isDiscoverActive = checkRouteActive("/discover");
-  const isFeedActive = checkRouteActive("/feed");
-  const isProfileActive = checkRouteActive("/profile");
-  const isCuratedActive = checkRouteActive("/curated");
-  const isLoginActive = checkRouteActive("/login");
-  const isRegisterActive = checkRouteActive("/register");
-  const isPostActive = checkRouteActive("/feed/new");
 
   useEffect(() => {
     const fetchPages = async () => {
@@ -71,42 +57,36 @@ function BottomNav() {
             name: "Home",
             href: "/",
             icon: Home,
-            active: isHomeActive,
           },
           {
             name: "Discover",
             href: "/discover",
             icon: IconSwipe,
-            active: isDiscoverActive,
           },
           {
             name: "Curated",
             href: "/curated",
             icon: ListChecks,
-            active: isCuratedActive,
           },
           {
             name: "Feed",
             href: "/feed",
             icon: Newspaper,
-            active: isFeedActive,
           },
           {
             name: "Post",
             href: "/feed/new",
             icon: PlusCircle,
-            active: isPostActive,
           },
         ];
       } else {
         pages = [
-          { name: "Home", href: "/", icon: Home, active: isHomeActive },
-          { name: "Login", href: "/login", icon: LogIn, active: isLoginActive },
+          { name: "Home", href: "/", icon: Home },
+          { name: "Login", href: "/login", icon: LogIn },
           {
             name: "Register",
             href: "/register",
             icon: NotebookPen,
-            active: isRegisterActive,
           },
         ];
       }
@@ -114,16 +94,7 @@ function BottomNav() {
       setPages(pages);
     };
     fetchPages();
-  }, [
-    isHomeActive,
-    isDiscoverActive,
-    isFeedActive,
-    isProfileActive,
-    isCuratedActive,
-    isLoginActive,
-    isRegisterActive,
-    isPostActive,
-  ]);
+  }, []);
 
   const { theme } = useTheme();
 
@@ -132,27 +103,34 @@ function BottomNav() {
       initial={{ y: 0 }}
       animate={{ y: isVisible ? 0 : 100 }}
       transition={{ duration: 0.3 }}
-      className={`fixed bottom-0 w-full py-3 z-40 bg-background md:hidden border-t border-gray-700`}
+      className={`fixed bottom-0 w-full py-2 z-40 bg-background md:hidden border-t border-gray-700`}
     >
       <div className="flex flex-row justify-around items-center bg-transparent w-full">
         {pages.map((page, index) => (
           <Link key={index} href={page.href} className="flex items-center z-50">
-            {page.active ? (
-              page.name === "Discover" ? (
-                <IconSwipe color={theme === "dark" ? "white" : "black"} size={30} />
-              ) : (
-                <page.icon
-                  width="30"
-                  height="30"
-                  stroke={theme === "dark" ? "white" : "black"}
-                />
-              )
+            {page.name === "Discover" ? (
+              <IconSwipe
+                color={
+                  pathname === page.href
+                    ? theme === "dark"
+                      ? "white"
+                      : "black"
+                    : "gray"
+                }
+                size={30}
+              />
             ) : (
-              page.name === "Discover" ? (
-                <IconSwipe color="gray" size={30} />
-              ) : (
-                <page.icon width="30" height="30" stroke="gray" />
-              )
+              <page.icon
+                width="30"
+                height="30"
+                stroke={
+                  pathname === page.href
+                    ? theme === "dark"
+                      ? "white"
+                      : "black"
+                    : "gray"
+                }
+              />
             )}
           </Link>
         ))}
