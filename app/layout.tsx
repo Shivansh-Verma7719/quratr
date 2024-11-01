@@ -6,6 +6,7 @@ import BottomNav from "@/components/bottomnav";
 import Topbar from "@/components/topbar";
 import { Providers } from "./providers";
 import MobileThemeSwitcher from "@/components/mobileThemeSwitcher";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -31,6 +32,7 @@ export default function RootLayout({
           <BottomNav />
         </Providers>
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );

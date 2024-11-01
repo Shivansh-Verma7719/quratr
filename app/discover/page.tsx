@@ -35,17 +35,6 @@ export default function DiscoverPage() {
     {}
   );
 
-  // useEffect(() => {
-  //   const checkIsMobile = () => {
-  //     setIsMobile(window.innerWidth < 748);
-  //   };
-
-  //   checkIsMobile();
-  //   window.addEventListener("resize", checkIsMobile);
-
-  //   return () => window.removeEventListener("resize", checkIsMobile);
-  // }, []);
-
   const fetchCards = useCallback(async () => {
     setIsLoading(true);
     const sortedPlaces = await sortPlacesByPreferences();
