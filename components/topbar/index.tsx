@@ -24,7 +24,9 @@ const Topbar = () => {
   useEffect(() => {
     getUser().then((user) => {
       setUser(user);
-      setIsLoggedIn(!!user);
+      if (user?.username !== undefined) {
+        setIsLoggedIn(true);
+      }
     });
   }, []);
 

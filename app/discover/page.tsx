@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import TinderCard from "react-tinder-card";
 import { Card, CardBody, CardFooter } from "@nextui-org/card";
+import { Spinner } from "@nextui-org/react";
 import Image from "next/image";
 import { sortPlacesByPreferences, likePlace, dislikePlace } from "./helpers";
 import { Rating } from "@smastrom/react-rating";
@@ -95,7 +96,7 @@ export default function DiscoverPage() {
         <div className="relative h-[95%] w-[95%] md:w-[600px] md:h-[600px]">
           {isLoading ? (
             <div className="flex items-center justify-center h-full">
-              <p>Loading...</p>
+              <Spinner size="lg" />
             </div>
           ) : (
             cards

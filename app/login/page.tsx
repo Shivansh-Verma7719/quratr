@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import LoginForm from "./loginForm";
-// import Navbar from "@/components/navbar/index";
 import Footer from "@/components/footer/index";
 
 const LoginPage: React.FC = () => {

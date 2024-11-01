@@ -1,5 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 import { fetchLikedPlaces, fetchUsername } from "./helpers";
 import { Card, CardBody, CardFooter } from "@nextui-org/card";
 import Image from "next/image";
@@ -8,6 +10,8 @@ import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 import { Chip } from "@nextui-org/chip";
 import { CircleCheck } from "lucide-react";
+import { Spinner } from "@nextui-org/spinner";
+import { IconSwipe } from "@tabler/icons-react";
 
 import {
   Modal,
@@ -29,39 +33,39 @@ interface Place {
 }
 
 export default function CuratedPage() {
+  const router = useRouter();
   const [places, setPlaces] = useState<Place[]>([]);
-  // const [isMobile, setIsMobile] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPlace, setCurrentPlace] = useState<Place | null>(null);
   const [username, setUsername] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchAndSetUsername = async () => {
-      const username = await fetchUsername();
-      if (username) {
-        setUsername(username);
-      } else {
-        setUsername("Guest"); // Fallback if username is null
+    const loadData = async () => {
+      try {
+        // Fetch both data in parallel
+        const [usernameData, likedPlaces] = await Promise.all([
+          fetchUsername(),
+          fetchLikedPlaces(),
+        ]);
+
+        if (usernameData) {
+          setUsername(usernameData);
+        } else {
+          setUsername("Guest");
+        }
+
+        if (likedPlaces) {
+          setPlaces(likedPlaces);
+        }
+      } catch (error) {
+        console.error("Error loading data:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    fetchAndSetUsername();
-  }, []);
-  useEffect(() => {
-    // const checkIsMobile = () => setIsMobile(window.innerWidth < 748);
-    // checkIsMobile();
-    // window.addEventListener("resize", checkIsMobile);
-
-    const loadLikedPlaces = async () => {
-      const likedPlaces = await fetchLikedPlaces();
-      if (likedPlaces) {
-        setPlaces(likedPlaces);
-      }
-    };
-
-    loadLikedPlaces();
-
-    // return () => window.removeEventListener("resize", checkIsMobile);
+    loadData();
   }, []);
 
   const generateDiscountCode = (placeName: string) => {
@@ -86,53 +90,83 @@ export default function CuratedPage() {
 
   return (
     <>
-      <div className="flex justify-center items-start py-2 px-5 min-h-screen w-full bg-background">
-        <div className="w-full max-w-2xl">
-          <h2 className="text-2xl font-bold mb-4 text-center">
-            Your Curated Places
-          </h2>
-          {places.map((place) => (
-            <Card key={place.id} className="mb-6">
-              <Image
-                alt={place.name}
-                className="object-cover w-full h-64"
-                src={place.image}
-                width={600}
-                height={400}
-              />
-              <CardBody>
-                <h3 className="text-xl font-bold">{place.name}</h3>
-                <p className="text-sm text-gray-500">{place.address}</p>
-                <Chip variant="faded">{place.tags}</Chip>
-                <Rating
-                  style={{ maxWidth: 200 }}
-                  value={place.rating}
-                  readOnly={true}
-                />
-                <p className="text-sm">{place.location}</p>
-                {place.group_experience === "1" && (
-                  <Chip
-                    variant="faded"
-                    startContent={<CircleCheck size={18} />}
-                    color="success"
+      <div className="flex justify-center items-start py-2 px-5 min-h-[calc(100vh_-_123px)] w-full bg-background">
+        {isLoading ? (
+          <div className="flex items-center justify-center h-[calc(100vh_-_123px)]">
+            <Spinner size="lg" />
+          </div>
+        ) : (
+          <div className="w-full max-w-2xl">
+            {places.length > 0 ? (
+              <>
+                <h2 className="text-2xl font-bold mb-4 text-center">
+                  Your Curated Places
+                </h2>
+                {places.map((place, index) => (
+                  <motion.div
+                    key={place.id}
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.7, delay: index * 0.1 }}
                   >
-                    Group Experience
-                  </Chip>
-                )}
-              </CardBody>
-              <CardFooter>
+                    <Card className="mb-6">
+                      <Image
+                        alt={place.name}
+                        className="object-cover w-full h-64"
+                        src={place.image}
+                        width={600}
+                        height={400}
+                      />
+                      <CardBody>
+                        <h3 className="text-xl font-bold">{place.name}</h3>
+                        <p className="text-sm text-gray-500">{place.address}</p>
+                        <Chip variant="faded">{place.tags}</Chip>
+                        <Rating
+                          style={{ maxWidth: 200 }}
+                          value={place.rating}
+                          readOnly={true}
+                        />
+                        <p className="text-sm">{place.location}</p>
+                        {place.group_experience === "1" && (
+                          <Chip
+                            variant="faded"
+                            startContent={<CircleCheck size={18} />}
+                            color="success"
+                          >
+                            Group Experience
+                          </Chip>
+                        )}
+                      </CardBody>
+                      <CardFooter>
+                        <Button
+                          color="primary"
+                          variant="flat"
+                          className="ml-auto"
+                          onClick={() => handleRedeemClick(place)}
+                        >
+                          Redeem Discount
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  </motion.div>
+                ))}
+              </>
+            ) : (
+              <p className="flex flex-col justify-center items-center h-[calc(100vh_-_123px)]">
+                <b>Swipe to find places you like!</b>
                 <Button
                   color="primary"
+                  className="mt-2"
                   variant="flat"
-                  className="ml-auto"
-                  onClick={() => handleRedeemClick(place)}
+                  startContent={<IconSwipe />}
+                  onClick={() => router.push("/discover")}
                 >
-                  Redeem Discount
+                  Start Swiping
                 </Button>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
+              </p>
+            )}
+          </div>
+        )}
       </div>
 
       {currentPlace && (
