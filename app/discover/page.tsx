@@ -29,7 +29,7 @@ export default function DiscoverPage() {
   const [cards, setCards] = useState<Card[]>([]);
   // const [isMobile, setIsMobile] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(10);
-  const [zIndex, setZIndex] = useState(0);
+  // const [zIndex, setZIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [flippedCards, setFlippedCards] = useState<{ [key: string]: boolean }>(
     {}
@@ -71,11 +71,11 @@ export default function DiscoverPage() {
   const onSwipe = (direction: string, cardId: string, index: number) => {
     // console.log("onSwipe", direction, " ", cardId, " ", index, " ", zIndex);
     if (direction === "right") {
-      likePlace(cardId);
+      // likePlace(cardId);
     } else if (direction === "left") {
-      dislikePlace(cardId);
+      // dislikePlace(cardId);
     }
-    setZIndex((prevZIndex) => prevZIndex + 3);
+    // setZIndex((prevZIndex) => prevZIndex + 3);
 
     if (index === 1) {
       setCurrentIndex((prevIndex) => prevIndex + 10);
@@ -112,9 +112,7 @@ export default function DiscoverPage() {
                   }
                   swipeThreshold={100}
                   swipeRequirementType="position"
-                  className={`absolute top-0 left-0 h-full w-full z-[${
-                    cards.length - zIndex
-                  }]`}
+                  className={`absolute top-0 left-0 h-full w-full`}
                 >
                   <div
                     onClick={() => handleCardFlip(card.id)}
@@ -168,8 +166,7 @@ export default function DiscoverPage() {
                               priority={index < 3}
                               loading={index < 3 ? "eager" : "lazy"}
                               quality={75}
-                              placeholder="blur"
-                              blurDataURL={`data:image/svg+xml;base64,...`}
+                              placeholder="empty"
                             />
                             <CardBody className="absolute top-0 left-0 w-auto">
                               <Chip variant="faded">{card.tags}</Chip>
