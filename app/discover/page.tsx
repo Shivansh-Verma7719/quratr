@@ -97,7 +97,7 @@ export default function DiscoverPage() {
 
   return (
     <>
-      <div className="flex justify-center items-center py-4 px-5 h-[calc(100vh_-_123px)] w-full overflow-hidden">
+      <div className="flex justify-center items-center py-4 px-5 h-[calc(100vh_-_123px)] w-full overflow-hidden bg-background">
         <div className="relative h-[95%] w-[95%] md:w-[600px] md:h-[600px]">
           {isLoading ? (
             <div className="flex items-center justify-center h-full">
