@@ -36,33 +36,39 @@ export default function DiscoverPage() {
   );
 
   const fetchCards = useCallback(async () => {
-    setIsLoading(true);
-    const sortedPlaces = await sortPlacesByPreferences();
-    if (sortedPlaces) {
-      const lastCard: Card = {
-        id: "last-card",
-        name: "All Caught Up!",
-        image: "",
-        matchScore: 0,
-        tags: "",
-        rating: 0,
-        location: "",
-        group_experience: "",
-        isLastCard: true,
-        description: "",
-        address: "",
-      };
-      const newCards = [...sortedPlaces, lastCard];
-      setCards(newCards as Card[]);
+    await sortPlacesByPreferences()
+      .then((sortedPlaces) => {
+        if (sortedPlaces) {
+          const lastCard: Card = {
+            id: "last-card",
+            name: "All Caught Up!",
+            image: "",
+            matchScore: 0,
+            tags: "",
+            rating: 0,
+            location: "",
+            group_experience: "",
+            isLastCard: true,
+            description: "",
+            address: "",
+          };
+          const newCards = [...sortedPlaces, lastCard];
+          setCards(newCards as Card[]);
 
-      // Populate the flippedCards state with all card IDs
-      const initialFlippedState = newCards.reduce((acc, card) => {
-        acc[card.id] = false;
-        return acc;
-      }, {} as { [key: string]: boolean });
-      setFlippedCards(initialFlippedState);
-    }
-    setIsLoading(false);
+          // Populate the flippedCards state with all card IDs
+          const initialFlippedState = newCards.reduce((acc, card) => {
+            acc[card.id] = false;
+            return acc;
+          }, {} as { [key: string]: boolean });
+          setFlippedCards(initialFlippedState);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching cards:", error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
 
   useEffect(() => {
@@ -127,8 +133,7 @@ export default function DiscoverPage() {
                         e.currentTarget.dataset.touchStartTime || "0",
                         10
                       );
-                      if (touchEndTime - touchStartTime < 150) {
-                        // Adjust this threshold as needed
+                      if (touchEndTime - touchStartTime < 250) {
                         handleCardFlip(card.id);
                       }
                     }}
@@ -169,7 +174,13 @@ export default function DiscoverPage() {
                               placeholder="empty"
                             />
                             <CardBody className="absolute top-0 left-0 w-auto">
-                              <Chip variant="faded">{card.tags}</Chip>
+                              <Chip
+                                color="secondary"
+                                variant="faded"
+                                className="text-white bg-opacity-85 bg-slate-800 border-none"
+                              >
+                                {card.tags}
+                              </Chip>
                             </CardBody>
                             <CardFooter className="flex flex-col items-start before:bg-white/10 border-white/20 border-1 overflow-hidden py-2 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
                               <p className="text-3xl text-white m-0">
@@ -289,7 +300,9 @@ export default function DiscoverPage() {
                                   >
                                     <p className="text-md text-white flex items-center">
                                       <HomeIcon size={18} className="mr-1" />
-                                      <strong className="mr-1">Address: </strong>
+                                      <strong className="mr-1">
+                                        Address:{" "}
+                                      </strong>
                                       {card.address}
                                     </p>
                                     {/* <p className="text-md text-white">

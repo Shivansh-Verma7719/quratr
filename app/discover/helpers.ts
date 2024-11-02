@@ -1,5 +1,5 @@
-"use server";
-import { createClient } from "@/utils/supabase/server";
+"use client";
+import { createClient } from "@/utils/supabase/client";
 
 interface Place {
   id: string;
@@ -84,6 +84,7 @@ export async function sortPlacesByPreferences() {
   const { data: placesData, error: placesError } = await supabase
     .from("places")
     .select("*");
+    
   if (placesError) {
     console.error("Error fetching places:", placesError);
     return null;
