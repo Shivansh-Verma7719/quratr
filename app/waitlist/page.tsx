@@ -2,9 +2,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, CheckCheck } from 'lucide-react';
-// import Navbar from "@/components/navbar/index";
 import Footer from "@/components/footer/index";
-import { Providers } from '../providers';
 import { createClient } from '@/utils/supabase/client';
 
 const WaitlistForm = () => {
@@ -52,7 +50,7 @@ const WaitlistForm = () => {
   };
 
   return (
-    <Providers>
+    <>
       <div className="min-h-screen font-sans overflow-x-hidden bg-background text-text">
         {/* <Navbar /> */}
         <main>
@@ -133,7 +131,7 @@ const WaitlistForm = () => {
         </main>
         <Footer />
       </div>
-    </Providers>
+    </>
   );
 };
 

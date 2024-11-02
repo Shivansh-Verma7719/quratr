@@ -34,7 +34,7 @@ const BottomNav = () => {
     const fetchLoggedIn = async () => {
       checkLoggedIn()
         .then((loggedIn) => {
-          console.log(loggedIn);
+          // console.log(loggedIn);
           setIsLoggedIn(loggedIn);
         })
         .finally(() => {
