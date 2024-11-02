@@ -80,9 +80,9 @@ const Tutorial = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void })
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentStep}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
+                initial={{ opacity: 0, x: -100 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 100 }}
                 className="flex flex-col items-center justify-center min-h-screen p-4 text-center text-white"
               >
                 <motion.div

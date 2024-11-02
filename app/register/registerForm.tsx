@@ -230,11 +230,11 @@ const RegisterForm: React.FC = () => {
         />
         <label htmlFor="termsCheckbox" className="ml-2 text-sm">
           I agree to the{" "}
-          <Link href="/terms" className="text-primary hover:underline">
+          <Link href="/termsandconditions" className="text-primary hover:underline">
             Terms and Conditions
           </Link>{" "}
           and{" "}
-          <Link href="/privacy" className="text-primary hover:underline">
+          <Link href="/privacy_policy" className="text-primary hover:underline">
             Privacy Policy
           </Link>
         </label>
