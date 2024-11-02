@@ -16,8 +16,10 @@ import QuratrLogoDark from "@/components/logos/logo_light";
 import QuratrLogo from "@/components/logos/logo";
 import { getUser, User } from "./helpers";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 const Topbar = () => {
+  const pathname = usePathname();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<User | null>(null);
 
@@ -27,8 +29,11 @@ const Topbar = () => {
       if (user?.username !== undefined) {
         setIsLoggedIn(true);
       }
+      else {
+        setIsLoggedIn(false);
+      }
     });
-  }, []);
+  }, [pathname]);
 
   return (
     <Navbar
@@ -39,11 +44,6 @@ const Topbar = () => {
     >
       <NavbarContent justify="start" className={isLoggedIn ? "" : "hidden"}>
         <NavbarItem key="profile_dropdown">
-          {/* <Link href="/profile">
-            <Button isIconOnly variant="light" aria-label="Profile">
-              <UserCircle size={30} stroke="gray" />
-            </Button>
-          </Link> */}
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
               <Avatar

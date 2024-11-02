@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import {
   Home,
-  ListChecks,
+  ListCheck,
   LogIn,
   Newspaper,
   NotebookPen,
@@ -66,7 +66,7 @@ const BottomNav = () => {
         ? [
             { name: "Home", href: "/", icon: Home },
             { name: "Discover", href: "/discover", icon: IconSwipe },
-            { name: "Curated", href: "/curated", icon: ListChecks },
+            { name: "Curated", href: "/curated", icon: ListCheck },
             { name: "Feed", href: "/feed", icon: Newspaper },
             { name: "Post", href: "/feed/new", icon: PlusCircle },
           ]

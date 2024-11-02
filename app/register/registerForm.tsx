@@ -44,6 +44,7 @@ const RegisterForm: React.FC = () => {
     isLoggedIn().then((loggedIn) => {
       if (loggedIn) {
         router.push("/discover");
+        router.refresh();
       }
     });
   }, [router]);
@@ -88,7 +89,8 @@ const RegisterForm: React.FC = () => {
           setError(response.error || "");
         } else {
           setSuccess("Redirecting...");
-          router.push("/app/onboarding");
+          router.push("/onboarding");
+          router.refresh();
         }
         setIsLoading(false);
       }

@@ -65,15 +65,11 @@ export async function updateSession(request: NextRequest) {
   const onboardedPages = [
     "/discover",
     "/curated",
-    // "/feed/",
     "/profile/edit",
-    // "/settings",
   ];
 
   const user = await supabase.auth.getUser();
-  // console.log(user);
 
-  // Check if the page is protected
   const isProtectedPage = protectedPages.some((page) =>
     request.nextUrl.pathname.startsWith(page)
   );
@@ -88,12 +84,11 @@ export async function updateSession(request: NextRequest) {
     request.nextUrl.pathname.startsWith(page)
   );
 
-  if (isOnboardedPage) {
-    // console.log(user.data.user?.id);
+  if (isOnboardedPage && user.data.user) {
     const { data: onboardingData, error: onboardingError } = await supabase
       .from("profiles")
       .select("is_onboarded")
-      .eq("id", user.data.user?.id)
+      .eq("id", user.data.user.id)
       .single();
 
     if (onboardingError) {

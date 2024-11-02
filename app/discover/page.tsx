@@ -11,6 +11,7 @@ import { Chip } from "@nextui-org/chip";
 import { CircleCheck, PartyPopper, MapPin, HomeIcon } from "lucide-react";
 import ReactCardFlip from "react-card-flip";
 import { motion } from "framer-motion";
+import Tutorial from "@/components/tutorial";
 
 interface Card {
   id: string;
@@ -28,13 +29,13 @@ interface Card {
 
 export default function DiscoverPage() {
   const [cards, setCards] = useState<Card[]>([]);
-  // const [isMobile, setIsMobile] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(10);
   // const [zIndex, setZIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [flippedCards, setFlippedCards] = useState<{ [key: string]: boolean }>(
     {}
   );
+  const [showTutorial, setShowTutorial] = useState(false);
 
   const fetchCards = useCallback(async () => {
     setIsLoading(true);
@@ -66,6 +67,19 @@ export default function DiscoverPage() {
   }, []);
 
   useEffect(() => {
+    // Check if tutorial has been shown before
+    const tutorialShown = localStorage.getItem("discoveryTutorialShown");
+    if (!tutorialShown) {
+      setShowTutorial(true);
+    }
+  }, []);
+
+  const handleCloseTutorial = () => {
+    setShowTutorial(false);
+    localStorage.setItem("discoveryTutorialShown", "true");
+  };
+
+  useEffect(() => {
     fetchCards();
   }, [fetchCards]);
 
@@ -76,7 +90,6 @@ export default function DiscoverPage() {
     } else if (direction === "left") {
       dislikePlace(cardId);
     }
-    // setZIndex((prevZIndex) => prevZIndex + 3);
 
     if (index === 1) {
       setCurrentIndex((prevIndex) => prevIndex + 10);
@@ -84,7 +97,6 @@ export default function DiscoverPage() {
   };
 
   const handleCardFlip = (cardId: string) => {
-    // console.log("handleCardFlip", cardId);
     if (!cards.find((card) => card.id === cardId)?.isLastCard) {
       setFlippedCards((prev) => ({ ...prev, [cardId]: !prev[cardId] }));
     }
@@ -290,7 +302,9 @@ export default function DiscoverPage() {
                                   >
                                     <p className="text-md text-white flex items-center">
                                       <HomeIcon size={18} className="mr-1" />
-                                      <strong className="mr-1">Address: </strong>
+                                      <strong className="mr-1">
+                                        Address:{" "}
+                                      </strong>
                                       {card.address}
                                     </p>
                                     {/* <p className="text-md text-white">
@@ -318,6 +332,7 @@ export default function DiscoverPage() {
         </div>
       </div>
       {/* <BottomNav /> */}
+      <Tutorial isOpen={showTutorial} onClose={handleCloseTutorial} />
     </>
   );
 }

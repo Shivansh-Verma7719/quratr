@@ -37,6 +37,7 @@ const LoginForm: React.FC = () => {
       console.log("Login status:", response);
       if (response.success === true) {
         router.push("/discover");
+        router.refresh();
       }
     };
     checkLoginStatus();
@@ -57,13 +58,9 @@ const LoginForm: React.FC = () => {
       if (response.success === false) {
         setError(response.error || "");
       } else {
-        // console.log("Login successful");
-        // const supabase = createClient();
-        // const { data, error } = await supabase.auth.getUser();
-        // console.log("User data:", data);
-        // console.log("User error:", error);
-        router.push("/discover");
         setSuccess("Login successful");
+        router.push("/discover");
+        router.refresh();
       }
       setIsLoading(false);
     }
