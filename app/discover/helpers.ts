@@ -21,12 +21,26 @@ export async function sortPlacesByPreferences() {
     return null;
   }
 
+  // fetch concurrently
+  const [
+    { data: preferencesData, error: preferencesError },
+    { data: dislikedPlacesData, error: dislikedPlacesError },
+    { data: likedPlacesData, error: likedPlacesError },
+  ] = await Promise.all([
+    supabase.from("onboarding").select("*").eq("id", userData.user.id).single(),
+    supabase
+      .from("dislikes")
+      .select("place_id")
+      .eq("user_id", userData.user.id),
+    supabase.from("likes").select("place_id").eq("user_id", userData.user.id),
+  ]);
+
   // Get user preferences
-  const { data: preferencesData, error: preferencesError } = await supabase
-    .from("onboarding")
-    .select("*")
-    .eq("id", userData.user.id)
-    .single();
+  // const { data: preferencesData, error: preferencesError } = await supabase
+  //   .from("onboarding")
+  //   .select("*")
+  //   .eq("id", userData.user.id)
+  //   .single();
 
   if (preferencesError) {
     console.error("Error fetching user preferences:", preferencesError);
@@ -34,30 +48,34 @@ export async function sortPlacesByPreferences() {
   }
 
   // Get disliked places
-  const { data: dislikedPlacesData, error: dislikedPlacesError } = await supabase
-    .from("dislikes")
-    .select("place_id")
-    .eq("user_id", userData.user.id);
+  // const { data: dislikedPlacesData, error: dislikedPlacesError } = await supabase
+  //   .from("dislikes")
+  //   .select("place_id")
+  //   .eq("user_id", userData.user.id);
 
   if (dislikedPlacesError) {
     console.error("Error fetching disliked places:", dislikedPlacesError);
     return null;
   }
 
-  const dislikedPlaceIds = dislikedPlacesData.map((dislike: { place_id: string }) => dislike.place_id);
+  const dislikedPlaceIds = dislikedPlacesData.map(
+    (dislike: { place_id: string }) => dislike.place_id
+  );
 
   // Get liked places
-  const { data: likedPlacesData, error: likedPlacesError } = await supabase
-    .from("likes")
-    .select("place_id")
-    .eq("user_id", userData.user.id);
+  // const { data: likedPlacesData, error: likedPlacesError } = await supabase
+  //   .from("likes")
+  //   .select("place_id")
+  //   .eq("user_id", userData.user.id);
 
   if (likedPlacesError) {
     console.error("Error fetching liked places:", likedPlacesError);
     return null;
   }
 
-  const likedPlaceIds = likedPlacesData.map((like: { place_id: string }) => like.place_id);
+  const likedPlaceIds = likedPlacesData.map(
+    (like: { place_id: string }) => like.place_id
+  );
 
   // Combine disliked and liked place IDs
   const excludedPlaceIds = new Set([...dislikedPlaceIds, ...likedPlaceIds]);
@@ -72,7 +90,9 @@ export async function sortPlacesByPreferences() {
   }
 
   // Filter out disliked and liked places
-  const filteredPlaces = placesData.filter((place: Place) => !excludedPlaceIds.has(place.id));
+  const filteredPlaces = placesData.filter(
+    (place: Place) => !excludedPlaceIds.has(place.id)
+  );
 
   // Sort places by preferences in descending order
   const sortedPlaces = filteredPlaces.map((place: Place) => {
