@@ -37,7 +37,7 @@ const OnboardingPage: React.FC = () => {
       }
     };
     checkStatus();
-  }, []);
+  }, [router]);
 
   const handleOnboardingAnswer = (answer: string) => {
     const newAnswers = [...formData.onboardingAnswers];
@@ -65,7 +65,7 @@ const OnboardingPage: React.FC = () => {
         .then((result) => {
           if (result.success) {
             router.push("/discover");
-            router.refresh();
+            // router.refresh();
           } else {
             console.log(result.error);
           }
