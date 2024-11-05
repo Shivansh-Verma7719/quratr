@@ -2,7 +2,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SlidersHorizontal, X } from "lucide-react";
-import { Button, Select, SelectItem, Chip } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
+import { MultiSelect } from "@/components/ui/select";
 
 interface CityLocalityMap {
   [key: string]: string[];
@@ -77,11 +78,10 @@ export default function FloatingActionButton({
                 onClick={toggleExpand}
               >
                 <X className="h-6 w-6" />
-                <span className="sr-only">Close filter options</span>
               </Button>
               <div className="space-y-6 w-full max-w-md">
                 <h2 className="text-2xl font-bold text-center">
-                  Filter Options
+                  Filter
                 </h2>
                 {/* <div className="flex items-center justify-start space-x-4">
                   <span
@@ -123,65 +123,20 @@ export default function FloatingActionButton({
                     Delhi
                   </span>
                 </div> */}
-                <Select
-                  label="Select cities"
-                  // placeholder="Select cities"
-                  selectionMode="multiple"
-                  variant="bordered"
-                  selectedKeys={selectedCities}
-                  isMultiline
-                  onSelectionChange={(keys) =>
-                    setSelectedCities(Array.from(keys) as string[])
-                  }
-                  className="w-full"
-                  renderValue={(items) => {
-                    return (
-                      <div className="flex flex-wrap gap-2">
-                        {items.map((item) => (
-                          <Chip key={item.key}>{item.key}</Chip>
-                        ))}
-                      </div>
-                    );
-                  }}
-                >
-                  {cities.map((city) => (
-                    <SelectItem key={city} value={city}>
-                      {city}
-                    </SelectItem>
-                  ))}
-                </Select>
-                <Select
-                  label="Select localities"
-                  // placeholder="Select localities"
-                  selectionMode="multiple"
-                  selectedKeys={selectedLocalities}
-                  isMultiline
-                  variant="bordered"
-                  onSelectionChange={(keys) =>
-                    setSelectedLocalities(Array.from(keys) as string[])
-                  }
-                  className="w-full"
-                  renderValue={(items) => {
-                    return (
-                      <div className="flex flex-wrap gap-2">
-                        {items.map((item) => (
-                          <Chip key={item.key}>{item.key}</Chip>
-                        ))}
-                      </div>
-                    );
-                  }}
-                >
-                  {selectedCities.flatMap(
-                    (city) =>
-                      localities[city as keyof typeof localities]?.map(
-                        (locality) => (
-                          <SelectItem key={locality} value={locality}>
-                            {locality}
-                          </SelectItem>
-                        )
-                      ) || []
+                <MultiSelect
+                  items={cities}
+                  placeholder="Select cities"
+                  selectedItems={selectedCities}
+                  onChange={setSelectedCities}
+                />
+                <MultiSelect
+                  items={selectedCities.flatMap(
+                    (city) => localities[city as keyof typeof localities] || []
                   )}
-                </Select>
+                  placeholder="Select localities"
+                  selectedItems={selectedLocalities}
+                  onChange={setSelectedLocalities}
+                />
                 <div className="absolute bottom-6 right-6">
                   <Button
                     color="primary"

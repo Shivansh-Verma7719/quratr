@@ -33,6 +33,7 @@ const OnboardingPage: React.FC = () => {
       const response = await checkOnboardingStatus();
       if (response.success === true) {
         router.push("/discover");
+        router.refresh();
       }
     };
     checkStatus();
@@ -65,6 +66,7 @@ const OnboardingPage: React.FC = () => {
         console.log(result.error);
       } else {
         router.push("/discover");
+        router.refresh();
       }
       setIsLoading(false);
     }
@@ -121,59 +123,57 @@ const OnboardingPage: React.FC = () => {
     <div className="min-h-screen font-sans overflow-x-hidden bg-background text-text">
       {/* <Navbar /> */}
       <main className="container mx-auto px-4 sm:px-6 py-16 sm:py-24">
-        <React.Suspense fallback={<div>Loading...</div>}>
-          <form onSubmit={handleSubmit} className="max-w-md mx-auto">
-            <div className="mb-8 bg-gray-200 h-2 rounded-full">
-              <motion.div
-                className="bg-blue-500 h-2 rounded-full"
-                initial={{ width: 0 }}
-                animate={{ width: `${((step + 1) / 10) * 100}%` }}
-                transition={{ duration: 0.5 }}
-              ></motion.div>
-            </div>
-            <AnimatePresence mode="wait">{renderStep()}</AnimatePresence>
-            <div className="flex justify-between mt-8">
-              {step > 0 && (
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  type="button"
-                  onClick={handlePrevious}
-                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded-full flex items-center"
-                >
-                  <ArrowLeft className="mr-2" /> Previous
-                </motion.button>
-              )}
-              {step < 9 ? (
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  type="button"
-                  onClick={handleNext}
-                  className={`bg-blue-500 text-white px-4 py-2 rounded-full flex items-center ml-auto ${
-                    !validateStep() ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                  disabled={!validateStep()}
-                >
-                  Next <ArrowRight className="ml-2" />
-                </motion.button>
-              ) : (
-                <Button
-                  type="submit"
-                  color="primary"
-                  variant="flat"
-                  size="lg"
-                  disabled={isLoading || !validateAllSteps()}
-                  className={`bg-green-500 text-white px-4 py-2 rounded-full flex items-center ml-auto ${
-                    !validateAllSteps() ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                >
-                  Submit
-                </Button>
-              )}
-            </div>
-          </form>
-        </React.Suspense>
+        <form onSubmit={handleSubmit} className="max-w-md mx-auto">
+          <div className="mb-8 bg-gray-200 h-2 rounded-full">
+            <motion.div
+              className="bg-blue-500 h-2 rounded-full"
+              initial={{ width: 0 }}
+              animate={{ width: `${((step + 1) / 10) * 100}%` }}
+              transition={{ duration: 0.5 }}
+            ></motion.div>
+          </div>
+          <AnimatePresence mode="wait">{renderStep()}</AnimatePresence>
+          <div className="flex justify-between mt-8">
+            {step > 0 && (
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                type="button"
+                onClick={handlePrevious}
+                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-full flex items-center"
+              >
+                <ArrowLeft className="mr-2" /> Previous
+              </motion.button>
+            )}
+            {step < 9 ? (
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                type="button"
+                onClick={handleNext}
+                className={`bg-blue-500 text-white px-4 py-2 rounded-full flex items-center ml-auto ${
+                  !validateStep() ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={!validateStep()}
+              >
+                Next <ArrowRight className="ml-2" />
+              </motion.button>
+            ) : (
+              <Button
+                type="submit"
+                color="primary"
+                variant="flat"
+                size="lg"
+                disabled={isLoading || !validateAllSteps()}
+                className={`bg-green-500 text-white px-4 py-2 rounded-full flex items-center ml-auto ${
+                  !validateAllSteps() ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+              >
+                Submit
+              </Button>
+            )}
+          </div>
+        </form>
       </main>
       <Footer />
     </div>
