@@ -57,8 +57,7 @@ const OnboardingPage: React.FC = () => {
     if (step > 0) setStep(step - 1);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     if (step === 9 && validateAllSteps()) {
       setIsLoading(true);
       const result = await submitOnboarding(formData);
@@ -123,7 +122,7 @@ const OnboardingPage: React.FC = () => {
     <div className="min-h-screen font-sans overflow-x-hidden bg-background text-text">
       {/* <Navbar /> */}
       <main className="container mx-auto px-4 sm:px-6 py-16 sm:py-24">
-        <form onSubmit={handleSubmit} className="max-w-md mx-auto">
+        <div className="max-w-md mx-auto">
           <div className="mb-8 bg-gray-200 h-2 rounded-full">
             <motion.div
               className="bg-blue-500 h-2 rounded-full"
@@ -160,10 +159,11 @@ const OnboardingPage: React.FC = () => {
               </motion.button>
             ) : (
               <Button
-                type="submit"
+                onClick={handleSubmit}
                 color="primary"
                 variant="flat"
                 size="lg"
+                isLoading={isLoading}
                 disabled={isLoading || !validateAllSteps()}
                 className={`bg-green-500 text-white px-4 py-2 rounded-full flex items-center ml-auto ${
                   !validateAllSteps() ? "opacity-50 cursor-not-allowed" : ""
@@ -173,7 +173,7 @@ const OnboardingPage: React.FC = () => {
               </Button>
             )}
           </div>
-        </form>
+        </div>
       </main>
       <Footer />
     </div>

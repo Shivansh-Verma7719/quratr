@@ -12,8 +12,8 @@ export async function submitOnboarding(formData: OnboardingData) {
     data: { user },
     error: userError,
   } = await supabase.auth.getUser();
-  
-  console.log(user);
+
+  // console.log(user);
   if (userError || !user) {
     console.log("User not found", userError);
     return { success: false, error: userError };
