@@ -1,11 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, PartyPopper, ShieldAlert } from "lucide-react";
 import Footer from "@/components/footer/index";
 import { submitOnboarding, checkOnboardingStatus } from "./helper";
 import { useRouter } from "next/navigation";
 import { Button } from "@nextui-org/button";
+import { Card, CardHeader, CardBody } from "@nextui-org/card";
+import { IconSwipe } from "@tabler/icons-react";
 
 const onboardingQuestions = [
   "You're more of a club kinda person than a starbucks kinda person?",
@@ -27,6 +29,8 @@ const OnboardingPage: React.FC = () => {
     onboardingAnswers: Array(10).fill(""),
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const checkStatus = async () => {
@@ -64,14 +68,16 @@ const OnboardingPage: React.FC = () => {
       await submitOnboarding(formData)
         .then((result) => {
           if (result.success) {
-            router.push("/discover");
+            // router.push("/discover");
             // router.refresh();
+            setSuccess(true);
           } else {
-            console.log(result.error);
+            setError(result.error?.message || "Failed to submit onboarding");
           }
         })
         .catch((error) => {
           console.error("Failed to submit onboarding:", error);
+          setError("Failed to submit onboarding");
         })
         .finally(() => {
           setIsLoading(false);
@@ -181,6 +187,48 @@ const OnboardingPage: React.FC = () => {
               </Button>
             )}
           </div>
+          {success && (
+            <Card
+              radius="lg"
+              className="mt-4 bg-green-500/20"
+              isBlurred
+              shadow="sm"
+            >
+              <CardHeader>
+                <PartyPopper className="text-green-500 mr-2" />
+                <h1 className="text-green-500">Onboarded!</h1>
+              </CardHeader>
+              <CardBody>
+                <b>Begin your curated journey!</b>
+                <Button
+                  color="primary"
+                  className="mt-2"
+                  variant="flat"
+                  startContent={<IconSwipe />}
+                  as="a"
+                  href="/discover"
+                >
+                  Start Swiping
+                </Button>
+              </CardBody>
+            </Card>
+          )}
+          {error && (
+            <Card
+              radius="lg"
+              className="mt-4 bg-red-500/20"
+              isBlurred
+              shadow="sm"
+            >
+              <CardHeader>
+                <ShieldAlert className="text-red-500 mr-2" />
+                <h1 className="text-red-500">Error</h1>
+              </CardHeader>
+              <CardBody>
+                <p className="text-red-500">{error}</p>
+              </CardBody>
+            </Card>
+          )}
         </div>
       </main>
       <Footer />
