@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import { fetchUserProfile, fetchUserPosts, UserProfile, Post } from "./helpers";
 import Link from "next/link";
 import { Plus } from "lucide-react";
-import { Spinner } from "@nextui-org/spinner";
+import { Spinner } from "@nextui-org/react";
 
 export default function ProfilePage() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);

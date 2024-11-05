@@ -1,6 +1,6 @@
 {
   "name": "quratr",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,7 +10,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@nextui-org/avatar": "^2.0.33",
     "@nextui-org/button": "^2.0.38",
     "@nextui-org/card": "^2.0.34",
     "@nextui-org/checkbox": "^2.1.5",
@@ -18,7 +17,6 @@
     "@nextui-org/input": "^2.2.5",
     "@nextui-org/link": "^2.0.35",
     "@nextui-org/modal": "^2.0.41",
-    "@nextui-org/navbar": "^2.0.37",
     "@nextui-org/react": "^2.4.8",
     "@nextui-org/switch": "^2.0.34",
     "@nextui-org/system": "^2.2.6",
@@ -32,7 +30,6 @@
     "@vercel/speed-insights": "^1.0.12",
     "axios": "^1.7.7",
     "browser-image-compression": "^2.0.2",
-    "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "framer-motion": "^11.5.5",
     "lucide-react": "^0.441.0",
@@ -43,13 +40,10 @@
     "react-card-flip": "^1.2.3",
     "react-dom": "^18",
     "react-google-recaptcha-v3": "^1.10.1",
-    "react-infinite-scroll-component": "^6.1.0",
     "react-password-strength-bar": "^0.4.1",
     "react-simple-star-rating": "^5.1.7",
     "react-tinder-card": "^1.6.4",
-    "sharp": "^0.33.5",
-    "tailwind-merge": "^2.5.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwind-merge": "^2.5.2"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.15",

@@ -7,11 +7,24 @@ interface Place {
   description: string;
   image: string;
   [key: string]: string | number | boolean | null | undefined;
+  locality: string;
+  group_experience: string;
+  rating: number;
+  tags: string;
+  city_name: string;
+  matchScore: number;
   isLastCard?: boolean;
   address: string;
 }
 
-export async function sortPlacesByPreferences() {
+interface CityLocalityMap {
+  [key: string]: string[];
+}
+
+export async function sortPlacesByPreferences(): Promise<{
+  sortedPlaces: Place[];
+  cityLocalityMap: CityLocalityMap;
+} | null> {
   const supabase = createClient();
 
   // Get user
@@ -26,6 +39,7 @@ export async function sortPlacesByPreferences() {
     { data: preferencesData, error: preferencesError },
     { data: dislikedPlacesData, error: dislikedPlacesError },
     { data: likedPlacesData, error: likedPlacesError },
+    { data: placesData, error: placesError },
   ] = await Promise.all([
     supabase.from("onboarding").select("*").eq("id", userData.user.id).single(),
     supabase
@@ -33,28 +47,26 @@ export async function sortPlacesByPreferences() {
       .select("place_id")
       .eq("user_id", userData.user.id),
     supabase.from("likes").select("place_id").eq("user_id", userData.user.id),
+    supabase.from("places").select("*"),
   ]);
-
-  // Get user preferences
-  // const { data: preferencesData, error: preferencesError } = await supabase
-  //   .from("onboarding")
-  //   .select("*")
-  //   .eq("id", userData.user.id)
-  //   .single();
 
   if (preferencesError) {
     console.error("Error fetching user preferences:", preferencesError);
     return null;
   }
 
-  // Get disliked places
-  // const { data: dislikedPlacesData, error: dislikedPlacesError } = await supabase
-  //   .from("dislikes")
-  //   .select("place_id")
-  //   .eq("user_id", userData.user.id);
-
   if (dislikedPlacesError) {
     console.error("Error fetching disliked places:", dislikedPlacesError);
+    return null;
+  }
+
+  if (likedPlacesError) {
+    console.error("Error fetching liked places:", likedPlacesError);
+    return null;
+  }
+
+  if (placesError) {
+    console.error("Error fetching places:", placesError);
     return null;
   }
 
@@ -62,33 +74,23 @@ export async function sortPlacesByPreferences() {
     (dislike: { place_id: string }) => dislike.place_id
   );
 
-  // Get liked places
-  // const { data: likedPlacesData, error: likedPlacesError } = await supabase
-  //   .from("likes")
-  //   .select("place_id")
-  //   .eq("user_id", userData.user.id);
-
-  if (likedPlacesError) {
-    console.error("Error fetching liked places:", likedPlacesError);
-    return null;
-  }
-
   const likedPlaceIds = likedPlacesData.map(
     (like: { place_id: string }) => like.place_id
   );
 
+  // Print places with null city_name
+  // placesData.forEach((place: Place) => {
+  //   if (!place.city_name) {
+  //     console.log("Place with null city_name:", {
+  //       id: place.id,
+  //       name: place.name,
+  //       locality: place.locality
+  //     });
+  //   }
+  // });
+
   // Combine disliked and liked place IDs
   const excludedPlaceIds = new Set([...dislikedPlaceIds, ...likedPlaceIds]);
-
-  // Get all places
-  const { data: placesData, error: placesError } = await supabase
-    .from("places")
-    .select("*");
-    
-  if (placesError) {
-    console.error("Error fetching places:", placesError);
-    return null;
-  }
 
   // Filter out disliked and liked places
   const filteredPlaces = placesData.filter(
@@ -109,17 +111,59 @@ export async function sortPlacesByPreferences() {
   sortedPlaces.sort(
     (a: Place, b: Place) => (b.matchScore as number) - (a.matchScore as number)
   );
-  return sortedPlaces.map((place: Place) => ({
+
+  // Print Max Match Score
+  // console.log(
+  //   "Max Match Score:",
+  //   Math.max(...sortedPlaces.map((place: Place) => place.matchScore))
+  // );
+
+  // console.log(placesData);
+  const cityLocalityMap = createCityLocalityMap(placesData);
+
+  const finalSortedPlaces = sortedPlaces.map((place: Place) => ({
     id: place.id,
     name: place.name,
     image: place.image,
     tags: place.tags,
     rating: place.rating,
-    location: place.location,
+    locality: place.locality,
     group_experience: place.group_experience,
     matchScore: place.matchScore,
     isLastCard: false,
     address: place.address,
-    description: "Hello",
+    description: place.description,
+    city_name: place.city_name,
   }));
+
+  return {
+    sortedPlaces: finalSortedPlaces,
+    cityLocalityMap,
+  };
+}
+
+export function createCityLocalityMap(places: Place[]): CityLocalityMap {
+  return places.reduce((acc: CityLocalityMap, place) => {
+    // Get city name directly from place.city_name
+    let cityName = place.city_name;
+    let locality = place.locality;
+
+    if (!cityName || !locality) {
+      return acc;
+    }
+
+    cityName = cityName.trim();
+    locality = locality.trim();
+
+    if (!acc[cityName]) {
+      acc[cityName] = [];
+    }
+
+    // Only add locality if it's not already in the array
+    if (!acc[cityName].includes(locality)) {
+      acc[cityName].push(locality);
+    }
+
+    return acc;
+  }, {});
 }

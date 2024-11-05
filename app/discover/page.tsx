@@ -12,6 +12,7 @@ import { Chip } from "@nextui-org/chip";
 import { CircleCheck, PartyPopper, MapPin, HomeIcon } from "lucide-react";
 import ReactCardFlip from "react-card-flip";
 import { motion } from "framer-motion";
+import FloatingActionButton from "@/components/FloatingActionButton";
 
 interface Card {
   id: string;
@@ -20,25 +21,35 @@ interface Card {
   matchScore: number;
   tags: string;
   rating: number;
-  location: string;
+  locality: string;
   group_experience: string;
   isLastCard?: boolean;
   description: string;
   address: string;
+  city_name: string;
+}
+
+interface CityLocalityMap {
+  [key: string]: string[];
 }
 
 export default function DiscoverPage() {
   const [cards, setCards] = useState<Card[]>([]);
   const [currentIndex, setCurrentIndex] = useState(10);
   const [isLoading, setIsLoading] = useState(true);
+  const [originalCards, setOriginalCards] = useState<Card[]>([]);
   const [flippedCards, setFlippedCards] = useState<{ [key: string]: boolean }>(
     {}
   );
+  const [cityLocalityMap, setCityLocalityMap] = useState<CityLocalityMap>({});
+  const [selectedCities, setSelectedCities] = useState<string[]>([]);
+  const [selectedLocalities, setSelectedLocalities] = useState<string[]>([]);
 
   const fetchCards = useCallback(async () => {
     await sortPlacesByPreferences()
-      .then((sortedPlaces) => {
-        if (sortedPlaces) {
+      .then((result) => {
+        if (result) {
+          const { sortedPlaces, cityLocalityMap } = result;
           const lastCard: Card = {
             id: "last-card",
             name: "All Caught Up!",
@@ -46,14 +57,18 @@ export default function DiscoverPage() {
             matchScore: 0,
             tags: "",
             rating: 0,
-            location: "",
+            locality: "",
             group_experience: "",
             isLastCard: true,
             description: "",
             address: "",
+            city_name: "",
           };
           const newCards = [...sortedPlaces, lastCard];
+
           setCards(newCards as Card[]);
+          setOriginalCards(newCards as Card[]);
+          setCityLocalityMap(cityLocalityMap);
 
           // Populate the flippedCards state with all card IDs
           const initialFlippedState = newCards.reduce((acc, card) => {
@@ -74,6 +89,48 @@ export default function DiscoverPage() {
   useEffect(() => {
     fetchCards();
   }, []);
+
+  useEffect(() => {
+    // console.log(selectedCities, selectedLocalities);
+    setIsLoading(true);
+
+    // If no filters are selected, show all cards
+    if (selectedCities.length === 0 && selectedLocalities.length === 0) {
+      setCards(cards);
+      setIsLoading(false);
+      return;
+    }
+
+    const filtered = originalCards.filter((card) => {
+      // Skip the last card from filtering
+      if (card.isLastCard) return true;
+
+      // Check if both filters are active
+      if (selectedCities.length > 0 && selectedLocalities.length > 0) {
+        // Must match both city AND locality
+        return (
+          selectedCities.includes(card.city_name) &&
+          selectedLocalities.includes(card.locality)
+        );
+      }
+
+      // If only city filter is active
+      if (selectedCities.length > 0) {
+        return selectedCities.includes(card.city_name);
+      }
+
+      // If only locality filter is active
+      if (selectedLocalities.length > 0) {
+        return selectedLocalities.includes(card.locality);
+      }
+
+      return true;
+    });
+
+    // console.log(filtered);
+    setCards(filtered);
+    setIsLoading(false);
+  }, [selectedCities, selectedLocalities]);
 
   const onSwipe = (direction: string, cardId: string, index: number) => {
     // console.log("onSwipe", direction, " ", cardId, " ", index, " ", zIndex);
@@ -97,7 +154,7 @@ export default function DiscoverPage() {
 
   return (
     <>
-      <div className="flex justify-center items-center py-4 px-5 h-[calc(100vh_-_123px)] w-full overflow-hidden bg-background">
+      <div className="flex justify-center items-center py-4 px-5 h-[calc(100vh_-_123px)] w-full overflow-hidden">
         <div className="relative h-[95%] w-[95%] md:w-[600px] md:h-[600px]">
           {isLoading ? (
             <div className="flex items-center justify-center h-full">
@@ -192,7 +249,10 @@ export default function DiscoverPage() {
                                 readOnly={true}
                               />
                               <p className="text-2xl text-white m-0">
-                                {card.location}
+                                {card.locality}
+                              </p>
+                              <p className="text-2xl text-white m-0">
+                                {card.matchScore}
                               </p>
                               {card.group_experience === "1" && (
                                 <Chip
@@ -313,7 +373,7 @@ export default function DiscoverPage() {
                                       <strong className="mr-1">
                                         Location:
                                       </strong>
-                                      {card.location}
+                                      {card.locality}
                                     </p>
                                   </motion.div>
                                 </div>
@@ -328,6 +388,13 @@ export default function DiscoverPage() {
               ))
           )}
         </div>
+        <FloatingActionButton
+          cityLocalityMap={cityLocalityMap}
+          selectedCities={selectedCities}
+          setSelectedCities={setSelectedCities}
+          selectedLocalities={selectedLocalities}
+          setSelectedLocalities={setSelectedLocalities}
+        />
       </div>
     </>
   );
