@@ -60,14 +60,22 @@ const OnboardingPage: React.FC = () => {
   const handleSubmit = async () => {
     if (step === 9 && validateAllSteps()) {
       setIsLoading(true);
-      const result = await submitOnboarding(formData);
-      if (result.success === false) {
-        console.log(result.error);
-      } else {
-        router.push("/discover");
-        router.refresh();
-      }
-      setIsLoading(false);
+      // console.log(formData);
+      await submitOnboarding(formData)
+        .then((result) => {
+          if (result.success) {
+            router.push("/discover");
+            router.refresh();
+          } else {
+            console.log(result.error);
+          }
+        })
+        .catch((error) => {
+          console.error("Failed to submit onboarding:", error);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     }
   };
 
