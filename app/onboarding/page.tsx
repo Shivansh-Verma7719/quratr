@@ -33,7 +33,7 @@ const OnboardingPage: React.FC = () => {
       const response = await checkOnboardingStatus();
       if (response.success === true) {
         router.push("/discover");
-        router.refresh();
+        // router.refresh();
       }
     };
     checkStatus();
