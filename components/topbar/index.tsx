@@ -14,26 +14,32 @@ import { Button } from "@nextui-org/button";
 import { Settings } from "lucide-react";
 import QuratrLogoDark from "@/components/logos/logo_light";
 import QuratrLogo from "@/components/logos/logo";
-import { getUser, User } from "./helpers";
-import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { User } from "@supabase/supabase-js";
+import { UserProfile } from "@/app/layoutWrapper";
 
-const Topbar = () => {
-  const pathname = usePathname();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
+const Topbar = ({
+  user,
+  userProfile,
+}: {
+  user: User | null;
+  userProfile: UserProfile | null;
+}) => {
+  // const pathname = usePathname();
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [user, setUser] = useState<User | null>(null);
 
-  useEffect(() => {
-    getUser().then((user) => {
-      setUser(user);
-      if (user?.username !== undefined) {
-        setIsLoggedIn(true);
-      }
-      else {
-        setIsLoggedIn(false);
-      }
-    });
-  }, [pathname]);
+  // useEffect(() => {
+    // getUser().then((user) => {
+    //   setUser(user);
+  //   if (user?.username !== undefined) {
+  //     setIsLoggedIn(true);
+  //     }
+  //     else {
+  //       setIsLoggedIn(false);
+  //     }
+  //   });
+  // }, [pathname]);
+  // console.log(user);
 
   return (
     <Navbar
@@ -42,7 +48,7 @@ const Topbar = () => {
       height="3rem"
       shouldHideOnScroll
     >
-      <NavbarContent justify="start" className={isLoggedIn ? "" : "hidden"}>
+      <NavbarContent justify="start" className={user ? "" : "hidden"}>
         <NavbarItem key="profile_dropdown">
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
@@ -52,7 +58,7 @@ const Topbar = () => {
                 className="transition-transform"
                 color="primary"
                 showFallback
-                name={user?.first_name + " " + user?.last_name}
+                name={userProfile?.first_name + " " + userProfile?.last_name}
                 getInitials={(name) =>
                   name
                     ?.split(" ")
@@ -74,10 +80,6 @@ const Topbar = () => {
               <DropdownItem key="profile_link" textValue="Profile">
                 <Link href="/profile">Profile</Link>
               </DropdownItem>
-              {/* <DropdownItem key="team_settings">Team Settings</DropdownItem> */}
-              {/* <DropdownItem key="analytics">Analytics</DropdownItem> */}
-              {/* <DropdownItem key="system">System</DropdownItem> */}
-              {/* <DropdownItem key="configurations">Configurations</DropdownItem> */}
               <DropdownItem key="feedback" textValue="Feedback">
                 <Link href="/feedback">Feedback</Link>
               </DropdownItem>
@@ -91,7 +93,7 @@ const Topbar = () => {
         </NavbarItem>
       </NavbarContent>
 
-      <NavbarContent className={isLoggedIn ? "" : "mx-auto"} justify="center">
+      <NavbarContent className={user ? "" : "mx-auto"} justify="center">
         <NavbarItem>
           <Link
             href="/"
@@ -111,7 +113,7 @@ const Topbar = () => {
         </NavbarItem>
       </NavbarContent>
 
-      <NavbarContent justify="end" className={isLoggedIn ? "" : "hidden"}>
+      <NavbarContent justify="end" className={user ? "" : "hidden"}>
         <NavbarItem>
           <Link href="/profile/edit">
             <Button isIconOnly variant="light" aria-label="Settings">

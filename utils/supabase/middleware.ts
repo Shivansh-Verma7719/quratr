@@ -68,6 +68,8 @@ export async function updateSession(request: NextRequest) {
     "/profile/edit",
   ];
 
+  const loginPages = ["/login", "/register"];
+
   const user = await supabase.auth.getUser();
 
   const isProtectedPage = protectedPages.some((page) =>
@@ -76,6 +78,14 @@ export async function updateSession(request: NextRequest) {
 
   if (isProtectedPage && !user.data.user) {
     return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+  const isLoginPage = loginPages.some((page) =>
+    request.nextUrl.pathname.startsWith(page)
+  );
+
+  if (isLoginPage && user.data.user) {
+    return NextResponse.redirect(new URL("/discover", request.url));
   }
 
   // Check if the user is onboarded

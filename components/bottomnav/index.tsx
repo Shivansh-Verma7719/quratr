@@ -12,38 +12,19 @@ import {
 import { IconSwipe } from "@tabler/icons-react";
 import { Link } from "@nextui-org/link";
 import { usePathname } from "next/navigation";
-import { checkLoggedIn } from "./helpers";
 import { motion, AnimatePresence } from "framer-motion";
+import { User } from "@supabase/supabase-js";
 
-interface Page {
-  name: string;
-  href: string;
-  icon: React.ElementType;
-}
-
-const BottomNav = () => {
+const BottomNav = ({ user }: { user: User | null }) => {
   const pathname = usePathname();
-  const [pages, setPages] = useState<Page[]>([]);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const fetchLoggedIn = async () => {
-      checkLoggedIn()
-        .then((loggedIn) => {
-          // console.log(loggedIn);
-          setIsLoggedIn(loggedIn);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    };
-    setIsLoading(true);
-    fetchLoggedIn();
-  }, [pathname]);
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -60,31 +41,21 @@ const BottomNav = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  useEffect(() => {
-    const initializeNav = async () => {
-      const newPages = isLoggedIn
-        ? [
-            { name: "Home", href: "/", icon: Home },
-            { name: "Discover", href: "/discover", icon: IconSwipe },
-            { name: "Curated", href: "/curated", icon: ListCheck },
-            { name: "Feed", href: "/feed", icon: Newspaper },
-            { name: "Post", href: "/feed/new", icon: PlusCircle },
-          ]
-        : [
-            { name: "Home", href: "/", icon: Home },
-            { name: "Login", href: "/login", icon: LogIn },
-            { name: "Register", href: "/register", icon: NotebookPen },
-          ];
+  const pages = user
+    ? [
+        { name: "Home", href: "/", icon: Home },
+        { name: "Discover", href: "/discover", icon: IconSwipe },
+        { name: "Curated", href: "/curated", icon: ListCheck },
+        { name: "Feed", href: "/feed", icon: Newspaper },
+        { name: "Post", href: "/feed/new", icon: PlusCircle },
+      ]
+    : [
+        { name: "Home", href: "/", icon: Home },
+        { name: "Login", href: "/login", icon: LogIn },
+        { name: "Register", href: "/register", icon: NotebookPen },
+      ];
 
-      setPages(newPages);
-    };
-
-    initializeNav();
-  }, [isLoggedIn]);
-
-  if (isLoading) {
-    return null;
-  }
+  if (!mounted) return null;
 
   return (
     <AnimatePresence mode="wait">
@@ -97,7 +68,7 @@ const BottomNav = () => {
             type: "spring",
             stiffness: 300,
             damping: 30,
-            duration: 0.5,
+            duration: 0.3,
           }}
           className="fixed bottom-0 w-full py-2 z-40 bg-background md:hidden border-t border-gray-700"
         >

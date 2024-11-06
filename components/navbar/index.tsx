@@ -4,30 +4,54 @@ import { motion, useTransform, useScroll } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { ThemeSwitcher } from "../theme-switcher";
 import { useTheme } from "next-themes";
-import { getPages } from "../pages";
+import {
+  Home,
+  DoorOpen,
+  Newspaper,
+  BadgePlus,
+  LogOut,
+  User as UserIcon,
+  ListChecks,
+  MessageCircleReply,
+  Settings,
+} from "lucide-react";
 import Logo from "../logos/logo";
 import Logo_Light from "../logos/logo_light";
+import { User } from "@supabase/supabase-js";
 
-const CustomNavbar: React.FC = () => {
+const CustomNavbar: React.FC<{ user: User | null }> = ({ user }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { scrollYProgress } = useScroll();
   const headerOpacity = useTransform(scrollYProgress, [0, 0.1], [1, 0.8]);
   const { theme } = useTheme();
   const ThemeLogo = theme === "light" ? Logo_Light : Logo;
-  const [pages, setPages] = useState<{ name: string; href: string; icon: React.ElementType }[]>([]);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  useEffect(() => {
-    const fetchPages = async () => {
-      const pages = await getPages();
-      setPages(pages);
-    };
-    fetchPages();
-  }, []);
+  let pages = [
+    { name: "Home", href: "/", icon: Home },
+    { name: "About", href: "/#about", icon: DoorOpen },
+    { name: "Feedback", href: "/feedback", icon: MessageCircleReply },
+    // { name: "Discover", href: "/discover", icon: BadgePlus },
+    // { name: "Feed", href: "/feed", icon: Newspaper },
+    { name: "Login", href: "/login", icon: UserIcon },
+    { name: "Register", href: "/register", icon: Settings },
+  ];
+
+  if (user) {
+    pages = [
+      { name: "Home", href: "/", icon: Home },
+      { name: "Discover", href: "/discover", icon: BadgePlus },
+      { name: "Feed", href: "/feed", icon: Newspaper },
+      { name: "Profile", href: "/profile", icon: UserIcon },
+      { name: "Curated", href: "/curated", icon: ListChecks },
+      { name: "Feedback", href: "/feedback", icon: MessageCircleReply },
+      { name: "Logout", href: "/logout", icon: LogOut },
+    ];
+  }
 
   if (!mounted) return null;
 

@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { login, isLoggedIn } from "./actions";
+import React, { useState } from "react";
+import { login } from "./actions";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
-// import { createClient } from "@/utils/supabase/client";
 import {
   EyeIcon,
   EyeOffIcon,
@@ -26,22 +25,11 @@ const LoginForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  router.prefetch("/discover");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
-  useEffect(() => {
-    const checkLoginStatus = async () => {
-      const response = await isLoggedIn();
-      console.log("Login status:", response);
-      if (response.success === true) {
-        router.push("/discover");
-        router.refresh();
-      }
-    };
-    checkLoginStatus();
-  }, [router]);
 
   const validateForm = () => {
     return (

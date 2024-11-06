@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { signup } from "./helper";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
@@ -21,7 +21,6 @@ import {
 } from "lucide-react";
 import PasswordStrengthBar from "react-password-strength-bar";
 import Link from "next/link";
-import { isLoggedIn } from "./helper";
 const RegisterForm: React.FC = () => {
   const router = useRouter();
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -39,15 +38,7 @@ const RegisterForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-
-  useEffect(() => {
-    isLoggedIn().then((loggedIn) => {
-      if (loggedIn) {
-        router.push("/discover");
-        router.refresh();
-      }
-    });
-  }, [router]);
+  router.prefetch("/discover");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.name === "termsAccepted") {
