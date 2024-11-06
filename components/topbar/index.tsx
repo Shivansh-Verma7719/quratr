@@ -3,7 +3,6 @@ import {
   Navbar,
   NavbarContent,
   NavbarItem,
-  Link,
   DropdownItem,
   DropdownTrigger,
   Dropdown,
@@ -16,6 +15,7 @@ import QuratrLogoDark from "@/components/logos/logo_light";
 import QuratrLogo from "@/components/logos/logo";
 import { User } from "@supabase/supabase-js";
 import { UserProfile } from "@/app/layoutWrapper";
+import Link from "next/link";
 
 const Topbar = ({
   user,

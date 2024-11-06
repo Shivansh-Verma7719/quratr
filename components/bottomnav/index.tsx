@@ -10,7 +10,7 @@ import {
   PlusCircle,
 } from "lucide-react";
 import { IconSwipe } from "@tabler/icons-react";
-import { Link } from "@nextui-org/link";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { User } from "@supabase/supabase-js";
