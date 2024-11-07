@@ -24,22 +24,6 @@ const Topbar = ({
   user: User | null;
   userProfile: UserProfile | null;
 }) => {
-  // const pathname = usePathname();
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const [user, setUser] = useState<User | null>(null);
-
-  // useEffect(() => {
-    // getUser().then((user) => {
-    //   setUser(user);
-  //   if (user?.username !== undefined) {
-  //     setIsLoggedIn(true);
-  //     }
-  //     else {
-  //       setIsLoggedIn(false);
-  //     }
-  //   });
-  // }, [pathname]);
-  // console.log(user);
 
   return (
     <Navbar
@@ -78,13 +62,17 @@ const Topbar = ({
                 <p className="font-semibold">{user?.email}</p>
               </DropdownItem>
               <DropdownItem key="profile_link" textValue="Profile">
-                <Link href="/profile">Profile</Link>
+                <Link href="/profile" className="text-primary">
+                  Profile
+                </Link>
               </DropdownItem>
               <DropdownItem key="feedback" textValue="Feedback">
-                <Link href="/feedback">Feedback</Link>
+                <Link href="/feedback" className="text-primary">
+                  Feedback
+                </Link>
               </DropdownItem>
               <DropdownItem key="logout" textValue="Log Out">
-                <Link href="/logout" color="danger">
+                <Link href="/logout" className="text-danger">
                   Log Out
                 </Link>
               </DropdownItem>
