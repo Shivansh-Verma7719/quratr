@@ -12,6 +12,7 @@ export default function FeedPage() {
   const [scrollY, setScrollY] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  // comment
 
   useEffect(() => {
     fetchMorePosts();
