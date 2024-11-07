@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import { login } from "./actions";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
@@ -25,7 +26,10 @@ const LoginForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  router.prefetch("/discover");
+
+  useEffect(() => {
+    router.prefetch("/discover");
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

@@ -234,7 +234,7 @@ export default function DiscoverPage() {
                               <Chip
                                 color="secondary"
                                 variant="faded"
-                                className="text-white bg-opacity-85 bg-slate-800 border-none"
+                                className="border-slate-600 bg-slate-800 bg-opacity-85 text-white"
                               >
                                 {card.tags}
                               </Chip>
@@ -254,7 +254,7 @@ export default function DiscoverPage() {
                               {card.group_experience === "1" && (
                                 <Chip
                                   variant="faded"
-                                  className="-ml-1"
+                                  className="-ml-1 bg-slate-800 border-slate-600"
                                   startContent={<CircleCheck size={18} />}
                                   color="success"
                                 >
@@ -308,7 +308,7 @@ export default function DiscoverPage() {
                                   </motion.h2>
                                   <Chip
                                     variant="faded"
-                                    className="text-white bg-opacity-70"
+                                    className="text-white bg-opacity-85 bg-slate-800 border-slate-600"
                                   >
                                     {card.tags}
                                   </Chip>

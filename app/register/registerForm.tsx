@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import { signup } from "./helper";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
@@ -38,7 +39,10 @@ const RegisterForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  router.prefetch("/discover");
+
+  useEffect(() => {
+    router.prefetch("/discover");
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.name === "termsAccepted") {
