@@ -135,9 +135,9 @@ export default function DiscoverPage() {
   const onSwipe = (direction: string, cardId: string, index: number) => {
     // console.log("onSwipe", direction, " ", cardId, " ", index, " ", zIndex);
     if (direction === "right") {
-      likePlace(cardId);
+      // likePlace(cardId);
     } else if (direction === "left") {
-      dislikePlace(cardId);
+      // dislikePlace(cardId);
     }
 
     if (index === 1) {
@@ -225,9 +225,9 @@ export default function DiscoverPage() {
                               src={card.image}
                               width={600}
                               height={600}
-                              priority={index < 3}
-                              loading={index < 3 ? "eager" : "lazy"}
-                              quality={75}
+                              priority={true}
+                              loading="eager"
+                              quality={100}
                               placeholder="empty"
                             />
                             <CardBody className="absolute top-0 left-0 w-auto">
@@ -281,15 +281,23 @@ export default function DiscoverPage() {
                           </div>
                         ) : (
                           <>
-                            <div
-                              className="h-full w-full"
-                              style={{
-                                backgroundImage: `url(${card.image})`,
-                                backgroundSize: "cover",
-                                backgroundPosition: "center",
-                                filter: "blur(12px)",
-                              }}
-                            ></div>
+                            <Image
+                              alt={card.name}
+                              className="h-full w-full blur-md"
+                              src={card.image}
+                              width={600}
+                              height={600}
+                              priority={true}
+                              loading="eager"
+                              quality={100}
+                              placeholder="empty"
+                              // style={{
+                              //   backgroundImage: `url(${card.image})`,
+                              //   backgroundSize: "cover",
+                              //   backgroundPosition: "center",
+                              //   filter: "blur(12px)",
+                              // }}
+                            ></Image>
                             <CardBody className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-25">
                               <motion.div
                                 initial={{ opacity: 0 }}
