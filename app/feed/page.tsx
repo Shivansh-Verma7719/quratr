@@ -49,8 +49,6 @@ export default function FeedPage() {
   };
   return (
     <>
-      {/* {!isMobile && <CustomNavbar />} */}
-
       {isLoading ? (
         <div className="flex items-center justify-center h-[calc(100vh_-_123px)]">
           <Spinner size="lg" />

@@ -250,9 +250,9 @@ export default function DiscoverPage() {
                               <p className="text-2xl text-white m-0">
                                 {card.locality}
                               </p>
-                              <p className="text-2xl text-white m-0">
+                              {/* <p className="text-2xl text-white m-0">
                                 {card.matchScore}
-                              </p>
+                              </p> */}
                               {card.group_experience === "1" && (
                                 <Chip
                                   variant="faded"
