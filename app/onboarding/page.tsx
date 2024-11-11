@@ -10,23 +10,18 @@ import { Card, CardHeader, CardBody } from "@nextui-org/card";
 import { IconSwipe } from "@tabler/icons-react";
 
 const onboardingQuestions = [
-  "You're more of a club kinda person than a starbucks kinda person?",
-  "You're the 'I live for experiences and am ready to spend for premium experiences' kinds?",
-  "You're the 'ambivert but going out with friends is more my thing' kinds?",
-  "You're the 'I just want to sit alone and do nothing or some work on my laptop' kinds?",
-  "You were in the queue to get Coldplay tickets right?",
-  "You feel blue Tokai>Bohca anyday?",
-  "You're the ggn types?",
-  "You're the 'I go out to south/central Delhi' kinds?",
-  "You die to get hidden gems in and around NCR—'always out of home on weekends' kinds?",
-  "You're adventurous and want to do new things with new people?",
+  "You like night clubs?",
+  "You’re the ready to spend for premium experiences?",
+  "You like spending time alone at cafés?",
+  "Are you looking for hidden gems?",
+  "Are you looking to do cool things with new people?",
 ];
 
 const OnboardingPage: React.FC = () => {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
-    onboardingAnswers: Array(10).fill(""),
+    onboardingAnswers: Array(5).fill(""),
   });
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -54,7 +49,7 @@ const OnboardingPage: React.FC = () => {
   };
 
   const handleNext = () => {
-    if (validateStep() && step < 9) setStep(step + 1);
+    if (validateStep() && step < 4) setStep(step + 1);
   };
 
   const handlePrevious = () => {
@@ -62,9 +57,9 @@ const OnboardingPage: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    if (step === 9 && validateAllSteps()) {
+    if (step === 4 && validateAllSteps()) {
       setIsLoading(true);
-      // console.log(formData);
+      console.log(formData);
       await submitOnboarding(formData)
         .then((result) => {
           if (result.success) {
@@ -86,7 +81,7 @@ const OnboardingPage: React.FC = () => {
   };
 
   const renderStep = () => {
-    if (step >= 0 && step <= 9) {
+    if (step >= 0 && step <= 4) {
       return (
         <motion.div
           key={step}
@@ -141,7 +136,7 @@ const OnboardingPage: React.FC = () => {
             <motion.div
               className="bg-blue-500 h-2 rounded-full"
               initial={{ width: 0 }}
-              animate={{ width: `${((step + 1) / 10) * 100}%` }}
+              animate={{ width: `${((step + 1) / 5) * 100}%` }}
               transition={{ duration: 0.5 }}
             ></motion.div>
           </div>
@@ -158,7 +153,7 @@ const OnboardingPage: React.FC = () => {
                 <ArrowLeft className="mr-2" /> Previous
               </motion.button>
             )}
-            {step < 9 ? (
+            {step < 4 ? (
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}

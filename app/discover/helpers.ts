@@ -100,11 +100,15 @@ export async function sortPlacesByPreferences(): Promise<{
   // Sort places by preferences in descending order
   const sortedPlaces = filteredPlaces.map((place: Place) => {
     let matchScore = 0;
-    for (let i = 1; i <= 10; i++) {
-      if (place[i.toString()] === preferencesData[i.toString()]) {
+    // Only check columns 1, 2, 4, 9, 10
+    const columnsToCheck = ['1', '2', '4', '9', '10'];
+    
+    columnsToCheck.forEach(column => {
+      if (place[column] === preferencesData[column]) {
         matchScore++;
       }
-    }
+    });
+    
     return { ...place, matchScore };
   });
 
@@ -113,10 +117,10 @@ export async function sortPlacesByPreferences(): Promise<{
   );
 
   // Print Max Match Score
-  // console.log(
-  //   "Max Match Score:",
-  //   Math.max(...sortedPlaces.map((place: Place) => place.matchScore))
-  // );
+  console.log(
+    "Max Match Score:",
+    Math.max(...sortedPlaces.map((place: Place) => place.matchScore))
+  );
 
   // console.log(placesData);
   const cityLocalityMap = createCityLocalityMap(placesData);

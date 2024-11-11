@@ -91,7 +91,6 @@ export default function DiscoverPage() {
   }, []);
 
   useEffect(() => {
-    // console.log(selectedCities, selectedLocalities);
     setIsLoading(true);
 
     // If no filters are selected, show all cards
@@ -127,7 +126,6 @@ export default function DiscoverPage() {
       return true;
     });
 
-    // console.log(filtered);
     setCards(filtered);
     setIsLoading(false);
   }, [selectedCities, selectedLocalities]);
@@ -199,6 +197,8 @@ export default function DiscoverPage() {
                     <ReactCardFlip
                       isFlipped={flippedCards[card.id]}
                       containerClassName="h-full w-full"
+                      flipSpeedBackToFront={0.3}
+                      flipSpeedFrontToBack={0.3}
                     >
                       {/* Front of the card */}
                       <Card
@@ -226,8 +226,7 @@ export default function DiscoverPage() {
                               width={600}
                               height={600}
                               priority={true}
-                              loading="eager"
-                              quality={100}
+                              quality={70}
                               placeholder="empty"
                             />
                             <CardBody className="absolute top-0 left-0 w-auto">
@@ -250,6 +249,9 @@ export default function DiscoverPage() {
                               />
                               <p className="text-2xl text-white m-0">
                                 {card.locality}
+                              </p>
+                              <p className="text-2xl text-white m-0">
+                                {card.matchScore}
                               </p>
                               {card.group_experience === "1" && (
                                 <Chip
@@ -281,7 +283,7 @@ export default function DiscoverPage() {
                           </div>
                         ) : (
                           <>
-                            <Image
+                            {/* <Image
                               alt={card.name}
                               className="h-full w-full blur-md"
                               src={card.image}
@@ -291,13 +293,7 @@ export default function DiscoverPage() {
                               loading="eager"
                               quality={100}
                               placeholder="empty"
-                              // style={{
-                              //   backgroundImage: `url(${card.image})`,
-                              //   backgroundSize: "cover",
-                              //   backgroundPosition: "center",
-                              //   filter: "blur(12px)",
-                              // }}
-                            ></Image>
+                            ></Image> */}
                             <CardBody className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-25">
                               <motion.div
                                 initial={{ opacity: 0 }}
@@ -370,9 +366,6 @@ export default function DiscoverPage() {
                                       </strong>
                                       {card.address}
                                     </p>
-                                    {/* <p className="text-md text-white">
-                                      <strong>Rating:</strong> {card.rating}
-                                    </p> */}
                                     <p className="text-md text-white flex items-center">
                                       <MapPin size={18} className="mr-1" />
                                       <strong className="mr-1">
