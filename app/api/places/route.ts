@@ -1,5 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
+import { usePlacesStore } from "@/store/placeStore";
 
 interface Place {
   id: string;
@@ -62,12 +63,12 @@ export async function GET(): Promise<NextResponse> {
       );
     }
 
-    // fetch concurrently
+    // fetch user-specific data and cached places concurrently
     const [
       { data: preferencesData, error: preferencesError },
       { data: dislikedPlacesData, error: dislikedPlacesError },
       { data: likedPlacesData, error: likedPlacesError },
-      { data: placesData, error: placesError },
+      placesData,
     ] = await Promise.all([
       supabase
         .from("onboarding")
@@ -79,7 +80,7 @@ export async function GET(): Promise<NextResponse> {
         .select("place_id")
         .eq("user_id", userData.user.id),
       supabase.from("likes").select("place_id").eq("user_id", userData.user.id),
-      supabase.from("places").select("*"),
+      usePlacesStore.getState().fetchPlaces(), // Use the cached places
     ]);
 
     switch (true) {
@@ -110,8 +111,8 @@ export async function GET(): Promise<NextResponse> {
           },
           { status: 500 }
         );
-      case !!placesError:
-        console.error("Error fetching places:", placesError);
+      case !placesData:
+        console.error("Error fetching places:");
         return NextResponse.json(
           {
             data: null,
@@ -122,7 +123,7 @@ export async function GET(): Promise<NextResponse> {
     }
 
     // Sort places by preferences in descending order
-    const sortedPlaces = placesData.reduce((acc, place: Place) => {
+    const sortedPlaces = placesData.reduce((acc: Place[], place: Place) => {
       // Skip if place is in excluded set
       if (
         dislikedPlacesData.some(

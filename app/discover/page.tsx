@@ -95,7 +95,6 @@ export default function DiscoverPage() {
 
   useEffect(() => {
     if (selectedCities.length === 0 && selectedLocalities.length === 0) {
-      setIsLoading(false);
       return;
     }
     // If no filters are selected, show all cards
