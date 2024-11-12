@@ -4,7 +4,6 @@ import TinderCard from "react-tinder-card";
 import { Card, CardBody, CardFooter } from "@nextui-org/card";
 import { Spinner } from "@nextui-org/react";
 import Image from "next/image";
-// import { sortPlacesByPreferences } from "./helpers";
 import { likePlace, dislikePlace } from "./clientHelpers";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
@@ -48,7 +47,7 @@ export default function DiscoverPage() {
   const fetchCards = useCallback(async () => {
     setIsLoading(true);
     await fetch("/api/places")
-      .then((result) => result.json())
+      .then(async (result) => await result.json())
       .then((result) => {
         if (result) {
           const { data, cityLocalityMap } = result;

@@ -10,7 +10,7 @@ import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 import { Chip } from "@nextui-org/chip";
 import { CircleCheck } from "lucide-react";
-import { Spinner } from "@nextui-org/spinner";
+import { Spinner } from "@nextui-org/react";
 import { IconSwipe } from "@tabler/icons-react";
 
 import {

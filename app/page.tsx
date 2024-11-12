@@ -43,6 +43,7 @@ export default function QuratrLandingPage() {
             loop
             muted
             playsInline
+            preload="auto"
             className="z-0"
             style={{
               position: "absolute",

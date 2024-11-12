@@ -48,12 +48,14 @@ function createCityLocalityMap(places: Place[]): CityLocalityMap {
   }, {});
 }
 
-export async function GET(): Promise<NextResponse> {
+export async function GET(request: Request): Promise<NextResponse> {
   try {
     const supabase = createClient();
-
-    const { data: userData, error: userError } = await supabase.auth.getUser();
-    if (userError) {
+    
+    // Get user ID from headers
+    const userId = request.headers.get('user-id');
+    
+    if (!userId) {
       return NextResponse.json(
         {
           data: null,
@@ -73,13 +75,13 @@ export async function GET(): Promise<NextResponse> {
       supabase
         .from("onboarding")
         .select("*")
-        .eq("id", userData.user.id)
+        .eq("id", userId)
         .single(),
       supabase
         .from("dislikes")
         .select("place_id")
-        .eq("user_id", userData.user.id),
-      supabase.from("likes").select("place_id").eq("user_id", userData.user.id),
+        .eq("user_id", userId),
+      supabase.from("likes").select("place_id").eq("user_id", userId),
       usePlacesStore.getState().fetchPlaces(), // Use the cached places
     ]);
 

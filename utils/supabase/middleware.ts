@@ -58,15 +58,14 @@ export async function updateSession(request: NextRequest) {
     "/curated",
     "/feed/",
     "/profile",
+    "/api/places",
     // "/settings",
     "/onboarding",
   ];
 
-  const onboardedPages = [
-    "/discover",
-    "/curated",
-    "/profile/edit",
-  ];
+  const apiPages = ["/api/places"];
+
+  const onboardedPages = ["/discover", "/curated", "/profile/edit"];
 
   const loginPages = ["/login", "/register"];
 
@@ -86,6 +85,12 @@ export async function updateSession(request: NextRequest) {
 
   if (isLoginPage && user.data.user) {
     return NextResponse.redirect(new URL("/discover", request.url));
+  }
+
+  // set api user-id header
+  if (apiPages.some((page) => request.nextUrl.pathname.startsWith(page))) {
+    response.headers.set("user-id", user.data.user?.id || "");
+    return response;
   }
 
   // Check if the user is onboarded
