@@ -35,7 +35,7 @@ interface CityLocalityMap {
 
 export default function DiscoverPage() {
   const [cards, setCards] = useState<Card[]>([]);
-  const [currentIndex, setCurrentIndex] = useState(10);
+  const [currentIndex, setCurrentIndex] = useState(5);
   const [isLoading, setIsLoading] = useState(true);
   const [originalCards, setOriginalCards] = useState<Card[]>([]);
   const [flippedCards, setFlippedCards] = useState<{ [key: string]: boolean }>(
@@ -46,6 +46,7 @@ export default function DiscoverPage() {
   const [selectedLocalities, setSelectedLocalities] = useState<string[]>([]);
 
   const fetchCards = useCallback(async () => {
+    setIsLoading(true);
     await fetch("/api/places")
       .then((result) => result.json())
       .then((result) => {
@@ -134,13 +135,13 @@ export default function DiscoverPage() {
 
   const onSwipe = (direction: string, cardId: string, index: number) => {
     if (direction === "right") {
-      likePlace(cardId);
+      // likePlace(cardId);
     } else if (direction === "left") {
-      dislikePlace(cardId);
+      // dislikePlace(cardId);
     }
 
     if (index === 1) {
-      setCurrentIndex((prevIndex) => prevIndex + 10);
+      setCurrentIndex((prevIndex) => prevIndex + 5);
     }
   };
 
