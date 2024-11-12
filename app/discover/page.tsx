@@ -4,7 +4,7 @@ import TinderCard from "react-tinder-card";
 import { Card, CardBody, CardFooter } from "@nextui-org/card";
 import { Spinner } from "@nextui-org/react";
 import Image from "next/image";
-import { sortPlacesByPreferences } from "./helpers";
+// import { sortPlacesByPreferences } from "./helpers";
 import { likePlace, dislikePlace } from "./clientHelpers";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
@@ -46,10 +46,11 @@ export default function DiscoverPage() {
   const [selectedLocalities, setSelectedLocalities] = useState<string[]>([]);
 
   const fetchCards = useCallback(async () => {
-    await sortPlacesByPreferences()
+    await fetch("/api/places")
+      .then((result) => result.json())
       .then((result) => {
         if (result) {
-          const { sortedPlaces, cityLocalityMap } = result;
+          const { data, cityLocalityMap } = result;
           const lastCard: Card = {
             id: "1228",
             name: "All Caught Up!",
@@ -64,7 +65,7 @@ export default function DiscoverPage() {
             address: "",
             city_name: "",
           };
-          const newCards = [...sortedPlaces, lastCard];
+          const newCards = [...data, lastCard];
 
           setCards(newCards as Card[]);
           setOriginalCards(newCards as Card[]);
@@ -76,6 +77,7 @@ export default function DiscoverPage() {
             return acc;
           }, {} as { [key: string]: boolean });
           setFlippedCards(initialFlippedState);
+          // console.log("done");
         }
       })
       .catch((error) => {
@@ -131,7 +133,6 @@ export default function DiscoverPage() {
   }, [selectedCities, selectedLocalities]);
 
   const onSwipe = (direction: string, cardId: string, index: number) => {
-    // console.log("onSwipe", direction, " ", cardId, " ", index, " ", zIndex);
     if (direction === "right") {
       likePlace(cardId);
     } else if (direction === "left") {
@@ -144,7 +145,6 @@ export default function DiscoverPage() {
   };
 
   const handleCardFlip = (cardId: string) => {
-    // console.log("handleCardFlip", cardId);
     if (!cards.find((card) => card.id === cardId)?.isLastCard) {
       setFlippedCards((prev) => ({ ...prev, [cardId]: !prev[cardId] }));
     }
