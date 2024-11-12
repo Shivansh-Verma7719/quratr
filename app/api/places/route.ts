@@ -47,7 +47,7 @@ function createCityLocalityMap(places: Place[]): CityLocalityMap {
   }, {});
 }
 
-export async function GET() {
+export async function GET(): Promise<NextResponse> {
   try {
     const supabase = createClient();
 
@@ -85,16 +85,40 @@ export async function GET() {
     switch (true) {
       case !!preferencesError:
         console.error("Error fetching user preferences:", preferencesError);
-        return null;
+        return NextResponse.json(
+          {
+            data: null,
+            error: "Error fetching user preferences",
+          },
+          { status: 500 }
+        );
       case !!dislikedPlacesError:
         console.error("Error fetching disliked places:", dislikedPlacesError);
-        return null;
+        return NextResponse.json(
+          {
+            data: null,
+            error: "Error fetching disliked places",
+          },
+          { status: 500 }
+        );
       case !!likedPlacesError:
         console.error("Error fetching liked places:", likedPlacesError);
-        return null;
+        return NextResponse.json(
+          {
+            data: null,
+            error: "Error fetching liked places",
+          },
+          { status: 500 }
+        );
       case !!placesError:
         console.error("Error fetching places:", placesError);
-        return null;
+        return NextResponse.json(
+          {
+            data: null,
+            error: "Error fetching places",
+          },
+          { status: 500 }
+        );
     }
 
     // Sort places by preferences in descending order
