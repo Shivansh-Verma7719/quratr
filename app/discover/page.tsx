@@ -94,14 +94,11 @@ export default function DiscoverPage() {
   }, []);
 
   useEffect(() => {
-    setIsLoading(true);
-
-    // If no filters are selected, show all cards
     if (selectedCities.length === 0 && selectedLocalities.length === 0) {
-      setCards(cards);
       setIsLoading(false);
       return;
     }
+    // If no filters are selected, show all cards
 
     const filtered = originalCards.filter((card) => {
       // Skip the last card from filtering
@@ -130,7 +127,6 @@ export default function DiscoverPage() {
     });
 
     setCards(filtered);
-    setIsLoading(false);
   }, [selectedCities, selectedLocalities]);
 
   const onSwipe = (direction: string, cardId: string, index: number) => {
