@@ -50,57 +50,33 @@ export async function sortPlacesByPreferences(): Promise<{
     supabase.from("places").select("*"),
   ]);
 
-  if (preferencesError) {
-    console.error("Error fetching user preferences:", preferencesError);
-    return null;
+  switch (true) {
+    case !!preferencesError:
+      console.error("Error fetching user preferences:", preferencesError);
+      return null;
+    case !!dislikedPlacesError:
+      console.error("Error fetching disliked places:", dislikedPlacesError); 
+      return null;
+    case !!likedPlacesError:
+      console.error("Error fetching liked places:", likedPlacesError);
+      return null;
+    case !!placesError:
+      console.error("Error fetching places:", placesError);
+      return null;
   }
-
-  if (dislikedPlacesError) {
-    console.error("Error fetching disliked places:", dislikedPlacesError);
-    return null;
-  }
-
-  if (likedPlacesError) {
-    console.error("Error fetching liked places:", likedPlacesError);
-    return null;
-  }
-
-  if (placesError) {
-    console.error("Error fetching places:", placesError);
-    return null;
-  }
-
-  const dislikedPlaceIds = dislikedPlacesData.map(
-    (dislike: { place_id: string }) => dislike.place_id
-  );
-
-  const likedPlaceIds = likedPlacesData.map(
-    (like: { place_id: string }) => like.place_id
-  );
-
-  // Print places with null city_name
-  // placesData.forEach((place: Place) => {
-  //   if (!place.city_name) {
-  //     console.log("Place with null city_name:", {
-  //       id: place.id,
-  //       name: place.name,
-  //       locality: place.locality
-  //     });
-  //   }
-  // });
-
-  // Combine disliked and liked place IDs
-  const excludedPlaceIds = new Set([...dislikedPlaceIds, ...likedPlaceIds]);
-
-  // Filter out disliked and liked places
-  const filteredPlaces = placesData.filter(
-    (place: Place) => !excludedPlaceIds.has(place.id)
-  );
 
   // Sort places by preferences in descending order
-  const sortedPlaces = filteredPlaces.map((place: Place) => {
+  const sortedPlaces = placesData.reduce((acc, place: Place) => {
+    // Skip if place is in excluded set
+    if (
+      dislikedPlacesData.some((dislike: { place_id: string }) => dislike.place_id === place.id) ||
+      likedPlacesData.some((like: { place_id: string }) => like.place_id === place.id)
+    ) {
+      return acc;
+    }
+
+    // Calculate match score
     let matchScore = 0;
-    // Only check columns 1, 2, 4, 9, 10
     const columnsToCheck = ['1', '2', '4', '9', '10'];
     
     columnsToCheck.forEach(column => {
@@ -108,40 +84,30 @@ export async function sortPlacesByPreferences(): Promise<{
         matchScore++;
       }
     });
-    
-    return { ...place, matchScore };
-  });
 
-  sortedPlaces.sort(
-    (a: Place, b: Place) => (b.matchScore as number) - (a.matchScore as number)
-  );
+    // Insert place with match score into the accumulator array in sorted order
+    const placeWithScore = { ...place, matchScore };
+    const insertIndex = acc.findIndex((p: Place) => p.matchScore < matchScore);
+    
+    if (insertIndex === -1) {
+      acc.push(placeWithScore);
+    } else {
+      acc.splice(insertIndex, 0, placeWithScore);
+    }
+
+    return acc;
+  }, [] as Place[]);
 
   // Print Max Match Score
-  console.log(
-    "Max Match Score:",
-    Math.max(...sortedPlaces.map((place: Place) => place.matchScore))
-  );
+  // console.log(
+  //   "Max Match Score:",
+  //   Math.max(...sortedPlaces.map((place: Place) => place.matchScore))
+  // );
 
-  // console.log(placesData);
   const cityLocalityMap = createCityLocalityMap(placesData);
 
-  const finalSortedPlaces = sortedPlaces.map((place: Place) => ({
-    id: place.id,
-    name: place.name,
-    image: place.image,
-    tags: place.tags,
-    rating: place.rating,
-    locality: place.locality,
-    group_experience: place.group_experience,
-    matchScore: place.matchScore,
-    isLastCard: false,
-    address: place.address,
-    description: place.description,
-    city_name: place.city_name,
-  }));
-
   return {
-    sortedPlaces: finalSortedPlaces,
+    sortedPlaces,
     cityLocalityMap,
   };
 }

@@ -51,7 +51,7 @@ export default function DiscoverPage() {
         if (result) {
           const { sortedPlaces, cityLocalityMap } = result;
           const lastCard: Card = {
-            id: "last-card",
+            id: "1228",
             name: "All Caught Up!",
             image: "",
             matchScore: 0,
