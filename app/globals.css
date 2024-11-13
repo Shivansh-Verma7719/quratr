@@ -1,8 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
 
 @layer base {
   :root {
@@ -30,13 +29,6 @@
   /* Add more variables as needed */
 }
 
-/* * {
-  transition-property: color, background-color, border-color,
-    text-decoration-color, fill, stroke;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 300ms;
-} */
-
 .dark {
   --color-background: #0a0a0a;
   --color-foreground: #ededed;
@@ -61,18 +53,10 @@ body {
 
 p {
   font-family: "Roboto Mono", monospace !important;
-  transition-property: color, background-color, border-color,
-    text-decoration-color, fill, stroke;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
-  transition-duration: 0ms !important;
 }
 
 a {
   font-family: "Roboto Mono", monospace !important;
-  transition-property: color, background-color, border-color,
-    text-decoration-color, fill, stroke;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
-  transition-duration: 0ms !important;
 }
 
 h1,
@@ -81,10 +65,6 @@ h3,
 h4,
 h5,
 h6 {
-  transition-property: color, background-color, border-color,
-    text-decoration-color, fill, stroke;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
-  transition-duration: 0ms !important;
   font-family: "League Spartan", sans-serif;
 }
 
