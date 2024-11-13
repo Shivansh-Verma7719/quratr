@@ -7,6 +7,7 @@ import MobileThemeSwitcher from "@/components/mobileThemeSwitcher";
 import { Analytics } from "@vercel/analytics/react";
 import { createClient } from "@/utils/supabase/server";
 import { User } from "@supabase/supabase-js";
+import { useUserStore } from "@/store/userStore";
 
 const getUser = async () => {
   const supabase = createClient();
@@ -53,6 +54,9 @@ export default async function LayoutWrapper({
 }>) {
   const user = await getUser();
   const userProfile = await getUserProfile(user);
+
+  // useUserStore.getState().setUser(user);
+  // useUserStore.getState().setUserProfile(userProfile);
 
   return (
     <>
