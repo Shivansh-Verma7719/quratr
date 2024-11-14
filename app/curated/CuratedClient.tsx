@@ -105,7 +105,7 @@ export default function CuratedClient({
                   transition={{ duration: 0.4, delay: index * 0.1 }}
                 >
                   <Card className="mb-6">
-                    <p className="text-sm text-gray-500">{index}</p>
+                    {/* <p className="text-sm text-gray-500">{index}</p> */}
                     <Image
                       alt={place.name}
                       className="object-cover w-full h-64"
