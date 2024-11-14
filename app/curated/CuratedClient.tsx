@@ -1,15 +1,15 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import { fetchMoreLikedPlaces } from "./helpers";
+import { AnimatePresence, motion } from "framer-motion";
+import { fetchMoreLikedPlaces, deleteLikedPlace } from "./helpers";
 import { Place } from "./server-helpers";
 import { Card, CardBody, CardFooter } from "@nextui-org/card";
 import Image from "next/image";
 import { Button } from "@nextui-org/button";
 import { Rating } from "@smastrom/react-rating";
 import { Chip } from "@nextui-org/chip";
-import { CircleCheck } from "lucide-react";
+import { CircleCheck, Trash2 } from "lucide-react";
 import { Spinner } from "@nextui-org/react";
 import "@smastrom/react-rating/style.css";
 import { IconSwipe } from "@tabler/icons-react";
@@ -26,6 +26,63 @@ interface CuratedClientProps {
   username: string;
 }
 
+interface DeleteButtonProps {
+  isConfirming: boolean;
+  onClick: () => void;
+  onConfirm: () => void;
+  containerRef: React.RefObject<HTMLDivElement>;
+}
+
+const DeleteButton = ({
+  isConfirming,
+  onClick,
+  onConfirm,
+  containerRef,
+}: DeleteButtonProps) => (
+  <motion.div
+    ref={containerRef}
+    initial={false}
+    animate={{
+      width: isConfirming ? "auto" : "40px",
+    }}
+    transition={{ duration: 0.3 }}
+  >
+    <Button
+      color="danger"
+      variant="flat"
+      size="sm"
+      radius="sm"
+      className="min-w-0"
+      onClick={isConfirming ? onConfirm : onClick}
+    >
+      <motion.div
+        className="flex items-center gap-2"
+        animate={{
+          gap: isConfirming ? "0.5rem" : "0",
+        }}
+      >
+        <Trash2 size={20} />
+        <AnimatePresence mode="wait">
+          {isConfirming && (
+            <motion.span
+              initial={{ opacity: 0, width: 0 }}
+              animate={{ opacity: 1, width: "auto" }}
+              exit={{ opacity: 0, width: 0 }}
+              transition={{
+                duration: 0.3,
+                opacity: { duration: 0.2 },
+                width: { duration: 0.3 },
+              }}
+            >
+              Confirm
+            </motion.span>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </Button>
+  </motion.div>
+);
+
 export default function CuratedClient({
   initialPlaces,
   username,
@@ -36,12 +93,46 @@ export default function CuratedClient({
   const [currentPlace, setCurrentPlace] = useState<Place | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const deleteButtonRef = useRef<HTMLDivElement>(null);
+
+  const handleDeleteClick = (placeId: string) => {
+    setDeletingId(placeId);
+  };
+
+  const handleDeleteConfirm = async (placeId: string) => {
+    const success = await deleteLikedPlace(placeId);
+    if (success) {
+      // Animate the card out and remove it from state
+      setPlaces((prevPlaces) =>
+        prevPlaces.filter((place) => place.id !== placeId)
+      );
+    }
+    setDeletingId(null);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        deleteButtonRef.current &&
+        !deleteButtonRef.current.contains(event.target as Node)
+      ) {
+        setDeletingId(null);
+      }
+    };
+
+    if (deletingId) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
+    }
+  }, [deletingId]);
 
   useEffect(() => {
     const handleScroll = () => {
       if (
         window.innerHeight + window.scrollY >=
-        document.body.offsetHeight - 100
+        document.body.offsetHeight - 150
       ) {
         if (!isLoading && hasMore) {
           fetchMorePlaces();
@@ -86,8 +177,7 @@ export default function CuratedClient({
     )}`;
     window.open(url, "_blank");
   };
- 
-//   console.log(places)
+
   return (
     <>
       <div className="flex justify-center items-start py-2 px-5 min-h-[calc(100vh_-_123px)] w-full bg-background">
@@ -97,55 +187,66 @@ export default function CuratedClient({
               <h2 className="text-2xl font-bold mb-4 text-center">
                 Your Curated Places
               </h2>
-              {places.map((place, index) => (
-                <motion.div
-                  key={place.id}
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: index * 0.1 }}
-                >
-                  <Card className="mb-6">
-                    {/* <p className="text-sm text-gray-500">{index}</p> */}
-                    <Image
-                      alt={place.name}
-                      className="object-cover w-full h-64"
-                      src={place.image}
-                      width={600}
-                      height={400}
-                    />
-                    <CardBody>
-                      <h3 className="text-xl font-bold">{place.name}</h3>
-                      <p className="text-sm text-gray-500">{place.address}</p>
-                      <Chip variant="faded">{place.tags}</Chip>
-                      <Rating
-                        style={{ maxWidth: 200 }}
-                        value={place.rating}
-                        readOnly={true}
+              <AnimatePresence mode="popLayout">
+                {places.map((place, index) => (
+                  <motion.div
+                    key={place.id}
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, x: -100 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    layout // This enables smooth reflow animations
+                    className="mb-6"
+                  >
+                    <Card className="mb-6">
+                      {/* <p className="text-sm text-gray-500">{index}</p> */}
+                      <Image
+                        alt={place.name}
+                        className="object-cover w-full h-64"
+                        src={place.image}
+                        width={600}
+                        height={400}
                       />
-                      <p className="text-sm">{place.location}</p>
-                      {place.group_experience === "1" && (
-                        <Chip
-                          variant="faded"
-                          startContent={<CircleCheck size={18} />}
-                          color="success"
+                      <CardBody>
+                        <h3 className="text-xl font-bold">{place.name}</h3>
+                        <p className="text-sm text-gray-500">{place.address}</p>
+                        <Chip variant="faded">{place.tags}</Chip>
+                        <Rating
+                          style={{ maxWidth: 200 }}
+                          value={place.rating}
+                          readOnly={true}
+                        />
+                        <p className="text-sm">{place.location}</p>
+                        {place.group_experience === "1" && (
+                          <Chip
+                            variant="faded"
+                            startContent={<CircleCheck size={18} />}
+                            color="success"
+                          >
+                            Group Experience
+                          </Chip>
+                        )}
+                      </CardBody>
+                      <CardFooter className="flex justify-between">
+                        <DeleteButton
+                          isConfirming={deletingId === place.id}
+                          onClick={() => handleDeleteClick(place.id)}
+                          onConfirm={() => handleDeleteConfirm(place.id)}
+                          containerRef={deleteButtonRef}
+                        />
+                        <Button
+                          color="primary"
+                          variant="flat"
+                          className="ml-auto"
+                          onClick={() => handleRedeemClick(place)}
                         >
-                          Group Experience
-                        </Chip>
-                      )}
-                    </CardBody>
-                    <CardFooter>
-                      <Button
-                        color="primary"
-                        variant="flat"
-                        className="ml-auto"
-                        onClick={() => handleRedeemClick(place)}
-                      >
-                        Redeem Discount
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                </motion.div>
-              ))}
+                          Redeem Discount
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
               {isLoading && (
                 <div className="flex justify-center py-4">
                   <Spinner size="lg" />

@@ -34,3 +34,18 @@ export async function fetchMoreLikedPlaces(
 
   return placesData.reverse() || [];
 }
+
+// Add this new function to helpers.ts
+export async function deleteLikedPlace(placeId: string) {
+  const supabase = createClient();
+  const { data: { user }, error: userError } = await supabase.auth.getUser();
+  
+  if (userError || !user) return false;
+  
+  const { error } = await supabase
+    .from("likes")
+    .delete()
+    .match({ user_id: user.id, place_id: placeId });
+    
+  return !error;
+}
