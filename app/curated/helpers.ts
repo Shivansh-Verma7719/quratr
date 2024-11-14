@@ -32,5 +32,5 @@ export async function fetchMoreLikedPlaces(
 
   if (placesError) return [];
 
-  return placesData || [];
+  return placesData.reverse() || [];
 }

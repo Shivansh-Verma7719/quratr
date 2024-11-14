@@ -86,7 +86,8 @@ export default function CuratedClient({
     )}`;
     window.open(url, "_blank");
   };
-
+ 
+//   console.log(places)
   return (
     <>
       <div className="flex justify-center items-start py-2 px-5 min-h-[calc(100vh_-_123px)] w-full bg-background">
@@ -101,9 +102,10 @@ export default function CuratedClient({
                   key={place.id}
                   initial={{ opacity: 0, y: 50 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.7, delay: index * 0.1 }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
                 >
                   <Card className="mb-6">
+                    <p className="text-sm text-gray-500">{index}</p>
                     <Image
                       alt={place.name}
                       className="object-cover w-full h-64"
