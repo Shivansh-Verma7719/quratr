@@ -127,11 +127,11 @@ export default function DiscoverPage() {
     setCards(filtered);
   }, [selectedCities, selectedLocalities]);
 
-  const onSwipe = (direction: string, cardId: string, index: number) => {
+  const onSwipe = async (direction: string, cardId: string, index: number) => {
     if (direction === "right") {
-      likePlace(cardId);
+      await likePlace(cardId);
     } else if (direction === "left") {
-      dislikePlace(cardId);
+      await dislikePlace(cardId);
     }
 
     if (index === 1) {
