@@ -8,6 +8,9 @@ const nextConfig = {
       },
     ],
   },
+  experimental: {
+    staleTimes: 0,
+  },
 };
 
 export default nextConfig;
