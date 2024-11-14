@@ -53,8 +53,12 @@ export async function getInitialLikedPlacesAndUsername(): Promise<{
 
   if (placesError) return { places: [], username: "" };
 
+  const sortedPlaces = likedPlaceIds
+    .map((id) => placesData?.find((place) => place.id === id))
+    .filter((place): place is Place => place !== undefined);
+
   return {
-    places: placesData.reverse() || [],
+    places: sortedPlaces || [],
     username: usernameData.username || "",
   };
 }
