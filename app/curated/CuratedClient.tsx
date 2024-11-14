@@ -132,7 +132,7 @@ export default function CuratedClient({
     const handleScroll = () => {
       if (
         window.innerHeight + window.scrollY >=
-        document.body.offsetHeight - 150
+        document.body.offsetHeight - 250
       ) {
         if (!isLoading && hasMore) {
           fetchMorePlaces();
