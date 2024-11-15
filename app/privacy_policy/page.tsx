@@ -4,11 +4,13 @@ import Footer from "@/components/footer/index";
 
 const PrivacyPolicyPage: React.FC = () => {
   return (
-    <div className="min-h-screen font-sans overflow-x-hidden bg-white text-text">
+    <div className="min-h-screen overflow-x-hidden">
       {/* <Navbar /> */}
       <main className="container mx-auto px-4 sm:px-6 py-16 sm:py-24">
-        <div className="prose prose-sm sm:prose lg:prose-lg xl:prose-xl mx-auto">
-          <h1>Privacy Policy</h1>
+        <div className="prose-slate prose-lg md:prose-xl mx-auto">
+          <h1>
+            <b>Privacy Policy</b>
+          </h1>
           <p>Last updated: October 08, 2024</p>
           <p>
             This Privacy Policy describes Our policies and procedures on the

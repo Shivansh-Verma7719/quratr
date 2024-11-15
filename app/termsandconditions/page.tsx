@@ -7,10 +7,10 @@ import { Providers } from "../providers";
 const TermsAndConditionsPage: React.FC = () => {
   return (
     <Providers>
-      <div className="min-h-screen font-sans overflow-x-hidden bg-white text-text">
+      <div className="min-h-screen overflow-x-hidden">
         {/* <Navbar /> */}
         <main className="container mx-auto px-4 sm:px-6 py-16 sm:py-24">
-          <div className="prose prose-sm sm:prose lg:prose-lg xl:prose-xl mx-auto">
+          <div className="prose-slate prose-lg md:prose-xl mx-auto">
             <h1>
               <b>TERMS AND CONDITIONS</b>
             </h1>
@@ -535,14 +535,6 @@ const TermsAndConditionsPage: React.FC = () => {
             <p>
               Please send your feedback, comments, requests for technical
               support by email: <b>contact@quratr.com</b>.
-            </p>
-            <p>
-              These{" "}
-              <a href="https://policymaker.io/terms-and-conditions/">
-                Terms of Service
-              </a>{" "}
-              were created for <b>quratr.com</b> by{" "}
-              <a href="https://policymaker.io">PolicyMaker.io</a> on 2024-10-08.
             </p>
           </div>
         </main>
