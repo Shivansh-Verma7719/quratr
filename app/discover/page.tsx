@@ -41,7 +41,9 @@ export default function DiscoverPage() {
     {}
   );
   const [cityLocalityMap, setCityLocalityMap] = useState<CityLocalityMap>({});
-  const [selectedCities, setSelectedCities] = useState<string[]>([]);
+  const [selectedCities, setSelectedCities] = useState<string[]>([
+    "Delhi NCR",
+  ]); // Add Delhi NCR to the list
   const [selectedLocalities, setSelectedLocalities] = useState<string[]>([]);
 
   const fetchCards = useCallback(async () => {
@@ -278,17 +280,6 @@ export default function DiscoverPage() {
                           </div>
                         ) : (
                           <>
-                            {/* <Image
-                              alt={card.name}
-                              className="h-full w-full blur-md"
-                              src={card.image}
-                              width={600}
-                              height={600}
-                              priority={true}
-                              loading="eager"
-                              quality={100}
-                              placeholder="empty"
-                            ></Image> */}
                             <CardBody className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-25">
                               <motion.div
                                 initial={{ opacity: 0 }}
@@ -301,7 +292,7 @@ export default function DiscoverPage() {
                                   <motion.h2
                                     initial={{ y: -20 }}
                                     animate={{ y: 0 }}
-                                    className="text-3xl font-bold mb-4 text-white"
+                                    className="text-3xl font-bold mb-2 text-white"
                                   >
                                     {card.name}
                                   </motion.h2>
@@ -319,7 +310,7 @@ export default function DiscoverPage() {
                                     {card.group_experience === "1" && (
                                       <Chip
                                         variant="shadow"
-                                        className="mt-4 text-white bg-opacity-70"
+                                        className="mt-2 text-white bg-opacity-70"
                                         startContent={<CircleCheck size={18} />}
                                         color="success"
                                       >
@@ -329,7 +320,7 @@ export default function DiscoverPage() {
                                   </motion.div>
 
                                   <Rating
-                                    style={{ maxWidth: 200 }}
+                                    style={{ maxWidth: 150 }}
                                     value={card.rating}
                                     readOnly={true}
                                   />

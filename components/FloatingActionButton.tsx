@@ -31,6 +31,7 @@ export default function FloatingActionButton({
 
   const localities = cityLocalityMap;
   const cities = Object.keys(localities);
+  const filteredCities = cities.filter((city) => city !== "Goa"); // Remove Goa from the list (comment out line if you want to include Goa)
 
   // useEffect(() => {
   //   if (selectedCity === "Delhi") {
@@ -124,7 +125,7 @@ export default function FloatingActionButton({
                   </span>
                 </div> */}
                 <MultiSelect
-                  items={cities}
+                  items={filteredCities}
                   placeholder="Select cities"
                   selectedItems={selectedCities}
                   onChange={setSelectedCities}
@@ -143,7 +144,6 @@ export default function FloatingActionButton({
                     variant="flat"
                     onClick={toggleExpand}
                     className="px-8"
-                    // startContent={<X className="h-4 w-4" />}
                   >
                     Close
                   </Button>

@@ -11,8 +11,8 @@ import { IconSwipe } from "@tabler/icons-react";
 
 const onboardingQuestions = [
   "You like night clubs?",
-  "You’re the ready to spend for premium experiences?",
-  "You like spending time alone at cafés?",
+  "You're ready to spend for premium experiences?",
+  "Do you like spending time alone at cafés?",
   "Are you looking for hidden gems?",
   "Are you looking to do cool things with new people?",
 ];
