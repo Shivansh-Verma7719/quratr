@@ -39,7 +39,7 @@ const TermsAndConditionsPage: React.FC = () => {
             <p>
               If you do not agree with (or cannot comply with) Agreements, then
               you may not use the Service, but please let us know by emailing at{" "}
-              <b>contact@o2ret.com</b> so we can try to find a solution. These
+              <b>contact@quratr.com</b> so we can try to find a solution. These
               Terms apply to all visitors, users and others who wish to access
               or use Service.
             </p>
@@ -51,7 +51,7 @@ const TermsAndConditionsPage: React.FC = () => {
               marketing or promotional materials and other information we may
               send. However, you may opt out of receiving any, or all, of these
               communications from us by following the unsubscribe link or by
-              emailing at contact@o2ret.com.
+              emailing at contact@quratr.com.
             </p>
 
             <p>
@@ -263,7 +263,7 @@ const TermsAndConditionsPage: React.FC = () => {
               If you are a copyright owner, or authorized on behalf of one, and
               you believe that the copyrighted work has been copied in a way
               that constitutes copyright infringement, please submit your claim
-              via email to contact@o2ret.com, with the subject line: “Copyright
+              via email to contact@quratr.com, with the subject line: “Copyright
               Infringement” and include in your claim a detailed description of
               the alleged Infringement as detailed below, under “DMCA Notice and
               Procedure for Copyright Infringement Claims”
@@ -313,13 +313,13 @@ const TermsAndConditionsPage: React.FC = () => {
             </p>
             <p>
               You can contact our Copyright Agent via email at
-              contact@o2ret.com.
+              contact@quratr.com.
             </p>
             <p>
               12. <b>Error Reporting and Feedback</b>
             </p>
             <p>
-              You may provide us either directly at contact@o2ret.com or via
+              You may provide us either directly at contact@quratr.com or via
               third party sites and tools with information and feedback
               concerning errors, suggestions for improvements, ideas, problems,
               complaints, and other matters related to our Service (“Feedback”).
@@ -534,7 +534,7 @@ const TermsAndConditionsPage: React.FC = () => {
             </p>
             <p>
               Please send your feedback, comments, requests for technical
-              support by email: <b>contact@o2ret.com</b>.
+              support by email: <b>contact@quratr.com</b>.
             </p>
             <p>
               These{" "}

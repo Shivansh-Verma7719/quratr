@@ -519,7 +519,7 @@ const PrivacyPolicyPage: React.FC = () => {
             us:
           </p>
           <ul>
-            <li>By email: contact@o2ret.com</li>
+            <li>By email: contact@quratr.com</li>
           </ul>
         </div>
       </main>
