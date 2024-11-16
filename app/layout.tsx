@@ -6,11 +6,6 @@ export const metadata: Metadata = {
   title: "Home",
   description: "Quratr - Your ultimate platform for curated experiecd nces.",
   manifest: "/manifest.json",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-  },
 };
 
 export default function RootLayout({
