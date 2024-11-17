@@ -1,9 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SlidersHorizontal, X } from "lucide-react";
-import { Button } from "@nextui-org/react";
+import { Button, Switch } from "@nextui-org/react";
 import { MultiSelect } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 
 interface CityLocalityMap {
   [key: string]: string[];
@@ -25,21 +26,20 @@ export default function FloatingActionButton({
   setSelectedLocalities,
 }: FloatingActionButtonProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  // const [selectedCity, setSelectedCity] = useState("Goa");
+  const [selectedCity, setSelectedCity] = useState("Goa");
 
   const toggleExpand = () => setIsExpanded(!isExpanded);
 
   const localities = cityLocalityMap;
   const cities = Object.keys(localities);
-  const filteredCities = cities.filter((city) => city !== "Goa"); // Remove Goa from the list (comment out line if you want to include Goa)
 
-  // useEffect(() => {
-  //   if (selectedCity === "Delhi") {
-  //     setSelectedCities(["Delhi"]);
-  //   } else if (selectedCity === "Goa") {
-  //     setSelectedCities(["Goa"]);
-  //   }
-  // }, [selectedCity]);
+  useEffect(() => {
+    if (selectedCity === "Delhi") {
+      setSelectedCities(["Delhi NCR"]);
+    } else if (selectedCity === "Goa") {
+      setSelectedCities(["Goa"]);
+    }
+  }, [selectedCity]);
 
   return (
     <motion.div
@@ -84,7 +84,7 @@ export default function FloatingActionButton({
                 <h2 className="text-2xl font-bold text-center">
                   Filter
                 </h2>
-                {/* <div className="flex items-center justify-start space-x-4">
+              <div className="flex items-center justify-start space-x-4">
                   <span
                     className={`text-md ${
                       selectedCity === "Goa" ? "text-primary" : ""
@@ -123,9 +123,9 @@ export default function FloatingActionButton({
                   >
                     Delhi
                   </span>
-                </div> */}
+                </div>
                 <MultiSelect
-                  items={filteredCities}
+                  items={cities}
                   placeholder="Select cities"
                   selectedItems={selectedCities}
                   onChange={setSelectedCities}

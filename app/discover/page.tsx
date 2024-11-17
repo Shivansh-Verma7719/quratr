@@ -8,7 +8,7 @@ import { likePlace, dislikePlace } from "./clientHelpers";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 import { Chip } from "@nextui-org/chip";
-import { CircleCheck, PartyPopper, MapPin, HomeIcon } from "lucide-react";
+import { CircleCheck, PartyPopper, HomeIcon, IndianRupee } from "lucide-react";
 import ReactCardFlip from "react-card-flip";
 import { motion } from "framer-motion";
 import FloatingActionButton from "@/components/FloatingActionButton";
@@ -26,6 +26,8 @@ interface Card {
   description: string;
   address: string;
   city_name: string;
+  price: number;
+  reservation: string;
 }
 
 interface CityLocalityMap {
@@ -41,9 +43,7 @@ export default function DiscoverPage() {
     {}
   );
   const [cityLocalityMap, setCityLocalityMap] = useState<CityLocalityMap>({});
-  const [selectedCities, setSelectedCities] = useState<string[]>([
-    "Delhi NCR",
-  ]); // Add Delhi NCR to the list
+  const [selectedCities, setSelectedCities] = useState<string[]>(["Goa"]); // Add Delhi NCR to the list
   const [selectedLocalities, setSelectedLocalities] = useState<string[]>([]);
 
   const fetchCards = useCallback(async () => {
@@ -66,6 +66,8 @@ export default function DiscoverPage() {
             description: "",
             address: "",
             city_name: "",
+            price: 0,
+            reservation: "",
           };
           const newCards = [...data, lastCard];
 
@@ -79,7 +81,6 @@ export default function DiscoverPage() {
             return acc;
           }, {} as { [key: string]: boolean });
           setFlippedCards(initialFlippedState);
-          // console.log("done");
         }
       })
       .catch((error) => {
@@ -98,8 +99,8 @@ export default function DiscoverPage() {
     if (selectedCities.length === 0 && selectedLocalities.length === 0) {
       return;
     }
-    // If no filters are selected, show all cards
 
+    // If no filters are selected, show all cards
     const filtered = originalCards.filter((card) => {
       // Skip the last card from filtering
       if (card.isLastCard) return true;
@@ -127,7 +128,7 @@ export default function DiscoverPage() {
     });
 
     setCards(filtered);
-  }, [selectedCities, selectedLocalities]);
+  }, [selectedCities, selectedLocalities, originalCards]);
 
   const onSwipe = async (direction: string, cardId: string, index: number) => {
     if (direction === "right") {
@@ -227,11 +228,7 @@ export default function DiscoverPage() {
                               placeholder="empty"
                             />
                             <CardBody className="absolute top-0 left-0 w-auto">
-                              <Chip
-                                color="secondary"
-                                variant="faded"
-                                className="border-slate-600 bg-slate-800 bg-opacity-85 text-white"
-                              >
+                              <Chip color="secondary" variant="solid">
                                 {card.tags}
                               </Chip>
                             </CardBody>
@@ -253,7 +250,7 @@ export default function DiscoverPage() {
                               {card.group_experience === "1" && (
                                 <Chip
                                   variant="faded"
-                                  className="-ml-1 bg-slate-800 border-slate-600"
+                                  className="-ml-1"
                                   startContent={<CircleCheck size={18} />}
                                   color="success"
                                 >
@@ -280,8 +277,11 @@ export default function DiscoverPage() {
                           </div>
                         ) : (
                           <>
-                            <CardBody className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-25">
+                            <CardBody className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50">
                               <motion.div
+                                key={`container-${card.id}-${
+                                  flippedCards[card.id]
+                                }`}
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
@@ -290,27 +290,71 @@ export default function DiscoverPage() {
                               >
                                 <div>
                                   <motion.h2
-                                    initial={{ y: -20 }}
-                                    animate={{ y: 0 }}
+                                    key={`title-${card.id}-${
+                                      flippedCards[card.id]
+                                    }`}
+                                    initial={{ x: -20, opacity: 0 }}
+                                    animate={{ x: 0, opacity: 1 }}
+                                    transition={{ duration: 0.5 }}
                                     className="text-3xl font-bold mb-2 text-white"
                                   >
                                     {card.name}
                                   </motion.h2>
-                                  <Chip
-                                    variant="faded"
-                                    className="text-white bg-opacity-85 bg-slate-800 border-slate-600"
-                                  >
-                                    {card.tags}
-                                  </Chip>
                                   <motion.div
-                                    initial={{ y: 20 }}
-                                    animate={{ y: 0 }}
-                                    transition={{ delay: 0.6 }}
+                                    key={`tags-${card.id}-${
+                                      flippedCards[card.id]
+                                    }`}
+                                    initial={{ x: -20, opacity: 0 }}
+                                    animate={{ x: 0, opacity: 1 }}
+                                    transition={{ duration: 0.5, delay: 0.1 }}
+                                    className="space-x-2 flex items-center"
                                   >
-                                    {card.group_experience === "1" && (
+                                    <Chip
+                                      variant="flat"
+                                      color="secondary"
+                                      className="text-secondary-200 dark:text-secondary-600"
+                                    >
+                                      {card.tags}
+                                    </Chip>
+
+                                    {card.price > 0 && (
+                                      <motion.div
+                                        key={`price-${card.id}-${
+                                          flippedCards[card.id]
+                                        }`}
+                                        initial={{ x: -20, opacity: 0 }}
+                                        animate={{ x: 0, opacity: 1 }}
+                                        transition={{
+                                          duration: 0.5,
+                                          delay: 0.3,
+                                        }}
+                                      >
+                                        <Chip
+                                          variant="flat"
+                                          color="success"
+                                          className="text-success-300"
+                                          startContent={
+                                            <IndianRupee size={18} />
+                                          }
+                                        >
+                                          {card.price}
+                                        </Chip>
+                                      </motion.div>
+                                    )}
+                                  </motion.div>
+
+                                  <motion.div
+                                    key={`group-${card.id}-${
+                                      flippedCards[card.id]
+                                    }`}
+                                    initial={{ x: -20, opacity: 0 }}
+                                    animate={{ x: 0, opacity: 1 }}
+                                    transition={{ duration: 0.5, delay: 0.2 }}
+                                  >
+                                    {card.group_experience && (
                                       <Chip
-                                        variant="shadow"
-                                        className="mt-2 text-white bg-opacity-70"
+                                        variant="solid"
+                                        className="mt-2"
                                         startContent={<CircleCheck size={18} />}
                                         color="success"
                                       >
@@ -319,47 +363,69 @@ export default function DiscoverPage() {
                                     )}
                                   </motion.div>
 
-                                  <Rating
-                                    style={{ maxWidth: 150 }}
-                                    value={card.rating}
-                                    readOnly={true}
-                                  />
-
                                   <motion.hr
-                                    initial={{ width: 0 }}
-                                    animate={{ width: "100%" }}
-                                    transition={{ delay: 0.1, duration: 0.5 }}
+                                    key={`divider-${card.id}-${
+                                      flippedCards[card.id]
+                                    }`}
+                                    initial={{ width: 0, opacity: 0 }}
+                                    animate={{ width: "100%", opacity: 1 }}
+                                    transition={{ delay: 0.4, duration: 0.5 }}
                                     className="border-t border-gray-300 my-4"
                                   />
-                                  {/* <motion.p
-                                  initial={{ opacity: 0 }}
-                                  animate={{ opacity: 1 }}
-                                  transition={{ delay: 0.2 }}
-                                  className="text-sm mb-4 text-white"
-                                >
-                                  {card.description}
-                                </motion.p> */}
+
+                                  <motion.p
+                                    key={`description-${card.id}-${
+                                      flippedCards[card.id]
+                                    }`}
+                                    initial={{ y: 20, opacity: 0 }}
+                                    animate={{ y: 0, opacity: 1 }}
+                                    transition={{ delay: 0.5, duration: 0.5 }}
+                                    className="text-sm mb-4 text-white"
+                                  >
+                                    {card.description}
+                                  </motion.p>
+
+                                  {/* Description divider */}
+                                  {card.description && (
+                                    <motion.hr
+                                      key={`divider2-${card.id}-${
+                                        flippedCards[card.id]
+                                      }`}
+                                      initial={{ width: 0, opacity: 0 }}
+                                      animate={{ width: "100%", opacity: 1 }}
+                                      transition={{ delay: 0.4, duration: 0.5 }}
+                                      className="border-t border-gray-300 my-4"
+                                    />
+                                  )}
+
                                   <motion.div
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ delay: 0.4 }}
+                                    key={`address-heading-${card.id}-${
+                                      flippedCards[card.id]
+                                    }`}
+                                    initial={{ y: 20, opacity: 0 }}
+                                    animate={{ y: 0, opacity: 1 }}
+                                    transition={{ delay: 0.6, duration: 0.5 }}
                                     className="space-y-2"
                                   >
-                                    <p className="text-md text-white flex items-center">
+                                    <p className="text-white flex items-center text-wrap text-sm">
                                       <HomeIcon size={18} className="mr-1" />
                                       <strong className="mr-1">
                                         Address:{" "}
                                       </strong>
-                                      {card.address}
-                                    </p>
-                                    <p className="text-md text-white flex items-center">
-                                      <MapPin size={18} className="mr-1" />
-                                      <strong className="mr-1">
-                                        Location:
-                                      </strong>
-                                      {card.locality}
+                                      <br />
                                     </p>
                                   </motion.div>
+                                  <motion.p
+                                    key={`address-${card.id}-${
+                                      flippedCards[card.id]
+                                    }`}
+                                    initial={{ y: 20, opacity: 0 }}
+                                    animate={{ y: 0, opacity: 1 }}
+                                    transition={{ delay: 0.7, duration: 0.5 }}
+                                    className="text-white text-sm"
+                                  >
+                                    {card.address}
+                                  </motion.p>
                                 </div>
                               </motion.div>
                             </CardBody>
