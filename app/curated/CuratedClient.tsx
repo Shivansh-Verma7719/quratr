@@ -194,12 +194,11 @@ export default function CuratedClient({
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, x: -100 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
                     layout // This enables smooth reflow animations
                     className="mb-6"
                   >
                     <Card className="mb-6">
-                      {/* <p className="text-sm text-gray-500">{index}</p> */}
                       <Image
                         alt={place.name}
                         className="h-64 w-full object-cover"
