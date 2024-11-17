@@ -5,6 +5,11 @@ export const dynamic = "force-dynamic";
 
 export default async function CuratedPage() {
   const initialPlacesAndUsername = await getInitialLikedPlacesAndUsername();
-  
-  return <CuratedClient initialPlaces={initialPlacesAndUsername.places} username={initialPlacesAndUsername.username} />;
+
+  return (
+    <CuratedClient
+      initialPlaces={initialPlacesAndUsername.places}
+      username={initialPlacesAndUsername.username}
+    />
+  );
 }

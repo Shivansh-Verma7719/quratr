@@ -180,11 +180,11 @@ export default function CuratedClient({
 
   return (
     <>
-      <div className="flex justify-center items-start py-2 px-5 min-h-[calc(100vh_-_123px)] w-full bg-background">
+      <div className="flex min-h-[calc(100vh_-_123px)] w-full items-start justify-center bg-background px-5 py-2">
         <div className="w-full max-w-2xl">
           {places.length > 0 ? (
             <>
-              <h2 className="text-2xl font-bold mb-4 text-center">
+              <h2 className="mb-4 text-center text-2xl font-bold">
                 Your Curated Places
               </h2>
               <AnimatePresence mode="popLayout">
@@ -202,7 +202,7 @@ export default function CuratedClient({
                       {/* <p className="text-sm text-gray-500">{index}</p> */}
                       <Image
                         alt={place.name}
-                        className="object-cover w-full h-64"
+                        className="h-64 w-full object-cover"
                         src={place.image}
                         width={600}
                         height={400}
@@ -253,13 +253,13 @@ export default function CuratedClient({
                 </div>
               )}
               {!hasMore && !isLoading && (
-                <p className="text-center py-4 text-default-500">
+                <p className="py-4 text-center text-default-500">
                   <b>You&apos;ve seen all your liked places!</b>
                 </p>
               )}
             </>
           ) : (
-            <div className="flex flex-col justify-center items-center h-[calc(100vh_-_123px)]">
+            <div className="flex h-[calc(100vh_-_123px)] flex-col items-center justify-center">
               <b>Swipe to find places you like!</b>
               <Button
                 color="primary"
@@ -287,7 +287,7 @@ export default function CuratedClient({
             </ModalHeader>
             <ModalBody>
               <p className="text-text">{currentPlace.name}</p>
-              <div className="bg-background p-2 rounded mt-2">
+              <div className="mt-2 rounded bg-background p-2">
                 <p className="text-text">
                   Click the button below to send your discount code via
                   WhatsApp:
@@ -301,7 +301,7 @@ export default function CuratedClient({
                   Send via WhatsApp
                 </Button>
               </div>
-              <p className="text-text mt-4">WhatsApp it to +91 9717095684</p>
+              <p className="mt-4 text-text">WhatsApp it to +91 9717095684</p>
             </ModalBody>
             <ModalFooter>
               <Button

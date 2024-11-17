@@ -95,8 +95,8 @@ const RegisterForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto">
-      <h2 className="text-2xl font-bold mb-4 text-text text-center">
+    <form onSubmit={handleSubmit} className="mx-auto max-w-md">
+      <h2 className="mb-4 text-center text-2xl font-bold text-text">
         Create Your Account
       </h2>
       <Input
@@ -107,12 +107,12 @@ const RegisterForm: React.FC = () => {
         label="First Name"
         value={formData.firstName}
         startContent={
-          <UserPen className="text-2xl text-default-400 pointer-events-none" />
+          <UserPen className="pointer-events-none text-2xl text-default-400" />
         }
         labelPlacement="outside"
         onChange={handleInputChange}
         name="firstName"
-        className="w-full p-2 mb-4 text-text"
+        className="mb-4 w-full p-2 text-text"
       />
       <Input
         type="text"
@@ -122,12 +122,12 @@ const RegisterForm: React.FC = () => {
         label="Last Name"
         value={formData.lastName}
         startContent={
-          <UserPen className="text-2xl text-default-400 pointer-events-none" />
+          <UserPen className="pointer-events-none text-2xl text-default-400" />
         }
         labelPlacement="outside"
         onChange={handleInputChange}
         name="lastName"
-        className="w-full p-2 mb-4 text-text"
+        className="mb-4 w-full p-2 text-text"
       />
       <Input
         type="text"
@@ -137,12 +137,12 @@ const RegisterForm: React.FC = () => {
         label="Username"
         value={formData.username}
         startContent={
-          <UserIcon className="text-2xl text-default-400 pointer-events-none" />
+          <UserIcon className="pointer-events-none text-2xl text-default-400" />
         }
         labelPlacement="outside"
         onChange={handleInputChange}
         name="username"
-        className="w-full p-2 mb-4 text-text"
+        className="mb-4 w-full p-2 text-text"
       />
       <Input
         type="email"
@@ -154,9 +154,9 @@ const RegisterForm: React.FC = () => {
         name="email"
         labelPlacement="outside"
         onChange={handleInputChange}
-        className="w-full p-2 mb-4 text-text"
+        className="mb-4 w-full p-2 text-text"
         startContent={
-          <MailIcon className="text-2xl text-default-400 pointer-events-none" />
+          <MailIcon className="pointer-events-none text-2xl text-default-400" />
         }
       />
       <Input
@@ -172,20 +172,20 @@ const RegisterForm: React.FC = () => {
             aria-label="toggle password visibility"
           >
             {isVisible ? (
-              <EyeIcon className="text-2xl text-default-400 pointer-events-none" />
+              <EyeIcon className="pointer-events-none text-2xl text-default-400" />
             ) : (
-              <EyeOffIcon className="text-2xl text-default-400 pointer-events-none" />
+              <EyeOffIcon className="pointer-events-none text-2xl text-default-400" />
             )}
           </button>
         }
         startContent={
-          <LockIcon className="text-2xl text-default-400 pointer-events-none" />
+          <LockIcon className="pointer-events-none text-2xl text-default-400" />
         }
         type={isVisible ? "text" : "password"}
         value={formData.password}
         onChange={handleInputChange}
         name="password"
-        className="w-full p-2 mb-4 text-text"
+        className="mb-4 w-full p-2 text-text"
       />
       <Input
         isRequired
@@ -200,23 +200,23 @@ const RegisterForm: React.FC = () => {
             aria-label="toggle password visibility"
           >
             {isVisible ? (
-              <EyeIcon className="text-2xl text-default-400 pointer-events-none" />
+              <EyeIcon className="pointer-events-none text-2xl text-default-400" />
             ) : (
-              <EyeOffIcon className="text-2xl text-default-400 pointer-events-none" />
+              <EyeOffIcon className="pointer-events-none text-2xl text-default-400" />
             )}
           </button>
         }
         type={isVisible ? "text" : "password"}
         startContent={
-          <LockIcon className="text-2xl text-default-400 pointer-events-none" />
+          <LockIcon className="pointer-events-none text-2xl text-default-400" />
         }
         name="confirmPassword"
         value={formData.confirmPassword}
         onChange={handleInputChange}
-        className="w-full p-2 mb-4 text-text"
+        className="mb-4 w-full p-2 text-text"
       />
       <PasswordStrengthBar password={formData.password} />
-      <div className="flex items-center mb-4">
+      <div className="mb-4 flex items-center">
         <Checkbox
           id="termsCheckbox"
           name="termsAccepted"
@@ -225,7 +225,10 @@ const RegisterForm: React.FC = () => {
         />
         <label htmlFor="termsCheckbox" className="ml-2 text-sm">
           I agree to the{" "}
-          <Link href="/termsandconditions" className="text-primary hover:underline">
+          <Link
+            href="/termsandconditions"
+            className="text-primary hover:underline"
+          >
             Terms and Conditions
           </Link>{" "}
           and{" "}
@@ -247,7 +250,7 @@ const RegisterForm: React.FC = () => {
       {error && (
         <Card radius="lg" className="mt-4 bg-red-500/20" isBlurred shadow="sm">
           <CardHeader>
-            <ShieldAlert className="text-red-500 mr-2" />
+            <ShieldAlert className="mr-2 text-red-500" />
             <h1 className="text-red-500">Error</h1>
           </CardHeader>
           <CardBody>

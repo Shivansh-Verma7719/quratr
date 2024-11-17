@@ -1,12 +1,12 @@
-'use client';
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, CheckCheck } from 'lucide-react';
+"use client";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, CheckCheck } from "lucide-react";
 import Footer from "@/components/footer/index";
-import { createClient } from '@/utils/supabase/client';
+import { createClient } from "@/utils/supabase/client";
 
 const WaitlistForm = () => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(false);
@@ -45,29 +45,39 @@ const WaitlistForm = () => {
     } finally {
       setIsSubmitting(false);
       setIsEmailValid(false);
-    //   setIsSubmitted(false);
+      //   setIsSubmitted(false);
     }
   };
 
   return (
     <>
-      <div className="min-h-screen font-sans overflow-x-hidden bg-background text-text">
+      <div className="min-h-screen overflow-x-hidden bg-background font-sans text-text">
         {/* <Navbar /> */}
         <main>
-          <div className="container mx-auto px-4 sm:px-6 py-16 sm:py-24">
-            <div className="bg-background p-8 rounded-lg shadow-lg dark:shadow-gray-800 w-full max-w-2xl mx-auto">
-              <h1 className="text-3xl font-bold mb-6 text-center">Join the Quratr Waitlist</h1>
-              <p className="text-lg text-center mb-8">Be the first to experience personalized adventures with Quratr.</p>
+          <div className="container mx-auto px-4 py-16 sm:px-6 sm:py-24">
+            <div className="mx-auto w-full max-w-2xl rounded-lg bg-background p-8 shadow-lg dark:shadow-gray-800">
+              <h1 className="mb-6 text-center text-3xl font-bold">
+                Join the Quratr Waitlist
+              </h1>
+              <p className="mb-8 text-center text-lg">
+                Be the first to experience personalized adventures with Quratr.
+              </p>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-2" style={{display: isSubmitted ? 'none' : 'block'}}>Email Address</label>
+                  <label
+                    htmlFor="email"
+                    className="mb-2 block text-sm font-medium"
+                    style={{ display: isSubmitted ? "none" : "block" }}
+                  >
+                    Email Address
+                  </label>
                   <input
                     hidden={isSubmitted}
                     type="email"
                     id="email"
                     value={email}
                     onChange={handleEmailChange}
-                    className="w-full p-3 border border-gray-300 rounded-md bg-background text-text"
+                    className="w-full rounded-md border border-gray-300 bg-background p-3 text-text"
                     placeholder="Enter your email"
                     required
                   />
@@ -77,8 +87,10 @@ const WaitlistForm = () => {
                   disabled={isSubmitting || !isEmailValid}
                   whileHover={{ scale: isEmailValid ? 1.05 : 1 }}
                   whileTap={{ scale: isEmailValid ? 0.95 : 1 }}
-                  className={`w-full bg-[#fed4e4] text-black px-6 py-3 rounded-full transition-all flex items-center justify-center ${
-                    isEmailValid ? "hover:scale-110" : "opacity-50 cursor-not-allowed"
+                  className={`flex w-full items-center justify-center rounded-full bg-[#fed4e4] px-6 py-3 text-black transition-all ${
+                    isEmailValid
+                      ? "hover:scale-110"
+                      : "cursor-not-allowed opacity-50"
                   }`}
                 >
                   <AnimatePresence mode="wait" initial={false}>
@@ -94,12 +106,12 @@ const WaitlistForm = () => {
                     ) : isSubmitted ? (
                       <motion.span
                         key="submitted"
-                        className='flex flex-col items-center'
+                        className="flex flex-col items-center"
                         initial={{ opacity: 0, scale: 0.5 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.5 }}
                       >
-                        <CheckCheck className="w-5 h-5" />
+                        <CheckCheck className="h-5 w-5" />
                         <p className="text-center">Joined!</p>
                       </motion.span>
                     ) : (
@@ -123,7 +135,8 @@ const WaitlistForm = () => {
                   transition={{ duration: 0.5 }}
                   className="mt-4 text-center text-green-500"
                 >
-                  Thank you for joining our waitlist! We&apos;ll keep you updated.
+                  Thank you for joining our waitlist! We&apos;ll keep you
+                  updated.
                 </motion.p>
               )}
             </div>

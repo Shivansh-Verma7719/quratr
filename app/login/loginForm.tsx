@@ -59,8 +59,8 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto">
-      <h2 className="text-2xl text-text font-bold mb-4 text-center">
+    <form onSubmit={handleSubmit} className="mx-auto max-w-md">
+      <h2 className="mb-4 text-center text-2xl font-bold text-text">
         Login to Your Account
       </h2>
       <Input
@@ -73,9 +73,9 @@ const LoginForm: React.FC = () => {
         name="email"
         labelPlacement="outside"
         onChange={handleInputChange}
-        className="w-full p-2 mb-4"
+        className="mb-4 w-full p-2"
         startContent={
-          <MailIcon className="text-2xl text-default-400 pointer-events-none" />
+          <MailIcon className="pointer-events-none text-2xl text-default-400" />
         }
       />
       <Input
@@ -91,20 +91,20 @@ const LoginForm: React.FC = () => {
             aria-label="toggle password visibility"
           >
             {isVisible ? (
-              <EyeIcon className="text-2xl text-default-400 pointer-events-none" />
+              <EyeIcon className="pointer-events-none text-2xl text-default-400" />
             ) : (
-              <EyeOffIcon className="text-2xl text-default-400 pointer-events-none" />
+              <EyeOffIcon className="pointer-events-none text-2xl text-default-400" />
             )}
           </button>
         }
         startContent={
-          <LockIcon className="text-2xl text-default-400 pointer-events-none" />
+          <LockIcon className="pointer-events-none text-2xl text-default-400" />
         }
         type={isVisible ? "text" : "password"}
         value={formData.password}
         onChange={handleInputChange}
         name="password"
-        className="w-full p-2 mb-4"
+        className="mb-4 w-full p-2"
       />
       <Button
         type="submit"
@@ -119,7 +119,7 @@ const LoginForm: React.FC = () => {
       {error && (
         <Card radius="lg" className="mt-4 bg-red-500/20" isBlurred shadow="sm">
           <CardHeader>
-            <ShieldAlert className="text-red-500 mr-2" />
+            <ShieldAlert className="mr-2 text-red-500" />
             <h1 className="text-red-500">Error</h1>
           </CardHeader>
           <CardBody>

@@ -49,7 +49,7 @@ export default function FeedClient({ initialPosts }: FeedClientProps) {
 
   return (
     <>
-      <div className="flex justify-center items-start px-5 h-full w-full md:max-w-2xl md:mx-auto">
+      <div className="flex h-full w-full items-start justify-center px-5 md:mx-auto md:max-w-2xl">
         <div className="w-full">
           {posts.map((post, index) => (
             <motion.div
@@ -57,16 +57,16 @@ export default function FeedClient({ initialPosts }: FeedClientProps) {
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="mb-6 md:mb-0 mt-10 md:mt-10"
+              className="mb-6 mt-10 md:mb-0 md:mt-10"
             >
               <Card className="w-full">
                 <CardHeader className="justify-between">
                   <div className="flex gap-5">
-                    <div className="flex flex-row p-1 items-center justify-center">
+                    <div className="flex flex-row items-center justify-center p-1">
                       <Avatar
                         isBordered
                         as="button"
-                        className="transition-transform mr-2"
+                        className="mr-2 transition-transform"
                         color="secondary"
                         showFallback
                         name={post.username}
@@ -91,7 +91,7 @@ export default function FeedClient({ initialPosts }: FeedClientProps) {
                   {post.image && (
                     <Image
                       alt="Post image"
-                      className="object-cover rounded-xl w-full h-full"
+                      className="h-full w-full rounded-xl object-cover"
                       src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/feed_images/${post.image}`}
                       width={400}
                       height={300}
@@ -103,15 +103,15 @@ export default function FeedClient({ initialPosts }: FeedClientProps) {
             </motion.div>
           ))}
           {!hasMore && (
-            <p className="text-center mt-5 mb-0 md:mb-10">
+            <p className="mb-0 mt-5 text-center md:mb-10">
               <b>Yay! You have seen it all</b>
             </p>
           )}
         </div>
       </div>
-      <div className="fixed left-1/2 -translate-x-1/2 top-[3.5rem]">
+      <div className="fixed left-1/2 top-[3.5rem] -translate-x-1/2">
         <motion.div
-          className="bg-[#fed4e4] text-black p-3 sm:p-4 rounded-full shadow-lg cursor-pointer"
+          className="cursor-pointer rounded-full bg-[#fed4e4] p-3 text-black shadow-lg sm:p-4"
           initial={{ y: 100, opacity: 0 }}
           animate={{
             y: scrollY > 370 ? 0 : -100,
@@ -125,7 +125,7 @@ export default function FeedClient({ initialPosts }: FeedClientProps) {
           whileTap={{ scale: 0.9 }}
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >
-          <ArrowRight className="transform rotate-[-90deg] w-5 h-5 sm:w-6 sm:h-6" />
+          <ArrowRight className="h-5 w-5 rotate-[-90deg] transform sm:h-6 sm:w-6" />
         </motion.div>
       </div>
     </>

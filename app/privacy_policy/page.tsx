@@ -6,8 +6,8 @@ const PrivacyPolicyPage: React.FC = () => {
   return (
     <div className="min-h-screen overflow-x-hidden">
       {/* <Navbar /> */}
-      <main className="container mx-auto px-4 sm:px-6 py-16 sm:py-24">
-        <div className="prose-slate prose-lg md:prose-xl mx-auto">
+      <main className="container mx-auto px-4 py-16 sm:px-6 sm:py-24">
+        <div className="prose-lg prose-slate mx-auto md:prose-xl">
           <h1>
             <b>Privacy Policy</b>
           </h1>

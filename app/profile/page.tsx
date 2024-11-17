@@ -21,7 +21,7 @@ export default function ProfilePage() {
         // Fetch both profile and posts data in parallel
         const [profile, posts] = await Promise.all([
           fetchUserProfile(),
-          fetchUserPosts()
+          fetchUserPosts(),
         ]);
 
         if (profile) {
@@ -42,14 +42,14 @@ export default function ProfilePage() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-[calc(100vh_-_123px)]">
+      <div className="flex h-[calc(100vh_-_123px)] items-center justify-center">
         <Spinner size="lg" />
       </div>
     );
   }
 
   return (
-    <div className="flex justify-center items-start py-7 px-5 min-h-screen w-full bg-background">
+    <div className="flex min-h-screen w-full items-start justify-center bg-background px-5 py-7">
       <div className="w-full max-w-2xl">
         {userProfile && (
           <motion.div
@@ -61,7 +61,7 @@ export default function ProfilePage() {
             <Card className="w-full">
               <CardHeader className="justify-between">
                 <div className="flex gap-5">
-                  <div className="flex flex-col gap-1 items-start justify-center">
+                  <div className="flex flex-col items-start justify-center gap-1">
                     <h4 className="text-small font-semibold leading-none text-default-600">
                       @{userProfile.username}
                     </h4>
@@ -85,7 +85,7 @@ export default function ProfilePage() {
           </motion.div>
         )}
 
-        <h2 className="text-2xl font-bold mb-4 text-center">Your Posts</h2>
+        <h2 className="mb-4 text-center text-2xl font-bold">Your Posts</h2>
         {userPosts.length > 0 ? (
           userPosts.map((post, index) => (
             <motion.div
@@ -98,7 +98,7 @@ export default function ProfilePage() {
               <Card className="w-full">
                 <CardHeader className="justify-between">
                   <div className="flex gap-5">
-                    <div className="flex flex-col gap-1 items-start justify-center">
+                    <div className="flex flex-col items-start justify-center gap-1">
                       <h4 className="text-small font-semibold leading-none text-default-600">
                         @{post.username}
                       </h4>
@@ -112,7 +112,7 @@ export default function ProfilePage() {
                   {post.image && (
                     <Image
                       alt="Post image"
-                      className="object-cover rounded-xl w-full h-full"
+                      className="h-full w-full rounded-xl object-cover"
                       src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/feed_images/${post.image}`}
                       width={400}
                       height={300}
@@ -128,11 +128,16 @@ export default function ProfilePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="flex flex-col items-center justify-center mt-10"
+            className="mt-10 flex flex-col items-center justify-center"
           >
-            <p className="text-xl mb-4">You haven&apos;t made any posts yet.</p>
+            <p className="mb-4 text-xl">You haven&apos;t made any posts yet.</p>
             <Link href="/feed/new">
-              <Button color="primary" variant="flat" size="lg" startContent={<Plus />}>
+              <Button
+                color="primary"
+                variant="flat"
+                size="lg"
+                startContent={<Plus />}
+              >
                 Create New Post
               </Button>
             </Link>

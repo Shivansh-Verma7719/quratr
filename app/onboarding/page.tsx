@@ -89,7 +89,7 @@ const OnboardingPage: React.FC = () => {
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -50 }}
         >
-          <h2 className="text-xl font-bold mb-4">
+          <h2 className="mb-4 text-xl font-bold">
             {onboardingQuestions[step]}
           </h2>
           <div className="flex justify-center space-x-4">
@@ -97,7 +97,7 @@ const OnboardingPage: React.FC = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => handleOnboardingAnswer("Yes")}
-              className={`px-4 py-2 rounded text-black ${
+              className={`rounded px-4 py-2 text-black ${
                 formData.onboardingAnswers[step] === "Yes"
                   ? "bg-green-500"
                   : "bg-gray-200"
@@ -109,7 +109,7 @@ const OnboardingPage: React.FC = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => handleOnboardingAnswer("No")}
-              className={`px-4 py-2 rounded text-black ${
+              className={`rounded px-4 py-2 text-black ${
                 formData.onboardingAnswers[step] === "No"
                   ? "bg-red-500"
                   : "bg-gray-200"
@@ -128,27 +128,27 @@ const OnboardingPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen font-sans overflow-x-hidden bg-background text-text">
+    <div className="min-h-screen overflow-x-hidden bg-background font-sans text-text">
       {/* <Navbar /> */}
-      <main className="container mx-auto px-4 sm:px-6 py-16 sm:py-24">
-        <div className="max-w-md mx-auto">
-          <div className="mb-8 bg-gray-200 h-2 rounded-full">
+      <main className="container mx-auto px-4 py-16 sm:px-6 sm:py-24">
+        <div className="mx-auto max-w-md">
+          <div className="mb-8 h-2 rounded-full bg-gray-200">
             <motion.div
-              className="bg-blue-500 h-2 rounded-full"
+              className="h-2 rounded-full bg-blue-500"
               initial={{ width: 0 }}
               animate={{ width: `${((step + 1) / 5) * 100}%` }}
               transition={{ duration: 0.5 }}
             ></motion.div>
           </div>
           <AnimatePresence mode="wait">{renderStep()}</AnimatePresence>
-          <div className="flex justify-between mt-8">
+          <div className="mt-8 flex justify-between">
             {step > 0 && (
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 type="button"
                 onClick={handlePrevious}
-                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-full flex items-center"
+                className="flex items-center rounded-full bg-gray-300 px-4 py-2 text-gray-700"
               >
                 <ArrowLeft className="mr-2" /> Previous
               </motion.button>
@@ -159,8 +159,8 @@ const OnboardingPage: React.FC = () => {
                 whileTap={{ scale: 0.95 }}
                 type="button"
                 onClick={handleNext}
-                className={`bg-blue-500 text-white px-4 py-2 rounded-full flex items-center ml-auto ${
-                  !validateStep() ? "opacity-50 cursor-not-allowed" : ""
+                className={`ml-auto flex items-center rounded-full bg-blue-500 px-4 py-2 text-white ${
+                  !validateStep() ? "cursor-not-allowed opacity-50" : ""
                 }`}
                 disabled={!validateStep()}
               >
@@ -174,8 +174,8 @@ const OnboardingPage: React.FC = () => {
                 size="lg"
                 isLoading={isLoading}
                 disabled={isLoading || !validateAllSteps()}
-                className={`bg-green-500 text-white px-4 py-2 rounded-full flex items-center ml-auto ${
-                  !validateAllSteps() ? "opacity-50 cursor-not-allowed" : ""
+                className={`ml-auto flex items-center rounded-full bg-green-500 px-4 py-2 text-white ${
+                  !validateAllSteps() ? "cursor-not-allowed opacity-50" : ""
                 }`}
               >
                 Submit
@@ -190,7 +190,7 @@ const OnboardingPage: React.FC = () => {
               shadow="sm"
             >
               <CardHeader>
-                <PartyPopper className="text-green-500 mr-2" />
+                <PartyPopper className="mr-2 text-green-500" />
                 <h1 className="text-green-500">Onboarded!</h1>
               </CardHeader>
               <CardBody>
@@ -216,7 +216,7 @@ const OnboardingPage: React.FC = () => {
               shadow="sm"
             >
               <CardHeader>
-                <ShieldAlert className="text-red-500 mr-2" />
+                <ShieldAlert className="mr-2 text-red-500" />
                 <h1 className="text-red-500">Error</h1>
               </CardHeader>
               <CardBody>

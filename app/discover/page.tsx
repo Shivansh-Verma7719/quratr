@@ -76,10 +76,13 @@ export default function DiscoverPage() {
           setCityLocalityMap(cityLocalityMap);
 
           // Populate the flippedCards state with all card IDs
-          const initialFlippedState = newCards.reduce((acc, card) => {
-            acc[card.id] = false;
-            return acc;
-          }, {} as { [key: string]: boolean });
+          const initialFlippedState = newCards.reduce(
+            (acc, card) => {
+              acc[card.id] = false;
+              return acc;
+            },
+            {} as { [key: string]: boolean }
+          );
           setFlippedCards(initialFlippedState);
         }
       })
@@ -150,10 +153,10 @@ export default function DiscoverPage() {
 
   return (
     <>
-      <div className="flex justify-center items-center py-4 px-5 h-[calc(100vh_-_123px)] w-full overflow-hidden">
-        <div className="relative h-[95%] w-[95%] md:w-[600px] md:h-[600px]">
+      <div className="flex h-[calc(100vh_-_123px)] w-full items-center justify-center overflow-hidden px-5 py-4">
+        <div className="relative h-[95%] w-[95%] md:h-[600px] md:w-[600px]">
           {isLoading ? (
-            <div className="flex items-center justify-center h-full">
+            <div className="flex h-full items-center justify-center">
               <Spinner size="lg" />
             </div>
           ) : (
@@ -171,7 +174,7 @@ export default function DiscoverPage() {
                   }
                   swipeThreshold={100}
                   swipeRequirementType="position"
-                  className={`absolute top-0 left-0 h-full w-full`}
+                  className={`absolute left-0 top-0 h-full w-full`}
                 >
                   <div
                     onClick={() => handleCardFlip(card.id)}
@@ -202,15 +205,15 @@ export default function DiscoverPage() {
                       <Card
                         isFooterBlurred
                         radius="lg"
-                        className="border-none h-full w-full"
+                        className="h-full w-full border-none"
                       >
                         {card.isLastCard ? (
-                          <div className="flex flex-col items-center justify-center h-full bg-gray-100 dark:bg-gray-800">
-                            <h2 className="text-2xl font-bold mb-4">
+                          <div className="flex h-full flex-col items-center justify-center bg-gray-100 dark:bg-gray-800">
+                            <h2 className="mb-4 text-2xl font-bold">
                               All Caught Up!
                             </h2>
                             <PartyPopper size={100} />
-                            <p className="text-center px-4">
+                            <p className="px-4 text-center">
                               Sit back and relax while we get you more
                               experiences to swipe on.
                             </p>
@@ -219,7 +222,7 @@ export default function DiscoverPage() {
                           <>
                             <Image
                               alt={card.name}
-                              className="object-cover w-full h-full md:w-[600px] md:h-[600px]"
+                              className="h-full w-full object-cover md:h-[600px] md:w-[600px]"
                               src={card.image}
                               width={600}
                               height={600}
@@ -227,13 +230,13 @@ export default function DiscoverPage() {
                               quality={70}
                               placeholder="empty"
                             />
-                            <CardBody className="absolute top-0 left-0 w-auto">
+                            <CardBody className="absolute left-0 top-0 w-auto">
                               <Chip color="secondary" variant="solid">
                                 {card.tags}
                               </Chip>
                             </CardBody>
-                            <CardFooter className="flex flex-col items-start before:bg-white/10 border-white/20 border-1 overflow-hidden py-2 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
-                              <p className="text-3xl text-white m-0">
+                            <CardFooter className="absolute bottom-1 z-10 ml-1 flex w-[calc(100%_-_8px)] flex-col items-start overflow-hidden rounded-large border-1 border-white/20 py-2 shadow-small before:rounded-xl before:bg-white/10">
+                              <p className="m-0 text-3xl text-white">
                                 {card.name}
                               </p>
                               <Rating
@@ -241,7 +244,7 @@ export default function DiscoverPage() {
                                 value={card.rating}
                                 readOnly={true}
                               />
-                              <p className="text-2xl text-white m-0">
+                              <p className="m-0 text-2xl text-white">
                                 {card.locality}
                               </p>
                               {/* <p className="text-2xl text-white m-0">
@@ -266,18 +269,18 @@ export default function DiscoverPage() {
                       <Card
                         isBlurred
                         radius="lg"
-                        className="border-none h-full w-full"
+                        className="h-full w-full border-none"
                       >
                         {card.isLastCard ? (
-                          <div className="flex flex-col items-center justify-center h-full bg-gray-100 dark:bg-gray-800">
-                            <h2 className="text-2xl font-bold mb-4">
+                          <div className="flex h-full flex-col items-center justify-center bg-gray-100 dark:bg-gray-800">
+                            <h2 className="mb-4 text-2xl font-bold">
                               All Caught Up!
                             </h2>
                             <PartyPopper size={100} />
                           </div>
                         ) : (
                           <>
-                            <CardBody className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50">
+                            <CardBody className="absolute left-0 top-0 h-full w-full bg-black bg-opacity-50">
                               <motion.div
                                 key={`container-${card.id}-${
                                   flippedCards[card.id]
@@ -286,7 +289,7 @@ export default function DiscoverPage() {
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.3 }}
-                                className="h-full w-full rounded-lg p-6 flex flex-col justify-between"
+                                className="flex h-full w-full flex-col justify-between rounded-lg p-6"
                               >
                                 <div>
                                   <motion.h2
@@ -296,7 +299,7 @@ export default function DiscoverPage() {
                                     initial={{ x: -20, opacity: 0 }}
                                     animate={{ x: 0, opacity: 1 }}
                                     transition={{ duration: 0.5 }}
-                                    className="text-3xl font-bold mb-2 text-white"
+                                    className="mb-2 text-3xl font-bold text-white"
                                   >
                                     {card.name}
                                   </motion.h2>
@@ -307,7 +310,7 @@ export default function DiscoverPage() {
                                     initial={{ x: -20, opacity: 0 }}
                                     animate={{ x: 0, opacity: 1 }}
                                     transition={{ duration: 0.5, delay: 0.1 }}
-                                    className="space-x-2 flex items-center"
+                                    className="flex items-center space-x-2"
                                   >
                                     <Chip
                                       variant="flat"
@@ -337,29 +340,9 @@ export default function DiscoverPage() {
                                             <IndianRupee size={18} />
                                           }
                                         >
-                                          {card.price}
+                                          {card.price} for 2
                                         </Chip>
                                       </motion.div>
-                                    )}
-                                  </motion.div>
-
-                                  <motion.div
-                                    key={`group-${card.id}-${
-                                      flippedCards[card.id]
-                                    }`}
-                                    initial={{ x: -20, opacity: 0 }}
-                                    animate={{ x: 0, opacity: 1 }}
-                                    transition={{ duration: 0.5, delay: 0.2 }}
-                                  >
-                                    {card.group_experience && (
-                                      <Chip
-                                        variant="solid"
-                                        className="mt-2"
-                                        startContent={<CircleCheck size={18} />}
-                                        color="success"
-                                      >
-                                        Group Experience
-                                      </Chip>
                                     )}
                                   </motion.div>
 
@@ -370,7 +353,7 @@ export default function DiscoverPage() {
                                     initial={{ width: 0, opacity: 0 }}
                                     animate={{ width: "100%", opacity: 1 }}
                                     transition={{ delay: 0.4, duration: 0.5 }}
-                                    className="border-t border-gray-300 my-4"
+                                    className="my-4 border-t border-gray-300"
                                   />
 
                                   <motion.p
@@ -380,7 +363,7 @@ export default function DiscoverPage() {
                                     initial={{ y: 20, opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
                                     transition={{ delay: 0.5, duration: 0.5 }}
-                                    className="text-sm mb-4 text-white"
+                                    className="mb-4 text-sm text-white"
                                   >
                                     {card.description}
                                   </motion.p>
@@ -394,7 +377,7 @@ export default function DiscoverPage() {
                                       initial={{ width: 0, opacity: 0 }}
                                       animate={{ width: "100%", opacity: 1 }}
                                       transition={{ delay: 0.4, duration: 0.5 }}
-                                      className="border-t border-gray-300 my-4"
+                                      className="my-4 border-t border-gray-300"
                                     />
                                   )}
 
@@ -407,7 +390,7 @@ export default function DiscoverPage() {
                                     transition={{ delay: 0.6, duration: 0.5 }}
                                     className="space-y-2"
                                   >
-                                    <p className="text-white flex items-center text-wrap text-sm">
+                                    <p className="flex items-center text-wrap text-sm text-white">
                                       <HomeIcon size={18} className="mr-1" />
                                       <strong className="mr-1">
                                         Address:{" "}
@@ -422,7 +405,7 @@ export default function DiscoverPage() {
                                     initial={{ y: 20, opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
                                     transition={{ delay: 0.7, duration: 0.5 }}
-                                    className="text-white text-sm"
+                                    className="text-sm text-white"
                                   >
                                     {card.address}
                                   </motion.p>
