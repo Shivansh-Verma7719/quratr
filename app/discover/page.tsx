@@ -136,8 +136,16 @@ export default function DiscoverPage() {
   const onSwipe = async (direction: string, cardId: string, index: number) => {
     if (direction === "right") {
       await likePlace(cardId);
+      const newOriginalCards = originalCards.filter(
+        (card) => card.id !== cardId
+      );
+      setOriginalCards(newOriginalCards);
     } else if (direction === "left") {
       await dislikePlace(cardId);
+      const newOriginalCards = originalCards.filter(
+        (card) => card.id !== cardId
+      );
+      setOriginalCards(newOriginalCards);
     }
 
     if (index === 1) {
