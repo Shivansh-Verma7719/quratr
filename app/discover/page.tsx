@@ -340,7 +340,7 @@ export default function DiscoverPage() {
                                             <IndianRupee size={18} />
                                           }
                                         >
-                                          {card.price} for 2
+                                          {card.price}for 2
                                         </Chip>
                                       </motion.div>
                                     )}
