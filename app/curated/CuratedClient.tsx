@@ -7,11 +7,9 @@ import { Place } from "./server-helpers";
 import { Card, CardBody, CardFooter } from "@nextui-org/card";
 import Image from "next/image";
 import { Button } from "@nextui-org/button";
-import { Rating } from "@smastrom/react-rating";
 import { Chip } from "@nextui-org/chip";
-import { CircleCheck, Trash2 } from "lucide-react";
+import { CircleCheck, Trash2, Star, IndianRupee } from "lucide-react";
 import { Spinner } from "@nextui-org/react";
-import "@smastrom/react-rating/style.css";
 import { IconSwipe } from "@tabler/icons-react";
 import {
   Modal,
@@ -207,14 +205,28 @@ export default function CuratedClient({
                         height={400}
                       />
                       <CardBody>
-                        <h3 className="text-xl font-bold">{place.name}</h3>
-                        <p className="text-sm text-gray-500">{place.address}</p>
-                        <Chip variant="faded">{place.tags}</Chip>
-                        <Rating
-                          style={{ maxWidth: 200 }}
-                          value={place.rating}
-                          readOnly={true}
-                        />
+                        <div className="flex items-center justify-between">
+                          <h3 className="text-xl font-bold">{place.name}</h3>
+                          <p className="text-sm flex items-center gap-1">
+                            <Star size={16} fill="currentColor" />
+                            {place.rating}
+                          </p>
+                        </div>
+                        <p className="text-sm text-gray-500 mb-1">
+                          {place.address}
+                        </p>
+                        <div className="flex items-center gap-2">
+                          <Chip variant="faded">{place.tags}</Chip>
+                          {place.price > 0 && (
+                            <Chip
+                            variant="flat"
+                            color="success"
+                            startContent={<IndianRupee size={18} />}
+                          >
+                            {place.price} for 2
+                            </Chip>
+                          )}
+                        </div>
                         <p className="text-sm">{place.location}</p>
                         {place.group_experience === "1" && (
                           <Chip
@@ -225,8 +237,9 @@ export default function CuratedClient({
                             Group Experience
                           </Chip>
                         )}
+                        <hr className="mt-3 border-t border-gray-500" />
                       </CardBody>
-                      <CardFooter className="flex justify-between">
+                      <CardFooter className="flex justify-between items-center pt-0">
                         <DeleteButton
                           isConfirming={deletingId === place.id}
                           onClick={() => handleDeleteClick(place.id)}
