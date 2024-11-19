@@ -232,6 +232,7 @@ export default function CuratedClient({
                           <Chip
                             variant="faded"
                             startContent={<CircleCheck size={18} />}
+                            className="mt-2"
                             color="success"
                           >
                             Group Experience
