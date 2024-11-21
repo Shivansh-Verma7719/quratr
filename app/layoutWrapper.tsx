@@ -4,7 +4,6 @@ import CustomNavbar from "@/components/navbar";
 import BottomNav from "@/components/bottomnav";
 import Topbar from "@/components/topbar";
 import MobileThemeSwitcher from "@/components/mobileThemeSwitcher";
-import { Analytics } from "@vercel/analytics/react";
 import { createClient } from "@/utils/supabase/server";
 import { User } from "@supabase/supabase-js";
 // import { useUserStore } from "@/store/userStore";
@@ -70,7 +69,6 @@ export default async function LayoutWrapper({
         <BottomNav user={user} />
       </Providers>
       <SpeedInsights />
-      <Analytics />
     </>
   );
 }

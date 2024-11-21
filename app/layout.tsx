@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import LayoutWrapper from "./layoutWrapper";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  width: 'device-width',
+  width: "device-width",
   initialScale: 1,
   maximumScale: 1,
 };
@@ -21,6 +22,12 @@ export default function RootLayout({
 }>) {
   return (
     <html>
+      <head>
+        <Script
+          src="https://cdn.jsdelivr.net/npm/@statsig/js-client@3/build/statsig-js-client+session-replay+web-analytics.min.js?apikey=client-CubBr0Rqc9rz5Ue4PyhJ03yHGExV64n6LhT9p0a4X6g"
+          async
+        ></Script>
+      </head>
       <body>
         <LayoutWrapper>{children}</LayoutWrapper>
       </body>
