@@ -6,6 +6,7 @@ import Topbar from "@/components/topbar";
 import MobileThemeSwitcher from "@/components/mobileThemeSwitcher";
 import { createClient } from "@/utils/supabase/server";
 import { User } from "@supabase/supabase-js";
+import MyStatsig from "./my-statsig";
 // import { useUserStore } from "@/store/userStore";
 
 const getUser = async () => {
@@ -59,16 +60,18 @@ export default async function LayoutWrapper({
 
   return (
     <>
-      <Providers>
-        <Topbar user={user} userProfile={userProfile} />
-        <CustomNavbar user={user} />
-        <main className="md:mt-[68px] mt-0 mb-16 md:mb-0 w-full h-full">
-          {children}
-        </main>
-        <MobileThemeSwitcher />
-        <BottomNav user={user} />
-      </Providers>
-      <SpeedInsights />
+      <MyStatsig user={user || ({ id: "" } as User)}>
+        <Providers>
+          <Topbar user={user} userProfile={userProfile} />
+          <CustomNavbar user={user} />
+          <main className="mb-16 mt-0 h-full w-full md:mb-0 md:mt-[68px]">
+            {children}
+          </main>
+          <MobileThemeSwitcher />
+          <BottomNav user={user} />
+        </Providers>
+        <SpeedInsights />
+      </MyStatsig>
     </>
   );
 }

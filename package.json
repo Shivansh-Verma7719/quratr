@@ -22,6 +22,8 @@
     "@nextui-org/theme": "^2.2.11",
     "@react-spring/web": "^9.5.5",
     "@smastrom/react-rating": "^1.5.0",
+    "@statsig/react-bindings": "^3.6.0",
+    "@statsig/web-analytics": "^3.6.0",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
     "@tabler/icons-react": "^3.21.0",
