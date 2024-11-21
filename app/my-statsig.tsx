@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import {
-  LogLevel,
   StatsigProvider,
   useClientAsyncInit,
 } from "@statsig/react-bindings";
@@ -22,8 +21,10 @@ export default function MyStatsig({
       userID: user.id,
       email: user.email
     },
-    { logLevel: LogLevel.Debug } // Optional - Prints debug logs to the console
+    // { logLevel: LogLevel.Debug } // Optional - Prints debug logs to the console
   );
+
+  // console.log(user);
 
   useEffect(() => {
     setMounted(true);

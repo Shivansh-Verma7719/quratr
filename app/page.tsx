@@ -77,7 +77,7 @@ export default function QuratrLandingPage() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.7, delay: 0.4 }}
             >
-              <a href="/waitlist">
+              <a href="/login">
                 <button className="bg-[#fed4e4] text-black hover:scale-110 text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-full transition-all inline-flex items-center group">
                   Start Exploring
                   <ArrowRight className="ml-2 group-hover:animate-bounceHorizontal transition-transform duration-300" />
@@ -147,12 +147,12 @@ export default function QuratrLandingPage() {
               Join Quratr today and start discovering personalized adventures.
             </p>
             <motion.a
-              href="/waitlist"
+              href="/login"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="bg-[#fed4e4] text-black px-6 py-2 rounded-full transition-all inline-block hover:scale-110"
             >
-              Join the Waitlist
+              Sign Up
             </motion.a>
           </div>
         </motion.section>
