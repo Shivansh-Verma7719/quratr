@@ -1,9 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import {
-  StatsigProvider,
-  useClientAsyncInit,
-} from "@statsig/react-bindings";
+import { StatsigProvider, useClientAsyncInit } from "@statsig/react-bindings";
 import { runStatsigAutoCapture } from "@statsig/web-analytics";
 import { User } from "@supabase/supabase-js";
 
@@ -20,11 +17,8 @@ export default function MyStatsig({
     {
       userID: user.id,
       email: user.email
-    },
-    // { logLevel: LogLevel.Debug } // Optional - Prints debug logs to the console
+    }
   );
-
-  // console.log(user);
 
   useEffect(() => {
     setMounted(true);
