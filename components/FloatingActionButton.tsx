@@ -50,7 +50,7 @@ export default function FloatingActionButton({
       layout
       initial={false}
       animate={isExpanded ? "expanded" : "collapsed"}
-      className="fixed bottom-28 right-3 overflow-v"
+      className="overflow-v fixed bottom-28 right-3"
     >
       <motion.div
         variants={{
@@ -151,11 +151,11 @@ export default function FloatingActionButton({
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={toggleExpand}
-              className="relative flex h-full w-full overflow-visible items-center justify-center"
+              className="relative flex h-full w-full items-center justify-center overflow-visible"
             >
               <SlidersHorizontal className="h-6 w-6" />
               {numberOfFilters > 0 && (
-                <div className="absolute -right-1.5 -top-1.5 flex h-5 w-5 flex items-center justify-center rounded-full bg-red-500 text-xs text-white">
+                <div className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
                   {numberOfFilters}
                 </div>
               )}
