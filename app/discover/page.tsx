@@ -50,8 +50,31 @@ export default function DiscoverPage() {
     {}
   );
   const [cityLocalityMap, setCityLocalityMap] = useState<CityLocalityMap>({});
-  const [selectedCities, setSelectedCities] = useState<string[]>(["Goa"]); // Add Delhi NCR to the list
-  const [selectedLocalities, setSelectedLocalities] = useState<string[]>([]);
+  const [selectedCities, setSelectedCities] = useState<string[]>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("selectedCities");
+      return saved ? JSON.parse(saved) : [];
+    }
+    return [];
+  });
+  const [selectedLocalities, setSelectedLocalities] = useState<string[]>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("selectedLocalities");
+      return saved ? JSON.parse(saved) : [];
+    }
+    return [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("selectedCities", JSON.stringify(selectedCities));
+  }, [selectedCities]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "selectedLocalities",
+      JSON.stringify(selectedLocalities)
+    );
+  }, [selectedLocalities]);
 
   const fetchCards = useCallback(async () => {
     setIsLoading(true);
@@ -255,7 +278,9 @@ export default function DiscoverPage() {
                                 <Chip
                                   variant="solid"
                                   color="danger"
-                                  startContent={<Heart size={18} fill="white" />}
+                                  startContent={
+                                    <Heart size={18} fill="white" />
+                                  }
                                 >
                                   {card.likes} people liked this
                                 </Chip>
@@ -453,6 +478,7 @@ export default function DiscoverPage() {
           setSelectedCities={setSelectedCities}
           selectedLocalities={selectedLocalities}
           setSelectedLocalities={setSelectedLocalities}
+          numberOfFilters={selectedCities.length + selectedLocalities.length}
         />
       </div>
     </>

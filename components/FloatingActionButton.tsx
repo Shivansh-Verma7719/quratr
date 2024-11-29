@@ -16,6 +16,7 @@ interface FloatingActionButtonProps {
   setSelectedCities: (cities: string[]) => void;
   selectedLocalities: string[];
   setSelectedLocalities: (localities: string[]) => void;
+  numberOfFilters: number;
 }
 
 export default function FloatingActionButton({
@@ -24,9 +25,12 @@ export default function FloatingActionButton({
   setSelectedCities,
   selectedLocalities,
   setSelectedLocalities,
+  numberOfFilters,
 }: FloatingActionButtonProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [selectedCity, setSelectedCity] = useState("Goa");
+  const [selectedCity, setSelectedCity] = useState(
+    JSON.parse(localStorage.getItem("selectedCities") || "[]")[0] || "Goa"
+  );
 
   const toggleExpand = () => setIsExpanded(!isExpanded);
 
@@ -46,7 +50,7 @@ export default function FloatingActionButton({
       layout
       initial={false}
       animate={isExpanded ? "expanded" : "collapsed"}
-      className="fixed bottom-28 right-3 overflow-hidden"
+      className="fixed bottom-28 right-3 overflow-v"
     >
       <motion.div
         variants={{
@@ -58,7 +62,7 @@ export default function FloatingActionButton({
           },
         }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
-        className={`bg-background text-foreground shadow-lg flex items-center justify-center z-50 ${
+        className={`z-50 flex items-center justify-center bg-background text-foreground shadow-lg ${
           isExpanded ? "border-2 border-slate-600" : ""
         }`}
       >
@@ -70,21 +74,19 @@ export default function FloatingActionButton({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ delay: 0.2 }}
-              className="w-full h-full flex flex-col items-center justify-center p-8 pb-20 relative"
+              className="relative flex h-full w-full flex-col items-center justify-center p-8 pb-20"
             >
               <Button
                 size="sm"
                 isIconOnly
-                className="absolute top-4 right-4 hover:text-gray-300 bg-transparent"
+                className="absolute right-4 top-4 bg-transparent hover:text-gray-300"
                 onClick={toggleExpand}
               >
                 <X className="h-6 w-6" />
               </Button>
-              <div className="space-y-6 w-full max-w-md">
-                <h2 className="text-2xl font-bold text-center">
-                  Filter
-                </h2>
-              <div className="flex items-center justify-start space-x-4">
+              <div className="w-full max-w-md space-y-6">
+                <h2 className="text-center text-2xl font-bold">Filter</h2>
+                <div className="flex items-center justify-start space-x-4">
                   <span
                     className={`text-md ${
                       selectedCity === "Goa" ? "text-primary" : ""
@@ -95,7 +97,7 @@ export default function FloatingActionButton({
                   <Switch
                     isSelected={selectedCity === "Delhi"}
                     onValueChange={() =>
-                      setSelectedCity((prev) =>
+                      setSelectedCity((prev: string) =>
                         prev === "Goa" ? "Delhi" : "Goa"
                       )
                     }
@@ -103,17 +105,10 @@ export default function FloatingActionButton({
                       <span>{selectedCity === "Delhi" ? "D" : "G"}</span>
                     }
                     classNames={{
-                      // base: "inline-flex items-center",
                       wrapper: cn(
                         "bg-primary", // Always green background
                         "group-data-[selected=true]:bg-primary" // Stays green when selected
                       ),
-                      // thumb: cn(
-                      //   "w-6 h-6 border-2 shadow-lg",
-                      //   "group-data-[selected=true]:ml-6",
-                      //   "group-data-[pressed=true]:w-7",
-                      //   "group-data-[selected]:group-data-[pressed]:ml-4",
-                      // ),
                     }}
                   />
                   <span
@@ -156,9 +151,14 @@ export default function FloatingActionButton({
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={toggleExpand}
-              className="w-full h-full flex items-center justify-center"
+              className="relative flex h-full w-full overflow-visible items-center justify-center"
             >
               <SlidersHorizontal className="h-6 w-6" />
+              {numberOfFilters > 0 && (
+                <div className="absolute -right-1.5 -top-1.5 flex h-5 w-5 flex items-center justify-center rounded-full bg-red-500 text-xs text-white">
+                  {numberOfFilters}
+                </div>
+              )}
               <span className="sr-only">Open filter options</span>
             </motion.button>
           )}
