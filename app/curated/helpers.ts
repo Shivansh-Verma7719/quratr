@@ -50,9 +50,10 @@ export async function deleteLikedPlace(placeId: string) {
   if (userError || !user) return false;
 
   const { error } = await supabase
-    .from("likes")
-    .delete()
-    .match({ user_id: user.id, place_id: placeId });
+    .rpc('delete_liked_place', {
+      p_user_id: user.id,
+      p_place_id: placeId
+    });
 
   return !error;
 }
