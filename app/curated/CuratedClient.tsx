@@ -8,7 +8,7 @@ import { Card, CardBody, CardFooter } from "@nextui-org/card";
 import Image from "next/image";
 import { Button } from "@nextui-org/button";
 import { Chip } from "@nextui-org/chip";
-import { CircleCheck, Trash2, Star, IndianRupee } from "lucide-react";
+import { CircleCheck, Trash2, Star, IndianRupee, Heart } from "lucide-react";
 import { Spinner } from "@nextui-org/react";
 import { IconSwipe } from "@tabler/icons-react";
 import {
@@ -47,10 +47,10 @@ const DeleteButton = ({
   >
     <Button
       color="danger"
-      variant="flat"
+      variant={isConfirming ? "flat" : "light"}
       size="sm"
       radius="sm"
-      className="min-w-0"
+      className="min-w-0 px-2"
       onClick={isConfirming ? onConfirm : onClick}
     >
       <motion.div
@@ -207,23 +207,23 @@ export default function CuratedClient({
                       <CardBody>
                         <div className="flex items-center justify-between">
                           <h3 className="text-xl font-bold">{place.name}</h3>
-                          <p className="text-sm flex items-center gap-1">
+                          <p className="flex items-center gap-1 text-sm">
                             <Star size={16} fill="currentColor" />
                             {place.rating}
                           </p>
                         </div>
-                        <p className="text-sm text-gray-500 mb-1">
+                        <p className="mb-1 text-sm text-gray-500">
                           {place.address}
                         </p>
                         <div className="flex items-center gap-2">
                           <Chip variant="faded">{place.tags}</Chip>
                           {place.price > 0 && (
                             <Chip
-                            variant="flat"
-                            color="success"
-                            startContent={<IndianRupee size={18} />}
-                          >
-                            {place.price} for 2
+                              variant="flat"
+                              color="success"
+                              startContent={<IndianRupee size={18} />}
+                            >
+                              {place.price} for 2
                             </Chip>
                           )}
                         </div>
@@ -238,9 +238,19 @@ export default function CuratedClient({
                             Group Experience
                           </Chip>
                         )}
+                        {place.likes > 1 && (
+                          <Chip
+                            startContent={<Heart size={18} />}
+                            className="mt-2"
+                            color="danger"
+                            variant="flat"
+                          >
+                            {place.likes} people liked this
+                          </Chip>
+                        )}
                         <hr className="mt-3 border-t border-gray-500" />
                       </CardBody>
-                      <CardFooter className="flex justify-between items-center pt-0">
+                      <CardFooter className="flex items-center justify-between px-2 pt-0">
                         <DeleteButton
                           isConfirming={deletingId === place.id}
                           onClick={() => handleDeleteClick(place.id)}

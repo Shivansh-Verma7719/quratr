@@ -16,6 +16,7 @@ interface Place {
   matchScore: number;
   isLastCard?: boolean;
   address: string;
+  likes: number;
 }
 
 interface CityLocalityMap {

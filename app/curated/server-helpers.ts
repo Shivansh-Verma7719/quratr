@@ -10,6 +10,7 @@ export interface Place {
   group_experience: string;
   address: string;
   price: number;
+  likes: number;
 }
 
 export async function getInitialLikedPlacesAndUsername(): Promise<{

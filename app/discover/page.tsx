@@ -8,7 +8,13 @@ import { likePlace, dislikePlace } from "./clientHelpers";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 import { Chip } from "@nextui-org/chip";
-import { CircleCheck, PartyPopper, HomeIcon, IndianRupee } from "lucide-react";
+import {
+  CircleCheck,
+  PartyPopper,
+  HomeIcon,
+  IndianRupee,
+  Heart,
+} from "lucide-react";
 import ReactCardFlip from "react-card-flip";
 import { motion } from "framer-motion";
 import FloatingActionButton from "@/components/FloatingActionButton";
@@ -28,6 +34,7 @@ interface Card {
   city_name: string;
   price: number;
   reservation: string;
+  likes: number;
 }
 
 interface CityLocalityMap {
@@ -60,6 +67,7 @@ export default function DiscoverPage() {
             matchScore: 0,
             tags: "",
             rating: 0,
+            likes: 0,
             locality: "",
             group_experience: "",
             isLastCard: true,
@@ -238,10 +246,20 @@ export default function DiscoverPage() {
                               quality={70}
                               placeholder="empty"
                             />
-                            <CardBody className="absolute left-0 top-0 w-auto">
+                            <CardBody className="absolute left-0 top-0 flex w-full flex-row items-center justify-between p-1 pt-2">
                               <Chip color="secondary" variant="solid">
                                 {card.tags}
                               </Chip>
+
+                              {card.likes > 1 && (
+                                <Chip
+                                  variant="solid"
+                                  color="danger"
+                                  startContent={<Heart size={18} fill="white" />}
+                                >
+                                  {card.likes} people liked this
+                                </Chip>
+                              )}
                             </CardBody>
                             <CardFooter className="absolute bottom-1 z-10 ml-1 flex w-[calc(100%_-_8px)] flex-col items-start overflow-hidden rounded-large border-1 border-white/20 py-2 shadow-small before:rounded-xl before:bg-white/10">
                               <p className="m-0 text-3xl text-white">
