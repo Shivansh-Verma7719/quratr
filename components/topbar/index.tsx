@@ -66,11 +66,6 @@ const Topbar = ({
                   Profile
                 </Link>
               </DropdownItem>
-              <DropdownItem key="feedback" textValue="Feedback">
-                <Link href="/feedback" className="text-primary">
-                  Feedback
-                </Link>
-              </DropdownItem>
               <DropdownItem key="logout" textValue="Log Out">
                 <Link href="/logout" className="text-danger">
                   Log Out

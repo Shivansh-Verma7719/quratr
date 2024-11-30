@@ -7,7 +7,6 @@ import {
   LogOut,
   User,
   ListChecks,
-  MessageCircleReply,
   Settings,
 } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
@@ -22,9 +21,6 @@ const getPages = async () => {
   let pages = [
     { name: "Home", href: "/", icon: Home },
     { name: "About", href: "/#about", icon: DoorOpen },
-    { name: "Feedback", href: "/feedback", icon: MessageCircleReply },
-    // { name: "Discover", href: "/discover", icon: BadgePlus },
-    // { name: "Feed", href: "/feed", icon: Newspaper },
     { name: "Login", href: "/login", icon: User },
     { name: "Register", href: "/register", icon: Settings },
   ];
@@ -36,7 +32,6 @@ const getPages = async () => {
       { name: "Feed", href: "/feed", icon: Newspaper },
       { name: "Profile", href: "/profile", icon: User },
       { name: "Curated", href: "/curated", icon: ListChecks },
-      { name: "Feedback", href: "/feedback", icon: MessageCircleReply },
       { name: "Logout", href: "/logout", icon: LogOut },
     ];
   }
