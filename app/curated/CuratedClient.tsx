@@ -238,7 +238,7 @@ export default function CuratedClient({
                             Group Experience
                           </Chip>
                         )}
-                        {place.likes > 1 && (
+                        {place.likes > 10 && (
                           <Chip
                             startContent={<Heart size={18} />}
                             className="mt-2"

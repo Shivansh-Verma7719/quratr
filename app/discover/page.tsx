@@ -371,7 +371,7 @@ export default function DiscoverPage() {
                                       {card.tags}
                                     </Chip>
 
-                                    {card.price > 0 && (
+                                    {card.price > 10 && (
                                       <motion.div
                                         key={`price-${card.id}-${
                                           flippedCards[card.id]
