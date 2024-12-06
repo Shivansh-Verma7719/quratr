@@ -274,7 +274,7 @@ export default function DiscoverPage() {
                                 {card.tags}
                               </Chip>
 
-                              {card.likes > 1 && (
+                              {card.likes > 10 && (
                                 <Chip
                                   variant="solid"
                                   color="danger"
