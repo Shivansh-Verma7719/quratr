@@ -203,6 +203,8 @@ export default function CuratedClient({
                         src={place.image}
                         width={600}
                         height={400}
+                        priority
+                        loading="eager"
                       />
                       <CardBody>
                         <div className="flex items-center justify-between">

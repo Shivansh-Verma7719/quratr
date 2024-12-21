@@ -12,22 +12,38 @@ export default function MyStatsig({
   user: User;
 }) {
   const [mounted, setMounted] = useState(false);
+  const [isDev, setIsDev] = useState(false);
+
   const { client } = useClientAsyncInit(
     process.env.NEXT_PUBLIC_STATSIG_CLIENT_KEY!,
     {
       userID: user.id,
-      email: user.email
+      email: user.email,
     }
   );
 
+  // Set mounted state to true after the initial render
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  // Check the environment only after the component is mounted
   useEffect(() => {
-    runStatsigAutoCapture(client);
-  }, [client, user]);
+    if (mounted) {
+      setIsDev(process.env.NEXT_PUBLIC_DEV === "true");
+    }
+  }, [mounted]);
 
-  if (!mounted) return null;
+  useEffect(() => {
+    if (mounted && !isDev && client) {
+      runStatsigAutoCapture(client);
+    }
+  }, [mounted, isDev, client, user]);
+
+  // Return children directly if in dev mode or not mounted
+  if (!mounted || isDev) {
+    return <>{children}</>;
+  }
+
   return <StatsigProvider client={client}>{children}</StatsigProvider>;
 }

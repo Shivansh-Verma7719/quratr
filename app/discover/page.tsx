@@ -266,6 +266,7 @@ export default function DiscoverPage() {
                               width={600}
                               height={600}
                               priority={true}
+                              loading="eager"
                               quality={70}
                               placeholder="empty"
                             />

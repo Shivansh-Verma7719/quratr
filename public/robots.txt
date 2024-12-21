@@ -1,6 +1,10 @@
 # *
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /login
+Disallow: /register
+Disallow: /profile
 
 # Host
 Host: https://quratr.com

@@ -3,8 +3,29 @@ import "./globals.css";
 import LayoutWrapper from "./layoutWrapper";
 
 export const metadata: Metadata = {
-  title: "Home",
-  description: "Quratr - Your ultimate platform for curated experiecd nces.",
+  title: {
+    default: "Quratr",
+    template: "%s | Quratr"
+  },
+  description: "Discover and explore personalized experiences with Quratr. Your ultimate platform for curated adventures, local discoveries, and memorable moments.",
+  keywords: ["experiences", "curated", "discovery", "local", "adventures", "personalized"],
+  authors: [{ name: "Quratr" }],
+  openGraph: {
+    title: "Quratr - Your Personalized App for Curated Experiences",
+    description: "Discover personalized experiences with a swipe. Join Quratr today!",
+    url: "https://quratr.com",
+    siteName: "Quratr",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Quratr - Your Personalized App for Curated Experiences",
+    description: "Discover personalized experiences with a swipe. Join Quratr today!",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   manifest: "/manifest.json",
 };
 
@@ -20,7 +41,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html>
+    <html lang="en">
       <body>
         <LayoutWrapper>{children}</LayoutWrapper>
       </body>
