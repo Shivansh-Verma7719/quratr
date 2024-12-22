@@ -253,6 +253,7 @@ export default function DiscoverPage() {
                             </h2>
                             <PartyPopper size={100} />
                             <p className="px-4 text-center">
+                              {/* Swipe more :) !!!!!!!!!!!!!!!!!!!! */}
                               Sit back and relax while we get you more
                               experiences to swipe on.
                             </p>

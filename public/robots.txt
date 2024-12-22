@@ -2,9 +2,14 @@
 User-agent: *
 Allow: /
 Disallow: /api/
-Disallow: /login
-Disallow: /register
+Disallow: /discover
+Disallow: /curated
 Disallow: /profile
+Disallow: /profile/edit
+Disallow: /onboarding
+Disallow: /settings
+Disallow: /feed
+Disallow: /feed/new
 
 # Host
 Host: https://quratr.com
