@@ -16,7 +16,7 @@ export function ThemeSwitcher({ className }: { className?: string }) {
   if (!mounted) return null;
 
   return (
-    <div className={`${className ? className : "fixed top-[1.1rem] right-2"}`}>
+    <div className={`${className ? className : "top-[1.1rem] right-2"}`}>
       <Switch
         defaultSelected={theme === "dark"}
         size="lg"
