@@ -29,32 +29,57 @@
     {
       "name": "Swipe to vibe",
       "short_name": "Discover",
-      "url": "/discover",
-      "icons": [{ "src": "/assests/shortcuts/swipe.svg", "sizes": "24x24" }]
+      "url": "https://quratr.com/discover",
+      "icons": [
+        {
+          "src": "https://quratr.com/assests/shortcuts/swipe.svg",
+          "sizes": "24x24"
+        }
+      ]
     },
     {
       "name": "Your Curations",
       "short_name": "Curations",
-      "url": "/curated",
-      "icons": [{ "src": "/assests/shortcuts/curations.svg", "sizes": "24x24" }]
+      "url": "https://quratr.com/curated",
+      "icons": [
+        {
+          "src": "https://quratr.com/assests/shortcuts/curations.svg",
+          "sizes": "24x24"
+        }
+      ]
     },
     {
       "name": "Feed",
       "short_name": "Feed",
-      "url": "/feed",
-      "icons": [{ "src": "/assests/shortcuts/feed.svg", "sizes": "24x24" }]
+      "url": "https://quratr.com/feed",
+      "icons": [
+        {
+          "src": "https://quratr.com/assests/shortcuts/feed.svg",
+          "sizes": "24x24"
+        }
+      ]
     },
     {
       "name": "New Post",
       "short_name": "Post",
-      "url": "/feed/new",
-      "icons": [{ "src": "/assests/shortcuts/post.svg", "sizes": "24x24" }]
+      "url": "https://quratr.com/feed/new",
+      "icons": [
+        {
+          "src": "https://quratr.com/assests/shortcuts/post.svg",
+          "sizes": "24x24"
+        }
+      ]
     },
     {
       "name": "Profile",
       "short_name": "Profile",
-      "url": "/profile",
-      "icons": [{ "src": "/assests/shortcuts/profile.svg", "sizes": "24x24" }]
+      "url": "https://quratr.com/profile",
+      "icons": [
+        {
+          "src": "https://quratr.com/assests/shortcuts/profile.svg",
+          "sizes": "24x24"
+        }
+      ]
     }
   ],
   "orientation": "portrait",
@@ -70,5 +95,5 @@
   },
   "display_override": ["window-controls-overlay"],
   "dir": "ltr",
-  "scope": "https://quratr.com"
+  "scope": "https://quratr.com/"
 }
