@@ -32,7 +32,7 @@
       "url": "https://quratr.com/discover",
       "icons": [
         {
-          "src": "https://quratr.com/assests/shortcuts/swipe.svg",
+          "src": "https://quratr.com/images/shortcuts/swipe.png",
           "sizes": "24x24"
         }
       ]
@@ -43,7 +43,7 @@
       "url": "https://quratr.com/curated",
       "icons": [
         {
-          "src": "https://quratr.com/assests/shortcuts/curations.svg",
+          "src": "https://quratr.com/images/shortcuts/curations.png",
           "sizes": "24x24"
         }
       ]
@@ -54,7 +54,7 @@
       "url": "https://quratr.com/feed",
       "icons": [
         {
-          "src": "https://quratr.com/assests/shortcuts/feed.svg",
+          "src": "https://quratr.com/images/shortcuts/feed.png",
           "sizes": "24x24"
         }
       ]
@@ -65,7 +65,7 @@
       "url": "https://quratr.com/feed/new",
       "icons": [
         {
-          "src": "https://quratr.com/assests/shortcuts/post.svg",
+          "src": "https://quratr.com/images/shortcuts/post.png",
           "sizes": "24x24"
         }
       ]
@@ -76,7 +76,7 @@
       "url": "https://quratr.com/profile",
       "icons": [
         {
-          "src": "https://quratr.com/assests/shortcuts/profile.svg",
+          "src": "https://quratr.com/images/shortcuts/profile.png",
           "sizes": "24x24"
         }
       ]
