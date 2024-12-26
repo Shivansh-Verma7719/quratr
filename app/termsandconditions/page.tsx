@@ -351,22 +351,6 @@ const TermsAndConditionsPage: React.FC = () => {
               entities/individuals or their websites.
             </p>
             <p>
-              For example, the outlined{" "}
-              <a href="https://policymaker.io/terms-and-conditions/">
-                Terms of Use
-              </a>{" "}
-              have been created using{" "}
-              <a href="https://policymaker.io/">PolicyMaker.io</a>, a free web
-              application for generating high-quality legal documents.
-              PolicyMaker’s{" "}
-              <a href="https://policymaker.io/terms-and-conditions/">
-                Terms and Conditions generator
-              </a>{" "}
-              is an easy-to-use free tool for creating an excellent standard
-              Terms of Service template for a website, blog, e-commerce store or
-              app.
-            </p>
-            <p>
               YOU ACKNOWLEDGE AND AGREE THAT COMPANY SHALL NOT BE RESPONSIBLE OR
               LIABLE, DIRECTLY OR INDIRECTLY, FOR ANY DAMAGE OR LOSS CAUSED OR
               ALLEGED TO BE CAUSED BY OR IN CONNECTION WITH USE OF OR RELIANCE
