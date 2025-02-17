@@ -33,7 +33,7 @@ const Footer: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           <div className="col-span-1 lg:col-span-2">
-            <a href="/">
+            <Link href="/">
               <div className="flex items-center space-x-2 mb-4 text-2xl font-bold">
                 <ThemeLogo width={35} height={35} />
                 <h1
@@ -43,7 +43,7 @@ const Footer: React.FC = () => {
                   uratr
                 </h1>
               </div>
-            </a>
+            </Link>
             <p className="text-gray-400 mb-4">
               © {new Date().getFullYear()} Quratr. All rights reserved.
             </p>
