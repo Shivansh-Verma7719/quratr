@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, Suspense, useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
@@ -26,6 +26,8 @@ const DynamicFooter = dynamic(() => import("@/components/footer"), {
 export default function QuratrLandingPage() {
   const [scrollY, setScrollY] = useState(0);
   const { scrollYProgress } = useScroll();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [playbackRate, setPlaybackRate] = useState(1);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -33,6 +35,7 @@ export default function QuratrLandingPage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
   const heroScale = useTransform(scrollYProgress, [0, 0.2], [1, 0.9]);
+  const heroBorderRadius = useTransform(scrollYProgress, [0, 0.2], [0, 50]);
   const aboutOpacity = useTransform(scrollYProgress, [0.4, 0.6], [0, 1]);
   const ctaScale = useTransform(scrollYProgress, [0.6, 0.8], [0.8, 1]);
 
@@ -44,24 +47,63 @@ export default function QuratrLandingPage() {
     );
   };
 
+  useEffect(() => {
+    let startTime: number;
+    const duration = 5000; // 5 seconds
+    const startSpeed = 1;
+    const endSpeed = 0.4;
+
+    const animatePlaybackSpeed = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      // Calculate current speed using easeOut function for smooth deceleration
+      const currentSpeed =
+        startSpeed - (startSpeed - endSpeed) * easeOutQuad(progress);
+
+      if (videoRef.current) {
+        videoRef.current.playbackRate = currentSpeed;
+        setPlaybackRate(currentSpeed);
+      }
+
+      if (progress < 1) {
+        requestAnimationFrame(animatePlaybackSpeed);
+      }
+    };
+
+    // Easing function for smooth transition
+    function easeOutQuad(x: number): number {
+      return 1 - (1 - x) * (1 - x);
+    }
+
+    requestAnimationFrame(animatePlaybackSpeed);
+  }, []);
+
   return (
-    // <Providers>
-    // <BottomNav />
-    // </Providers>
-    (<div className="min-h-screen overflow-x-hidden font-sans">
-      {/* <CustomNavbar /> */}
+    <div className="min-h-screen overflow-x-hidden font-sans">
       <div className="bg-white">
         <motion.section
           id="hero"
           style={{
             scale: heroScale,
+            borderRadius: heroBorderRadius,
             position: "relative",
             overflow: "hidden",
           }}
           className="h-screen w-full p-0 text-center"
         >
           <Suspense fallback={<VideoSkeleton />}>
+            <script>
+              {`
+              document.addEventListener('DOMContentLoaded', function() {
+                var video = document.querySelector('video');
+                video.playbackRate = ${playbackRate};
+              });
+            `}
+            </script>
             <video
+              ref={videoRef}
               autoPlay
               loop
               muted
@@ -195,6 +237,6 @@ export default function QuratrLandingPage() {
       >
         <ArrowRight className="h-5 w-5 rotate-[-90deg] transform sm:h-6 sm:w-6" />
       </motion.div>
-    </div>)
+    </div>
   );
 }
