@@ -17,7 +17,7 @@ export async function getInitialLikedPlacesAndUsername(): Promise<{
   places: Place[];
   username: string;
 }> {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const {
     data: { user },

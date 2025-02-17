@@ -2,7 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import { Post } from "./helpers";
 
 export async function getInitialPosts(): Promise<Post[]> {
-  const supabase = createClient();
+  const supabase = await createClient();
   
   const { data, error } = await supabase
     .from('posts')

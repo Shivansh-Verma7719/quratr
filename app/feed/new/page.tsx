@@ -2,8 +2,8 @@
 import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Button } from "@nextui-org/button";
-import { Textarea } from "@nextui-org/input";
+import { Button } from "@heroui/button";
+import { Textarea } from "@heroui/input";
 import { Camera, X } from "lucide-react";
 import { createNewPost } from "./helper";
 import { useRouter } from "next/navigation";
@@ -104,7 +104,7 @@ export default function NewPostPage() {
                   color="secondary"
                   variant="flat"
                   startContent={<Camera size={20} />}
-                  onClick={() => fileInputRef.current?.click()}
+                  onPress={() => fileInputRef.current?.click()}
                   className="w-full"
                 >
                   Add Photo
@@ -116,7 +116,7 @@ export default function NewPostPage() {
               variant="flat"
               isDisabled={!postText || !selectedImage}
               isLoading={isLoading}
-              onClick={handleSubmit}
+              onPress={handleSubmit}
               className="w-full"
             >
               Post

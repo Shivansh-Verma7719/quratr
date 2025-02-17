@@ -4,12 +4,12 @@ import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { fetchMoreLikedPlaces, deleteLikedPlace } from "./helpers";
 import { Place } from "./server-helpers";
-import { Card, CardBody, CardFooter } from "@nextui-org/card";
+import { Card, CardBody, CardFooter } from "@heroui/card";
 import Image from "next/image";
-import { Button } from "@nextui-org/button";
-import { Chip } from "@nextui-org/chip";
+import { Button } from "@heroui/button";
+import { Chip } from "@heroui/chip";
 import { CircleCheck, Trash2, Star, IndianRupee, Heart } from "lucide-react";
-import { Spinner } from "@nextui-org/react";
+import { Spinner } from "@heroui/react";
 import { IconSwipe } from "@tabler/icons-react";
 import {
   Modal,
@@ -17,7 +17,7 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-} from "@nextui-org/modal";
+} from "@heroui/modal";
 
 interface CuratedClientProps {
   initialPlaces: Place[];
@@ -200,7 +200,7 @@ export default function CuratedClient({
                       <Image
                         alt={place.name}
                         className="h-64 w-full object-cover"
-                        src={place.image}
+                        src={place.image.trim()}
                         width={600}
                         height={400}
                         priority
@@ -252,12 +252,12 @@ export default function CuratedClient({
                         )}
                         <hr className="mt-3 border-t border-gray-500" />
                       </CardBody>
-                      <CardFooter className="flex items-center justify-between px-2 pt-0">
+                        <CardFooter className="flex items-center justify-between px-2 pt-0">
                         <DeleteButton
                           isConfirming={deletingId === place.id}
                           onClick={() => handleDeleteClick(place.id)}
                           onConfirm={() => handleDeleteConfirm(place.id)}
-                          containerRef={deleteButtonRef}
+                          containerRef={deleteButtonRef as React.RefObject<HTMLDivElement>}
                         />
                         <Button
                           color="primary"
@@ -267,7 +267,7 @@ export default function CuratedClient({
                         >
                           Redeem Discount
                         </Button>
-                      </CardFooter>
+                        </CardFooter>
                     </Card>
                   </motion.div>
                 ))}

@@ -1,11 +1,11 @@
-import { motion, useInView } from "framer-motion";
+import { motion, useInView } from "motion/react";
 import {
   Smartphone,
   Users,
   Zap,
   TicketPercent,
-//   SearchX,
-//   MouseOff,
+  //   SearchX,
+  //   MouseOff,
 } from "lucide-react";
 import { Iphone15Pro } from "./iPhone15pro";
 import { useRef } from "react";
@@ -98,13 +98,13 @@ const FeatureBlock = ({
           duration: 1, // Increased from 0.8 to 1
           ease: [0.4, 0, 0.2, 1], // Custom cubic-bezier for smoother motion
         }}
-        className="w-full lg:w-1/2 text-center lg:text-left"
+        className="w-full text-center lg:w-1/2 lg:text-left"
       >
-        <div className="flex items-center justify-center lg:justify-start mb-4">
-          <feature.icon className="w-10 h-10 text-primary" />
+        <div className="mb-4 flex items-center justify-center lg:justify-start">
+          <feature.icon className="h-10 w-10 text-primary" />
         </div>
-        <h3 className="text-2xl sm:text-3xl font-bold mb-4">{feature.title}</h3>
-        <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300">
+        <h3 className="mb-4 text-2xl font-bold sm:text-3xl">{feature.title}</h3>
+        <p className="text-lg text-gray-600 dark:text-gray-300 sm:text-xl">
           {feature.description}
         </p>
       </motion.div>
@@ -119,7 +119,7 @@ const FeatureBlock = ({
           duration: 0.8,
           ease: "easeOut",
         }}
-        className="w-full lg:w-1/2 flex justify-center items-center"
+        className="flex w-full items-center justify-center lg:w-1/2"
       >
         <div className="relative">
           <Iphone15Pro
@@ -127,7 +127,7 @@ const FeatureBlock = ({
             width={440}
             height={882}
             src={feature.imageSrc}
-            className="w-full h-auto max-w-[320px] sm:max-w-[440px]"
+            className="h-auto w-full max-w-[320px] sm:max-w-[440px]"
           />
         </div>
       </motion.div>
@@ -137,9 +137,9 @@ const FeatureBlock = ({
 
 const FeatureSection = () => {
   return (
-    <section id="features" className="py-16 sm:py-24 bg-background">
+    <section id="features" className="bg-background py-16 sm:py-24">
       <div className="container mx-auto px-4 sm:px-6">
-        <h2 className="text-3xl sm:text-6xl font-bold text-center mb-12 sm:mb-16">
+        <h2 className="mb-12 text-center text-3xl font-bold sm:mb-16 sm:text-6xl">
           Connecting seekers to providers
         </h2>
         <div className="space-y-24 sm:space-y-32">

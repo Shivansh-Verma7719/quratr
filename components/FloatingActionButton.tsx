@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { SlidersHorizontal, X } from "lucide-react";
-import { Button, Switch } from "@nextui-org/react";
+import { Button, Switch } from "@heroui/react";
 import { MultiSelect } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 
@@ -29,7 +29,7 @@ export default function FloatingActionButton({
 }: FloatingActionButtonProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedCity, setSelectedCity] = useState(
-    JSON.parse(localStorage.getItem("selectedCities") || "[]")[0] || "Goa"
+    JSON.parse(localStorage.getItem("selectedCities") || "[]")[0] || "Delhi NCR"
   );
 
   const toggleExpand = () => setIsExpanded(!isExpanded);
@@ -38,7 +38,7 @@ export default function FloatingActionButton({
   const cities = Object.keys(localities);
 
   useEffect(() => {
-    if (selectedCity === "Delhi") {
+    if (selectedCity === "Delhi NCR") {
       setSelectedCities(["Delhi NCR"]);
     } else if (selectedCity === "Goa") {
       setSelectedCities(["Goa"]);
@@ -80,7 +80,7 @@ export default function FloatingActionButton({
                 size="sm"
                 isIconOnly
                 className="absolute right-4 top-4 bg-transparent hover:text-gray-300"
-                onClick={toggleExpand}
+                onPress={toggleExpand}
               >
                 <X className="h-6 w-6" />
               </Button>
@@ -95,14 +95,14 @@ export default function FloatingActionButton({
                     Goa
                   </span>
                   <Switch
-                    isSelected={selectedCity === "Delhi"}
+                    isSelected={selectedCity === "Delhi NCR"}
                     onValueChange={() =>
                       setSelectedCity((prev: string) =>
                         prev === "Goa" ? "Delhi" : "Goa"
                       )
                     }
                     thumbIcon={
-                      <span>{selectedCity === "Delhi" ? "D" : "G"}</span>
+                      <span>{selectedCity === "Delhi NCR" ? "D" : "G"}</span>
                     }
                     classNames={{
                       wrapper: cn(
@@ -113,7 +113,7 @@ export default function FloatingActionButton({
                   />
                   <span
                     className={`text-md ${
-                      selectedCity === "Delhi" ? "text-primary" : ""
+                      selectedCity === "Delhi NCR" ? "text-primary" : ""
                     }`}
                   >
                     Delhi

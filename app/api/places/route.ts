@@ -51,11 +51,11 @@ function createCityLocalityMap(places: Place[]): CityLocalityMap {
 
 export async function GET(request: Request): Promise<NextResponse> {
   try {
-    const supabase = createClient();
-    
+    const supabase = await createClient();
+
     // Get user ID from headers
-    const userId = request.headers.get('user-id');
-    
+    const userId = request.headers.get("user-id");
+
     if (!userId) {
       return NextResponse.json(
         {
@@ -73,15 +73,8 @@ export async function GET(request: Request): Promise<NextResponse> {
       { data: likedPlacesData, error: likedPlacesError },
       placesData,
     ] = await Promise.all([
-      supabase
-        .from("onboarding")
-        .select("*")
-        .eq("id", userId)
-        .single(),
-      supabase
-        .from("dislikes")
-        .select("place_id")
-        .eq("user_id", userId),
+      supabase.from("onboarding").select("*").eq("id", userId).single(),
+      supabase.from("dislikes").select("place_id").eq("user_id", userId),
       supabase.from("likes").select("place_id").eq("user_id", userId),
       usePlacesStore.getState().fetchPlaces(), // Use the cached places
     ]);
@@ -172,6 +165,8 @@ export async function GET(request: Request): Promise<NextResponse> {
 
     const cityLocalityMap = createCityLocalityMap(placesData);
 
+    // console.log("City Locality Map:", cityLocalityMap);
+    // console.log("Sorted Places:", sortedPlaces);
     return NextResponse.json({
       data: sortedPlaces,
       cityLocalityMap,
@@ -182,7 +177,7 @@ export async function GET(request: Request): Promise<NextResponse> {
     return NextResponse.json(
       {
         data: null,
-        error: "Failed to fetch places",
+        error: `Failed to fetch places: ${error}`,
       },
       {
         status: 500,

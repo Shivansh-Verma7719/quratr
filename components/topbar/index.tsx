@@ -8,8 +8,8 @@ import {
   Dropdown,
   DropdownMenu,
   Avatar,
-} from "@nextui-org/react";
-import { Button } from "@nextui-org/button";
+} from "@heroui/react";
+import { Button } from "@heroui/button";
 import { Settings } from "lucide-react";
 import QuratrLogoDark from "@/components/logos/logo_light";
 import QuratrLogo from "@/components/logos/logo";

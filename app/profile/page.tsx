@@ -1,14 +1,14 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
-import { Chip } from "@nextui-org/chip";
-import { Button } from "@nextui-org/button";
+import { Card, CardHeader, CardBody, CardFooter } from "@heroui/card";
+import { Chip } from "@heroui/chip";
+import { Button } from "@heroui/button";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { fetchUserProfile, fetchUserPosts, UserProfile, Post } from "./helpers";
 import Link from "next/link";
-import { Plus } from "lucide-react";
-import { Spinner } from "@nextui-org/react";
+import { Plus, Edit } from "lucide-react";
+import { Spinner, Avatar } from "@heroui/react";
 
 export default function ProfilePage() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
@@ -61,10 +61,31 @@ export default function ProfilePage() {
             <Card className="w-full">
               <CardHeader className="justify-between">
                 <div className="flex gap-5">
-                  <div className="flex flex-col items-start justify-center gap-1">
-                    <h4 className="text-small font-semibold leading-none text-default-600">
-                      @{userProfile.username}
-                    </h4>
+                  <Edit
+                    className="absolute top-4 right-4 cursor-pointer text-default-500 hover:text-default-400"
+                    size={20}
+                  />
+                  <div className="flex w-full flex-col items-start justify-center gap-1">
+                    <div className="flex w-full flex-row items-center justify-start p-1">
+                      <Avatar
+                        isBordered
+                        as="button"
+                        className="mr-2 transition-transform"
+                        color="primary"
+                        showFallback
+                        name={userProfile.username}
+                        getInitials={(name) =>
+                          name
+                            ?.split(" ")
+                            .map((n) => n[0])
+                            .join("")
+                        }
+                        size="sm"
+                      />
+                      <h4 className="text-small font-semibold text-default-600">
+                        @{userProfile.username}
+                      </h4>
+                    </div>
                     <h5 className="text-small tracking-tight text-default-400">
                       {userProfile.email}
                     </h5>
@@ -98,8 +119,23 @@ export default function ProfilePage() {
               <Card className="w-full">
                 <CardHeader className="justify-between">
                   <div className="flex gap-5">
-                    <div className="flex flex-col items-start justify-center gap-1">
-                      <h4 className="text-small font-semibold leading-none text-default-600">
+                    <div className="flex flex-row items-center justify-center p-1">
+                      <Avatar
+                        isBordered
+                        as="button"
+                        className="mr-2"
+                        color="primary"
+                        showFallback
+                        name={post.username}
+                        getInitials={(name) =>
+                          name
+                            ?.split(" ")
+                            .map((n) => n[0])
+                            .join("")
+                        }
+                        size="sm"
+                      />
+                      <h4 className="text-medium font-semibold text-default-600">
                         @{post.username}
                       </h4>
                     </div>

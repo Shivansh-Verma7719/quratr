@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import RegisterForm from "./registerForm";
-// import Navbar from "@/components/navbar/index";
 import Footer from "@/components/footer/index";
 import { Providers } from "../providers";
 

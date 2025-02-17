@@ -4,9 +4,9 @@ import { Providers } from "@/app/providers";
 // import CustomNavbar from "@/components/navbar";
 // import BottomNav from "@/components/bottomnav";
 import { motion } from "framer-motion";
-import { Input } from "@nextui-org/input";
-import { Button } from "@nextui-org/button";
-import { Card, CardBody } from "@nextui-org/card";
+import { Input } from "@heroui/input";
+import { Button } from "@heroui/button";
+import { Card, CardBody } from "@heroui/card";
 import {
   UserProfile,
   updateUserProfile,

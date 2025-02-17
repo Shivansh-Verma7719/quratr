@@ -5,8 +5,8 @@ import { ArrowLeft, ArrowRight, PartyPopper, ShieldAlert } from "lucide-react";
 import Footer from "@/components/footer/index";
 import { submitOnboarding, checkOnboardingStatus } from "./helper";
 import { useRouter } from "next/navigation";
-import { Button } from "@nextui-org/button";
-import { Card, CardHeader, CardBody } from "@nextui-org/card";
+import { Button } from "@heroui/button";
+import { Card, CardHeader, CardBody } from "@heroui/card";
 import { IconSwipe } from "@tabler/icons-react";
 
 const onboardingQuestions = [

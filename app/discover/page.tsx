@@ -1,19 +1,18 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
 import TinderCard from "react-tinder-card";
-import { Card, CardBody, CardFooter } from "@nextui-org/card";
-import { Spinner } from "@nextui-org/react";
+import { Card, CardBody, CardFooter } from "@heroui/card";
+import { Spinner } from "@heroui/react";
 import Image from "next/image";
 import { likePlace, dislikePlace } from "./clientHelpers";
-import { Rating } from "@smastrom/react-rating";
-import "@smastrom/react-rating/style.css";
-import { Chip } from "@nextui-org/chip";
+import { Chip } from "@heroui/chip";
 import {
   CircleCheck,
   PartyPopper,
   HomeIcon,
   IndianRupee,
   Heart,
+  Star,
 } from "lucide-react";
 import ReactCardFlip from "react-card-flip";
 import { motion } from "framer-motion";
@@ -263,7 +262,7 @@ export default function DiscoverPage() {
                             <Image
                               alt={card.name}
                               className="h-full w-full object-cover md:h-[600px] md:w-[600px]"
-                              src={card.image}
+                              src={card.image.trim()}
                               width={600}
                               height={600}
                               priority={true}
@@ -289,14 +288,19 @@ export default function DiscoverPage() {
                               )}
                             </CardBody>
                             <CardFooter className="absolute bottom-1 z-10 ml-1 flex w-[calc(100%_-_8px)] flex-col items-start overflow-hidden rounded-large border-1 border-white/20 py-2 shadow-small before:rounded-xl before:bg-white/10">
-                              <p className="m-0 text-3xl text-white">
-                                {card.name}
-                              </p>
-                              <Rating
-                                style={{ maxWidth: 200 }}
-                                value={card.rating}
-                                readOnly={true}
-                              />
+                              <div className="flex w-full items-center justify-between">
+                                <p className="m-0 text-3xl text-white">
+                                  {card.name}
+                                </p>
+                                <p className="flex items-center gap-1 text-2xl text-white">
+                                  <Star
+                                    size={16}
+                                    fill="#fbbf24"
+                                    className="text-amber-400"
+                                  />
+                                  {card.rating}
+                                </p>
+                              </div>
                               <p className="m-0 text-2xl text-white">
                                 {card.locality}
                               </p>

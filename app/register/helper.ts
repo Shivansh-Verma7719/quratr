@@ -10,7 +10,7 @@ type FormData = {
 };
 
 export async function signup(formData: FormData) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data: userData, error: signUpError } = await supabase.auth.signUp({
     email: formData.email,

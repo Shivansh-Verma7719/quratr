@@ -1,10 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
+import { Card, CardHeader, CardBody, CardFooter } from "@heroui/card";
 import Image from "next/image";
 import { fetchPosts, Post } from "./helpers";
 import { motion } from "framer-motion";
-import { Avatar } from "@nextui-org/react";
+import { Avatar } from "@heroui/react";
 import { ArrowRight } from "lucide-react";
 
 interface FeedClientProps {

@@ -41,7 +41,7 @@ export const usePlacesStore = create<PlacesStore>((set, get) => ({
     }
 
     try {
-      const supabase = createClient();
+      const supabase = await createClient();
       const { data, error } = await supabase.from("places").select("*");
       
       if (error) {

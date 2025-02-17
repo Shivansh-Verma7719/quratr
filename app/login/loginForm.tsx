@@ -1,9 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { login } from "./actions";
-import { Input } from "@nextui-org/input";
-import { Button } from "@nextui-org/button";
-import { Card, CardBody, CardHeader } from "@nextui-org/card";
+import { Input } from "@heroui/input";
+import { Button } from "@heroui/button";
+import { Card, CardBody, CardHeader } from "@heroui/card";
 import {
   EyeIcon,
   EyeOffIcon,
@@ -36,10 +36,7 @@ const LoginForm: React.FC = () => {
   };
 
   const validateForm = () => {
-    return (
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) &&
-      formData.password.length >= 8
-    );
+    return (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) && formData.password.length >= 8);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

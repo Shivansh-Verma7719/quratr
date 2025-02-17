@@ -1,11 +1,11 @@
 "use client";
 import { useState, useEffect, Suspense } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "motion/react";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import discoveryImage from "@/public/images/landing/2.jpg";
-import { Spinner, Skeleton } from "@nextui-org/react";
+import { Spinner, Skeleton } from "@heroui/react";
 
 const DynamicFeatureSection = dynamic(
   () => import("@/components/featureSection"),
@@ -46,9 +46,10 @@ export default function QuratrLandingPage() {
 
   return (
     // <Providers>
-    <div className="min-h-screen overflow-x-hidden font-sans">
+    // <BottomNav />
+    // </Providers>
+    (<div className="min-h-screen overflow-x-hidden font-sans">
       {/* <CustomNavbar /> */}
-
       <div className="bg-white">
         <motion.section
           id="hero"
@@ -181,9 +182,7 @@ export default function QuratrLandingPage() {
         </motion.section>
         {/* <BackgroundLinesDemo /> */}
       </div>
-
       <DynamicFooter />
-
       <motion.div
         className="fixed bottom-4 right-4 hidden cursor-pointer rounded-full bg-[#fed4e4] p-3 text-black shadow-lg sm:bottom-8 sm:right-8 sm:p-4 md:block"
         style={{
@@ -196,8 +195,6 @@ export default function QuratrLandingPage() {
       >
         <ArrowRight className="h-5 w-5 rotate-[-90deg] transform sm:h-6 sm:w-6" />
       </motion.div>
-    </div>
-    // <BottomNav />
-    // </Providers>
+    </div>)
   );
 }

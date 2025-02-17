@@ -1,14 +1,14 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { signup } from "./helper";
-import { Input } from "@nextui-org/input";
-import { Button } from "@nextui-org/button";
-import { Card, CardBody, CardHeader } from "@nextui-org/card";
+import { Input } from "@heroui/input";
+import { Button } from "@heroui/button";
+import { Card, CardBody, CardHeader } from "@heroui/card";
 import { useRouter } from "next/navigation";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import axios from "axios";
 import GoogleCaptchaWrapper from "@/app/googleCaptchaWrapper";
-import { Checkbox } from "@nextui-org/checkbox";
+import { Checkbox } from "@heroui/checkbox";
 
 import {
   EyeIcon,
@@ -53,15 +53,12 @@ const RegisterForm: React.FC = () => {
   };
 
   const validateForm = () => {
-    return (
-      formData.firstName.trim() !== "" &&
-      formData.lastName.trim() !== "" &&
-      formData.username.trim() !== "" &&
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) &&
-      formData.password.length >= 8 &&
-      formData.password === formData.confirmPassword &&
-      formData.termsAccepted
-    );
+    return (formData.firstName.trim() !== "" &&
+    formData.lastName.trim() !== "" &&
+    formData.username.trim() !== "" &&
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) &&
+    formData.password.length >= 8 &&
+    formData.password === formData.confirmPassword && formData.termsAccepted);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

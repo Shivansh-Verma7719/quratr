@@ -12,7 +12,6 @@ import {
   LogOut,
   User as UserIcon,
   ListChecks,
-  MessageCircleReply,
   Settings,
 } from "lucide-react";
 import Logo from "../logos/logo";
@@ -35,7 +34,6 @@ const CustomNavbar: React.FC<{ user: User | null }> = ({ user }) => {
   let pages = [
     { name: "Home", href: "/", icon: Home },
     { name: "About", href: "/#about", icon: DoorOpen },
-    { name: "Feedback", href: "/feedback", icon: MessageCircleReply },
     // { name: "Discover", href: "/discover", icon: BadgePlus },
     // { name: "Feed", href: "/feed", icon: Newspaper },
     { name: "Login", href: "/login", icon: UserIcon },
@@ -49,7 +47,6 @@ const CustomNavbar: React.FC<{ user: User | null }> = ({ user }) => {
       { name: "Feed", href: "/feed", icon: Newspaper },
       { name: "Profile", href: "/profile", icon: UserIcon },
       { name: "Curated", href: "/curated", icon: ListChecks },
-      { name: "Feedback", href: "/feedback", icon: MessageCircleReply },
       { name: "Logout", href: "/logout", icon: LogOut },
     ];
   }
@@ -59,38 +56,38 @@ const CustomNavbar: React.FC<{ user: User | null }> = ({ user }) => {
   return (
     <motion.header
       style={{ opacity: headerOpacity }}
-      className="hidden md:block fixed top-0 left-0 right-0 z-50 bg-background text-text bg-opacity-90 backdrop-blur-sm shadow-sm border-b border-gray-700"
+      className="fixed left-0 right-0 top-0 z-50 hidden border-b border-gray-700 bg-background bg-opacity-90 text-text shadow-sm backdrop-blur-sm md:block"
     >
-      <nav className="container mx-auto px-4 sm:px-6 py-4">
-        <div className="flex justify-between items-center">
+      <nav className="container mx-auto px-4 py-4 sm:px-6">
+        <div className="flex items-center justify-between">
           <Link href="/">
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="text-2xl flex text-text flex-row font-bold bg-clip-text"
+              className="flex flex-row bg-clip-text text-2xl font-bold text-text"
             >
               <ThemeLogo width={35} height={35} />
               <h1
-                className="text-2xl p-0 ml-0 font-bold translate-y-[0.3rem]"
+                className="ml-0 translate-y-[0.3rem] p-0 text-2xl font-bold"
                 style={{ marginLeft: "0px" }}
               >
                 uratr
               </h1>
             </motion.div>
           </Link>
-          <div className="hidden md:flex space-x-1">
+          <div className="hidden space-x-1 md:flex">
             {pages.map((item) => (
               <motion.a
                 key={item.name}
                 href={item.href}
-                className="text-text px-3 py-2 rounded-md text-sm font-medium transition-colors relative group"
+                className="group relative rounded-md px-3 py-2 text-sm font-medium text-text transition-colors"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
                 {item.name}
                 <motion.span
-                  className="absolute bottom-0 left-0 w-full h-0.5 bg-white origin-left transform scale-x-0 transition-transform group-hover:scale-x-100"
+                  className="absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 transform bg-white transition-transform group-hover:scale-x-100"
                   initial={false}
                   transition={{ duration: 0.3 }}
                 />
@@ -117,14 +114,14 @@ const CustomNavbar: React.FC<{ user: User | null }> = ({ user }) => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3 }}
-          className="md:hidden bg-white py-4 border-t border-gray-100"
+          className="border-t border-gray-100 bg-white py-4 md:hidden"
         >
-          <div className="container mx-auto px-4 flex flex-col space-y-2">
+          <div className="container mx-auto flex flex-col space-y-2 px-4">
             {pages.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                className="rounded-md px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:text-gray-900"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {item.name}

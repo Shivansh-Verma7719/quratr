@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, ModalContent, ModalBody, Button } from "@nextui-org/react";
+import { Modal, ModalContent, ModalBody, Button } from "@heroui/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Repeat, Heart, ListCheck } from "lucide-react";
 
