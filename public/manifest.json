@@ -1,9 +1,9 @@
 {
-  "id": "https://quratr.com/discover",
+  "id": "https://quratr.com/feed",
   "name": "Quratr",
   "short_name": "Quratr",
   "description": "Quratr - Your ultimate platform for curated experiences.",
-  "start_url": "https://quratr.com/discover",
+  "start_url": "https://quratr.com/feed",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",

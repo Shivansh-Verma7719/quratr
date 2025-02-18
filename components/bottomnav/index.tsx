@@ -5,7 +5,7 @@ import {
   Home,
   ListCheck,
   LogIn,
-  Newspaper,
+  // Newspaper,
   NotebookPen,
   PlusCircle,
 } from "lucide-react";
@@ -43,10 +43,10 @@ const BottomNav = ({ user }: { user: User | null }) => {
 
   const pages = user
     ? [
-        { name: "Home", href: "/", icon: Home },
+        { name: "Home", href: "/feed", icon: Home },
         { name: "Discover", href: "/discover", icon: IconSwipe },
         { name: "Curated", href: "/curated", icon: ListCheck },
-        { name: "Feed", href: "/feed", icon: Newspaper },
+        // { name: "Feed", href: "/feed", icon: Newspaper },
         { name: "Post", href: "/feed/new", icon: PlusCircle },
       ]
     : [
