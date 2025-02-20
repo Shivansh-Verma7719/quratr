@@ -8,6 +8,7 @@ import {
   // Newspaper,
   NotebookPen,
   PlusCircle,
+  Users,
 } from "lucide-react";
 import { IconSwipe } from "@tabler/icons-react";
 import Link from "next/link";
@@ -46,7 +47,7 @@ const BottomNav = ({ user }: { user: User | null }) => {
         { name: "Home", href: "/feed", icon: Home },
         { name: "Discover", href: "/discover", icon: IconSwipe },
         { name: "Curated", href: "/curated", icon: ListCheck },
-        // { name: "Feed", href: "/feed", icon: Newspaper },
+        { name: "Group Experience", href: "/group_swipe", icon: Users },
         { name: "Post", href: "/feed/new", icon: PlusCircle },
       ]
     : [
@@ -61,6 +62,7 @@ const BottomNav = ({ user }: { user: User | null }) => {
     <AnimatePresence mode="wait">
       {isVisible && (
         <motion.div
+          id="bottom-nav"
           initial={{ y: 100 }}
           animate={{ y: 0 }}
           exit={{ y: 100 }}
@@ -70,14 +72,14 @@ const BottomNav = ({ user }: { user: User | null }) => {
             damping: 30,
             duration: 0.3,
           }}
-          className="fixed bottom-0 w-full py-2 z-40 bg-background md:hidden border-t border-gray-700"
+          className="fixed bottom-0 z-40 w-full border-t border-gray-700 bg-background py-2 md:hidden"
         >
-          <div className="flex flex-row justify-around items-center bg-transparent w-full">
+          <div className="flex w-full flex-row items-center justify-around bg-transparent">
             {pages.map((page, index) => (
               <Link
                 key={index}
                 href={page.href}
-                className="flex items-center z-50"
+                className="z-50 flex items-center"
               >
                 {page.name === "Discover" ? (
                   <IconSwipe

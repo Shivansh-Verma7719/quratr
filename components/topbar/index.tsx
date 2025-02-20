@@ -30,6 +30,7 @@ const Topbar = ({
       maxWidth="full"
       height="3rem"
       shouldHideOnScroll
+      id="topbar"
     >
       <NavbarContent justify="start" className={user ? "" : "hidden"}>
         <NavbarItem key="profile_dropdown">

@@ -11,7 +11,7 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
   }
- 
+
   .dark {
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
@@ -26,7 +26,7 @@
   --color-foreground: #0a0a0a;
   --color-text: #171717;
   --color-text-secondary: #ffffff; /* gray-600 */
-  /* Add more variables as needed */
+  --transition-duration: 1500ms;
 }
 
 .dark {
@@ -72,4 +72,10 @@ h6 {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.animate-theme {
+  transition:
+    background-color var(--transition-duration) ease-in-out,
+    color var(--transition-duration) ease-in-out;
 }

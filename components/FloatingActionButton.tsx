@@ -137,7 +137,7 @@ export default function FloatingActionButton({
                   <Button
                     color="primary"
                     variant="flat"
-                    onClick={toggleExpand}
+                    onPress={toggleExpand}
                     className="px-8"
                   >
                     Close
