@@ -210,7 +210,7 @@ export const UserSelect = ({
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.2 }}
-          onClick={() => !disabled && setIsOpen(!isOpen)}
+          onClick={() => !isDisabled && setIsOpen(!isOpen)}
           className="cursor-pointer"
         >
           <ChevronDown className="h-5 w-5 text-gray-400" />

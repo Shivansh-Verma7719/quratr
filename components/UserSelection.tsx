@@ -9,7 +9,6 @@ import {
   DrawerFooter,
 } from "@heroui/drawer";
 import { Button } from "@heroui/button";
-import { Spinner } from "@heroui/spinner";
 import { createClient } from "@/utils/supabase/client";
 import { UserSelect } from "@/components/ui/UserSelect";
 
