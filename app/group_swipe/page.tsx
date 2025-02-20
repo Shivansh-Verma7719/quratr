@@ -18,7 +18,7 @@ import {
 import ReactCardFlip from "react-card-flip";
 import { motion } from "framer-motion";
 import FloatingActionButton from "@/components/FloatingActionButton";
-import { UserSelectionModal } from "@/components/UserSelectionModal";
+import { UserSelectionDrawer } from "@/components/UserSelection";
 import { PlaceDrawer } from "@/components/ui/Overlay";
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
@@ -218,8 +218,7 @@ export default function DiscoverPage() {
       };
 
       // Randomize the places array
-      const randomizedPlaces = [...places]
-        .sort(() => Math.random() - 0.5)
+      const randomizedPlaces = [...places].sort(() => Math.random() - 0.5);
 
       // Set the cards with randomized places
       setCards([...randomizedPlaces, lastCard]);
@@ -654,7 +653,7 @@ export default function DiscoverPage() {
           }}
         />
 
-        <UserSelectionModal
+        <UserSelectionDrawer
           isOpen={isModalOpen}
           onClose={() => {
             setIsModalOpen(false);

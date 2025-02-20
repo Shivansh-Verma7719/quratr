@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Avatar, Chip } from "@heroui/react";
 import { ChevronDown } from "lucide-react";
-import { User } from "@/components/UserSelectionModal";
+import { User } from "@/components/UserSelection";
 import { cn } from "@/lib/utils";
 
 interface UserSelectProps {
@@ -11,7 +11,7 @@ interface UserSelectProps {
   onChange: (users: User[]) => void;
   placeholder?: string;
   className?: string;
-  disabled?: boolean;
+  isDisabled?: boolean;
 }
 
 export const UserSelect = ({
@@ -20,7 +20,7 @@ export const UserSelect = ({
   onChange,
   placeholder = "Search users...",
   className,
-  disabled = false,
+  isDisabled = false,
 }: UserSelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -88,7 +88,7 @@ export const UserSelect = ({
       ref={containerRef}
       className={cn(
         "relative w-full font-sans",
-        disabled && "cursor-not-allowed opacity-50",
+        isDisabled && "cursor-not-allowed opacity-50",
         className
       )}
     >

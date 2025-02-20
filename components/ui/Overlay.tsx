@@ -11,7 +11,7 @@ import {
   Chip,
 } from "@heroui/react";
 import { MapPin, Star, Users, IndianRupee, Tag, Heart } from "lucide-react";
-import { User } from "@/components/UserSelectionModal";
+import { User } from "@/components/UserSelection";
 import { Card } from "@/app/group_swipe/page";
 
 interface OverlayProps {
