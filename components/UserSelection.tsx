@@ -1,5 +1,3 @@
-// components/UserSelectionDrawer.tsx
-
 import { useState, useEffect } from "react";
 import {
   Drawer,
@@ -73,7 +71,7 @@ export const UserSelectionDrawer = ({
       isOpen={isOpen}
       onClose={hideCloseButton ? undefined : onClose}
       placement="bottom"
-      size="3xl"
+      size="xl"
       hideCloseButton={hideCloseButton}
       isDismissable={!hideCloseButton}
       backdrop="blur"
@@ -94,15 +92,15 @@ export const UserSelectionDrawer = ({
               </p>
             </DrawerHeader>
 
-            <DrawerBody className="min-h-[400px] flex-grow">
-                <UserSelect
-                  users={users}
-                  selectedUsers={selectedUsers}
-                  onChange={handleUserSelect}
-                  placeholder="Search friends..."
-                  className="h-full"
-                  isDisabled={isLoading}
-                />
+            <DrawerBody className="pb-52">
+              <UserSelect
+                users={users}
+                selectedUsers={selectedUsers}
+                onChange={handleUserSelect}
+                placeholder="Search friends..."
+                className="h-full"
+                isDisabled={isLoading}
+              />
             </DrawerBody>
 
             <DrawerFooter className="px-6 py-4">
