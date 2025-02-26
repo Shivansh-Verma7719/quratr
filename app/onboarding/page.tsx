@@ -168,7 +168,7 @@ const OnboardingPage: React.FC = () => {
               </motion.button>
             ) : (
               <Button
-                onClick={handleSubmit}
+                onPress={handleSubmit}
                 color="primary"
                 variant="flat"
                 size="lg"

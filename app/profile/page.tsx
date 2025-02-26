@@ -62,7 +62,7 @@ export default function ProfilePage() {
               <CardHeader className="justify-between">
                 <div className="flex gap-5">
                   <Edit
-                    className="absolute top-4 right-4 cursor-pointer text-default-500 hover:text-default-400"
+                    className="absolute right-4 top-4 cursor-pointer text-default-500 hover:text-default-400"
                     size={20}
                   />
                   <div className="flex w-full flex-col items-start justify-center gap-1">
@@ -167,16 +167,16 @@ export default function ProfilePage() {
             className="mt-10 flex flex-col items-center justify-center"
           >
             <p className="mb-4 text-xl">You haven&apos;t made any posts yet.</p>
-            <Link href="/feed/new">
-              <Button
-                color="primary"
-                variant="flat"
-                size="lg"
-                startContent={<Plus />}
-              >
-                Create New Post
-              </Button>
-            </Link>
+            <Button
+              as={Link}
+              href="/posts/new"
+              color="primary"
+              variant="flat"
+              size="lg"
+              startContent={<Plus />}
+            >
+              Create New Post
+            </Button>
           </motion.div>
         )}
       </div>

@@ -51,7 +51,7 @@ const DeleteButton = ({
       size="sm"
       radius="sm"
       className="min-w-0 px-2"
-      onClick={isConfirming ? onConfirm : onClick}
+      onPress={isConfirming ? onConfirm : onClick}
     >
       <motion.div
         className="flex items-center gap-2"
@@ -263,7 +263,7 @@ export default function CuratedClient({
                           color="primary"
                           variant="flat"
                           className="ml-auto"
-                          onClick={() => handleRedeemClick(place)}
+                          onPress={() => handleRedeemClick(place)}
                         >
                           Redeem Discount
                         </Button>
@@ -291,7 +291,7 @@ export default function CuratedClient({
                 className="mt-2"
                 variant="flat"
                 startContent={<IconSwipe />}
-                onClick={() => router.push("/discover")}
+                onPress={() => router.push("/discover")}
               >
                 Start Swiping
               </Button>
@@ -319,7 +319,7 @@ export default function CuratedClient({
                 </p>
                 <Button
                   color="secondary"
-                  onClick={() => handleWhatsAppRedirect(currentPlace.name)}
+                  onPress={() => handleWhatsAppRedirect(currentPlace.name)}
                   className="mt-2 w-full"
                   variant="flat"
                 >
@@ -331,7 +331,7 @@ export default function CuratedClient({
             <ModalFooter>
               <Button
                 color="primary"
-                onClick={() => setIsModalOpen(false)}
+                onPress={() => setIsModalOpen(false)}
                 variant="flat"
               >
                 Close
