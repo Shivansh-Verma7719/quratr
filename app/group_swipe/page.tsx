@@ -643,16 +643,14 @@ export default function DiscoverPage() {
         </div>
 
         <div className="fixed bottom-14 left-3 z-50">
-          {selectedUsers.length != 0 && (
-            <Button
-              color="primary"
-              variant="shadow"
-              className="mr-4 h-12 w-12 rounded-full"
-              onPress={() => setIsModalOpen(true)}
-              startContent={<Users className="h-6 w-6" />}
-              isIconOnly
-            />
-          )}
+          <Button
+            color="primary"
+            variant="shadow"
+            className="mr-4 h-12 w-12 rounded-full"
+            onPress={() => setIsModalOpen(true)}
+            startContent={<Users className="h-6 w-6" />}
+            isIconOnly
+          />
         </div>
 
         <PlaceDrawer
