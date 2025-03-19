@@ -8,14 +8,15 @@ import {
   Dropdown,
   DropdownMenu,
   Avatar,
+  Button,
 } from "@heroui/react";
-import { Button } from "@heroui/button";
 import { Settings } from "lucide-react";
 import QuratrLogoDark from "@/components/logos/logo_light";
 import QuratrLogo from "@/components/logos/logo";
 import { User } from "@supabase/supabase-js";
 import { UserProfile } from "@/app/layoutWrapper";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const Topbar = ({
   user,
@@ -24,9 +25,19 @@ const Topbar = ({
   user: User | null;
   userProfile: UserProfile | null;
 }) => {
+  const router = useRouter();
+
+  const handleAction = (key: string) => {
+    if (key === "profile_link") {
+      router.push("/profile");
+    } else if (key === "logout") {
+      router.push("/logout");
+    }
+  };
+
   return (
     <Navbar
-      className="border-b border-divider bg-background backdrop-blur-md md:hidden"
+      className="border-b border-divider bg-background md:hidden"
       maxWidth="full"
       height="3rem"
       shouldHideOnScroll
@@ -34,7 +45,7 @@ const Topbar = ({
     >
       <NavbarContent justify="start" className={user ? "" : "hidden"}>
         <NavbarItem key="profile_dropdown">
-          <Dropdown placement="bottom-end">
+          <Dropdown placement="bottom-end" backdrop="blur">
             <DropdownTrigger>
               <Avatar
                 isBordered
@@ -52,7 +63,11 @@ const Topbar = ({
                 size="sm"
               />
             </DropdownTrigger>
-            <DropdownMenu aria-label="Profile Actions" variant="flat">
+            <DropdownMenu
+              aria-label="Profile Actions"
+              variant="flat"
+              onAction={(key) => handleAction(key as string)}
+            >
               <DropdownItem
                 key="profile"
                 className="h-14 gap-2 border-b border-divider"
@@ -61,15 +76,17 @@ const Topbar = ({
                 <p className="font-semibold">Signed in as</p>
                 <p className="font-semibold">{user?.email}</p>
               </DropdownItem>
-              <DropdownItem key="profile_link" textValue="Profile">
-                <Link href="/profile" className="text-primary">
-                  Profile
-                </Link>
+              <DropdownItem
+                key="profile_link"
+                className="text-primary"
+              >
+                Profile
               </DropdownItem>
-              <DropdownItem key="logout" textValue="Log Out">
-                <Link href="/logout" className="text-danger">
-                  Log Out
-                </Link>
+              <DropdownItem
+                key="logout"
+                className="text-danger"
+              >
+                Log Out
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
@@ -79,7 +96,7 @@ const Topbar = ({
       <NavbarContent className={user ? "" : "mx-auto"} justify="center">
         <NavbarItem>
           <Link
-            href="/"
+            href="/feed"
             className="relative flex h-10 w-10 items-center justify-center"
           >
             <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-0 dark:opacity-0">
@@ -98,9 +115,9 @@ const Topbar = ({
 
       <NavbarContent justify="end" className={user ? "" : "hidden"}>
         <NavbarItem>
-            <Button as={Link} href="\profile\edit" isIconOnly variant="light" aria-label="Settings">
-              <Settings size={30} stroke="gray" />
-            </Button>
+          <Button as={Link} href="/profile/edit" isIconOnly variant="light" aria-label="Settings">
+            <Settings size={30} stroke="gray" />
+          </Button>
         </NavbarItem>
       </NavbarContent>
     </Navbar>

@@ -3,7 +3,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import CustomNavbar from "@/components/navbar";
 import BottomNav from "@/components/bottomnav";
 import Topbar from "@/components/topbar";
-import MobileThemeSwitcher from "@/components/mobileThemeSwitcher";
 import { createClient } from "@/utils/supabase/server";
 import { User } from "@supabase/supabase-js";
 import MyStatsig from "./my-statsig";
@@ -63,7 +62,6 @@ export default async function LayoutWrapper({
           <main className="mb-16 mt-0 h-full w-full md:mb-0 md:mt-[68px]">
             {children}
           </main>
-          <MobileThemeSwitcher />
           <BottomNav user={user} />
         </Providers>
         <SpeedInsights />

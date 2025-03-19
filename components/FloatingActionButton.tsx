@@ -50,7 +50,7 @@ export default function FloatingActionButton({
       layout
       initial={false}
       animate={isExpanded ? "expanded" : "collapsed"}
-      className="overflow-v fixed bottom-28 right-3"
+      className="overflow-v fixed bottom-16 right-3"
     >
       <motion.div
         variants={{

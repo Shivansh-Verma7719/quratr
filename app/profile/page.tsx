@@ -1,19 +1,26 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { Card, CardHeader, CardBody, CardFooter } from "@heroui/card";
+import React, { useState, useEffect, useCallback } from "react";
+import { Card, CardHeader, CardBody } from "@heroui/card";
 import { Chip } from "@heroui/chip";
 import { Button } from "@heroui/button";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import { fetchUserProfile, fetchUserPosts, UserProfile, Post } from "./helpers";
 import Link from "next/link";
-import { Plus, Edit } from "lucide-react";
+import { Plus, Edit, Sun, Moon } from "lucide-react";
 import { Spinner, Avatar } from "@heroui/react";
+import { PostCard } from "@/components/ui/Post";
+import { useTheme } from "next-themes";
+import { likePost, unlikePost } from "../feed/helpers";
 
 export default function ProfilePage() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [userPosts, setUserPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { theme, setTheme } = useTheme();
+
+  const toggleTheme = useCallback(() => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  }, [theme, setTheme]);
 
   useEffect(() => {
     const loadData = async () => {
@@ -49,7 +56,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="flex min-h-screen w-full items-start justify-center bg-background px-5 py-7">
+    <div className="flex min-h-screen w-full flex-col items-center justify-start bg-background px-5 py-7">
       <div className="w-full max-w-2xl">
         {userProfile && (
           <motion.div
@@ -58,13 +65,9 @@ export default function ProfilePage() {
             transition={{ duration: 0.5 }}
             className="mb-8"
           >
-            <Card className="w-full">
+            <Card className="w-full shadow-md">
               <CardHeader className="justify-between">
-                <div className="flex gap-5">
-                  <Edit
-                    className="absolute right-4 top-4 cursor-pointer text-default-500 hover:text-default-400"
-                    size={20}
-                  />
+                <div className="flex w-full justify-between">
                   <div className="flex w-full flex-col items-start justify-center gap-1">
                     <div className="flex w-full flex-row items-center justify-start p-1">
                       <Avatar
@@ -90,12 +93,33 @@ export default function ProfilePage() {
                       {userProfile.email}
                     </h5>
                   </div>
+                  <div className="flex items-start space-x-2">
+                    <Button
+                      isIconOnly
+                      variant="light"
+                      onPress={toggleTheme}
+                      aria-label="Toggle theme"
+                    >
+                      {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+                    </Button>
+                    <Button
+                      isIconOnly
+                      variant="light"
+                      as={Link}
+                      href="/profile/edit"
+                      aria-label="Edit profile"
+                    >
+                      <Edit size={20} />
+                    </Button>
+                  </div>
                 </div>
               </CardHeader>
               <CardBody>
-                <p>
-                  {userProfile.first_name} {userProfile.last_name}
-                </p>
+                <div className="mb-2">
+                  <h2 className="text-xl font-bold">
+                    {userProfile.first_name} {userProfile.last_name}
+                  </h2>
+                </div>
                 <Chip color={userProfile.is_onboarded ? "success" : "danger"}>
                   {userProfile.is_onboarded
                     ? "Onboarding complete"
@@ -106,65 +130,27 @@ export default function ProfilePage() {
           </motion.div>
         )}
 
-        <h2 className="mb-4 text-center text-2xl font-bold">Your Posts</h2>
+        <h2 className="mb-6 text-center text-2xl font-bold">Your Posts</h2>
+
         {userPosts.length > 0 ? (
-          userPosts.map((post, index) => (
-            <motion.div
-              key={post.id}
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="mb-6"
-            >
-              <Card className="w-full">
-                <CardHeader className="justify-between">
-                  <div className="flex gap-5">
-                    <div className="flex flex-row items-center justify-center p-1">
-                      <Avatar
-                        isBordered
-                        as="button"
-                        className="mr-2"
-                        color="primary"
-                        showFallback
-                        name={post.username}
-                        getInitials={(name) =>
-                          name
-                            ?.split(" ")
-                            .map((n) => n[0])
-                            .join("")
-                        }
-                        size="sm"
-                      />
-                      <h4 className="text-medium font-semibold text-default-600">
-                        @{post.username}
-                      </h4>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardBody className="px-3 py-0 text-small text-default-400">
-                  <p>{post.content}</p>
-                </CardBody>
-                <CardFooter className="gap-3">
-                  {post.image && (
-                    <Image
-                      alt="Post image"
-                      className="h-full w-full rounded-xl object-cover"
-                      src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/feed_images/${post.image}`}
-                      width={400}
-                      height={300}
-                      quality={100}
-                    />
-                  )}
-                </CardFooter>
-              </Card>
-            </motion.div>
-          ))
+          <div>
+            {userPosts.map((post, index) => (
+              <PostCard
+                key={post.id}
+                post={post}
+                index={index}
+                likePost={likePost}
+                dislikePost={unlikePost}
+                isLiked={post.isLiked}
+              />
+            ))}
+          </div>
         ) : (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="mt-10 flex flex-col items-center justify-center"
+            className="mt-10 flex flex-col items-center justify-center rounded-lg bg-default-50 p-10 shadow-sm"
           >
             <p className="mb-4 text-xl">You haven&apos;t made any posts yet.</p>
             <Button
@@ -174,6 +160,7 @@ export default function ProfilePage() {
               variant="flat"
               size="lg"
               startContent={<Plus />}
+              className="font-medium"
             >
               Create New Post
             </Button>
