@@ -6,30 +6,17 @@ import { Button } from "@heroui/button";
 import { motion } from "framer-motion";
 import { fetchUserProfile, fetchUserPosts, UserProfile, Post } from "./helpers";
 import Link from "next/link";
-import { Plus, Edit, Sun, Moon, Monitor } from "lucide-react";
-import { Spinner, Avatar, Tabs, Tab } from "@heroui/react";
+import { Plus, Edit } from "lucide-react";
+import { Spinner, Avatar } from "@heroui/react";
 import { PostCard } from "@/components/ui/Post";
-import { useTheme } from "next-themes";
+import { MobileThemeSwitcher } from "@/components/MobileThemeSwitcher";
 import { likePost, unlikePost } from "../feed/helpers";
+import { ShareButton } from "@/components/Share";
 
 export default function ProfilePage() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [userPosts, setUserPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { theme, setTheme } = useTheme();
-  const [selectedTheme, setSelectedTheme] = useState<string>(theme || "system");
-
-  useEffect(() => {
-    if (theme) {
-      setSelectedTheme(theme);
-    }
-  }, [theme]);
-
-  const handleThemeChange = (key: React.Key) => {
-    if (typeof key === "string") {
-      setTheme(key);
-    }
-  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -76,6 +63,7 @@ export default function ProfilePage() {
           >
             <Card className="w-full shadow-md">
               <CardHeader className="justify-between">
+                {/* Avatar and user info section */}
                 <div className="flex w-full justify-between">
                   <div className="flex w-full flex-col items-start justify-center gap-1">
                     <div className="flex w-full flex-row items-center justify-start p-1">
@@ -103,6 +91,13 @@ export default function ProfilePage() {
                     </h5>
                   </div>
                   <div className="flex items-start space-x-2">
+                    <ShareButton
+                      title={`${userProfile.first_name} ${userProfile.last_name}'s Profile`}
+                      text={`Check out my profile on Quratr!`}
+                      variant="light"
+                      isIconOnly
+                      iconSize={20}
+                    />
                     <Button
                       isIconOnly
                       variant="light"
@@ -128,44 +123,7 @@ export default function ProfilePage() {
                       : "Onboarding incomplete"}
                   </Chip>
 
-                  <Tabs
-                    selectedKey={selectedTheme}
-                    onSelectionChange={handleThemeChange}
-                    aria-label="Theme options"
-                    color="primary"
-                    size="sm"
-                    variant="bordered"
-                    className="text-default-600"
-                    radius="full"
-                  >
-                    <Tab
-                      key="light"
-                      title={
-                        <div className="flex items-center gap-1">
-                          <Sun size={16} />
-                          <span>Light</span>
-                        </div>
-                      }
-                    />
-                    <Tab
-                      key="system"
-                      title={
-                        <div className="flex items-center gap-1">
-                          <Monitor size={16} />
-                          <span>System</span>
-                        </div>
-                      }
-                    />
-                    <Tab
-                      key="dark"
-                      title={
-                        <div className="flex items-center gap-1">
-                          <Moon size={16} />
-                          <span>Dark</span>
-                        </div>
-                      }
-                    />
-                  </Tabs>
+                  <MobileThemeSwitcher />
                 </div>
               </CardBody>
             </Card>
