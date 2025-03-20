@@ -6,6 +6,8 @@ export interface UserProfile {
   first_name: string;
   last_name: string;
   is_onboarded: boolean;
+  created_at?: string;
+  id: string;
 }
 
 export interface Post {
@@ -46,6 +48,8 @@ export async function fetchUserProfile(): Promise<UserProfile | null> {
     first_name: data.first_name || "",
     last_name: data.last_name || "",
     is_onboarded: data.is_onboarded || false,
+    id: data.id,
+    created_at: data.created_at,
     // avatar: data.avatar_url,
     // bio: data.bio
   };
@@ -67,6 +71,51 @@ export async function fetchUserPosts(): Promise<Post[]> {
     .order("created_at", { ascending: false });
 
   if (!data) return [];
+
+  // Fetch reactions for authenticated user
+  const { data: reactions } = await supabase
+    .from("post_reactions")
+    .select("post_id, reaction")
+    .eq("user_id", user.id)
+    .in(
+      "post_id",
+      data.map((post) => post.id)
+    );
+
+  // Create a map of liked posts
+  const likedPosts = new Set(
+    reactions?.filter((r) => r.reaction === "like").map((r) => r.post_id) || []
+  );
+
+  if (error) {
+    console.error("Error fetching user posts:", error);
+    return [];
+  }
+
+  return data.map((post) => ({
+    ...post,
+    isLiked: likedPosts.has(post.id),
+  }));
+}
+
+export async function fetchUserPostsById(userId: string): Promise<Post[]> {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return [];
+
+  const { data, error } = await supabase
+    .from("posts")
+    .select("*")
+    .eq("user_id", userId);
+
+  if (error) {
+    console.error("Error fetching user post:", error);
+    return [];
+  }
 
   // Fetch reactions for authenticated user
   const { data: reactions } = await supabase

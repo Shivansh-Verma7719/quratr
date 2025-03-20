@@ -51,6 +51,11 @@ export default function ProfilePage() {
     );
   }
 
+  const getProfileShareUrl = (userId: string) => {
+    const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
+    return `${baseUrl}/profile/${userId}`;
+  };
+
   return (
     <div className="flex min-h-screen w-full flex-col items-center justify-start bg-background px-5 py-7">
       <div className="w-full max-w-2xl">
@@ -93,7 +98,8 @@ export default function ProfilePage() {
                   <div className="flex items-start space-x-2">
                     <ShareButton
                       title={`${userProfile.first_name} ${userProfile.last_name}'s Profile`}
-                      text={`Check out my profile on Quratr!`}
+                      text={`Check out ${userProfile.first_name} ${userProfile.last_name}'s profile on Quratr!`}
+                      url={getProfileShareUrl(userProfile.id)}
                       iconSize={20}
                     />
                     <Button
