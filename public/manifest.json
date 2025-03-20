@@ -82,6 +82,14 @@
       ]
     }
   ],
+  "share_target": {
+    "action": "/share-handler",
+    "method": "GET",
+    "params": {
+      "text": "description",
+      "url": "link"
+    }
+  },
   "orientation": "portrait",
   "prefer_related_applications": false,
   "related_applications": [],
