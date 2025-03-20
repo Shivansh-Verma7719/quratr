@@ -56,7 +56,7 @@ export default async function LayoutWrapper({
   return (
     <>
       <MyStatsig user={user || ({ id: "" } as User)}>
-        <Providers attribute="class" defaultTheme="dark">
+        <Providers attribute="class" defaultTheme="system">
           <Topbar user={user} userProfile={userProfile} />
           <CustomNavbar user={user} />
           <main className="mb-16 mt-0 h-full w-full md:mb-0 md:mt-[68px]">

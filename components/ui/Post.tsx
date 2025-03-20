@@ -95,7 +95,7 @@ export const PostCard = ({
             </div>
           </div>
         </CardHeader>
-        <CardBody className="px-3 py-0 text-md md:text-lg text-default-500 dark:text-default-400">
+        <CardBody className="px-3 py-0 text-md md:text-lg text-default-600 dark:text-default-400">
           {post.content}
         </CardBody>
         <CardFooter className="flex flex-col p-0">

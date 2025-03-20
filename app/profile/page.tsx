@@ -1,13 +1,13 @@
 "use client";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardHeader, CardBody } from "@heroui/card";
 import { Chip } from "@heroui/chip";
 import { Button } from "@heroui/button";
 import { motion } from "framer-motion";
 import { fetchUserProfile, fetchUserPosts, UserProfile, Post } from "./helpers";
 import Link from "next/link";
-import { Plus, Edit, Sun, Moon } from "lucide-react";
-import { Spinner, Avatar } from "@heroui/react";
+import { Plus, Edit, Sun, Moon, Monitor } from "lucide-react";
+import { Spinner, Avatar, Tabs, Tab } from "@heroui/react";
 import { PostCard } from "@/components/ui/Post";
 import { useTheme } from "next-themes";
 import { likePost, unlikePost } from "../feed/helpers";
@@ -17,10 +17,19 @@ export default function ProfilePage() {
   const [userPosts, setUserPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { theme, setTheme } = useTheme();
+  const [selectedTheme, setSelectedTheme] = useState<string>(theme || "system");
 
-  const toggleTheme = useCallback(() => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  }, [theme, setTheme]);
+  useEffect(() => {
+    if (theme) {
+      setSelectedTheme(theme);
+    }
+  }, [theme]);
+
+  const handleThemeChange = (key: React.Key) => {
+    if (typeof key === "string") {
+      setTheme(key);
+    }
+  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -73,10 +82,10 @@ export default function ProfilePage() {
                       <Avatar
                         isBordered
                         as="button"
-                        className="mr-2 transition-transform"
+                        className="mr-3 transition-transform"
                         color="primary"
                         showFallback
-                        name={userProfile.username}
+                        name={userProfile?.first_name + " " + userProfile?.last_name}
                         getInitials={(name) =>
                           name
                             ?.split(" ")
@@ -85,23 +94,15 @@ export default function ProfilePage() {
                         }
                         size="sm"
                       />
-                      <h4 className="text-small font-semibold text-default-600">
+                      <h4 className="text-md font-semibold text-default-600">
                         @{userProfile.username}
                       </h4>
                     </div>
-                    <h5 className="text-small tracking-tight text-default-400">
+                    <h5 className="text-md tracking-tight text-default-600">
                       {userProfile.email}
                     </h5>
                   </div>
                   <div className="flex items-start space-x-2">
-                    <Button
-                      isIconOnly
-                      variant="light"
-                      onPress={toggleTheme}
-                      aria-label="Toggle theme"
-                    >
-                      {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
-                    </Button>
                     <Button
                       isIconOnly
                       variant="light"
@@ -120,11 +121,52 @@ export default function ProfilePage() {
                     {userProfile.first_name} {userProfile.last_name}
                   </h2>
                 </div>
-                <Chip color={userProfile.is_onboarded ? "success" : "danger"}>
-                  {userProfile.is_onboarded
-                    ? "Onboarding complete"
-                    : "Onboarding incomplete"}
-                </Chip>
+                <div className="flex flex-wrap justify-between items-center gap-2 mb-2">
+                  <Chip color={userProfile.is_onboarded ? "success" : "danger"}>
+                    {userProfile.is_onboarded
+                      ? "Onboarding complete"
+                      : "Onboarding incomplete"}
+                  </Chip>
+
+                  <Tabs
+                    selectedKey={selectedTheme}
+                    onSelectionChange={handleThemeChange}
+                    aria-label="Theme options"
+                    color="primary"
+                    size="sm"
+                    variant="bordered"
+                    className="text-default-600"
+                    radius="full"
+                  >
+                    <Tab
+                      key="light"
+                      title={
+                        <div className="flex items-center gap-1">
+                          <Sun size={16} />
+                          <span>Light</span>
+                        </div>
+                      }
+                    />
+                    <Tab
+                      key="system"
+                      title={
+                        <div className="flex items-center gap-1">
+                          <Monitor size={16} />
+                          <span>System</span>
+                        </div>
+                      }
+                    />
+                    <Tab
+                      key="dark"
+                      title={
+                        <div className="flex items-center gap-1">
+                          <Moon size={16} />
+                          <span>Dark</span>
+                        </div>
+                      }
+                    />
+                  </Tabs>
+                </div>
               </CardBody>
             </Card>
           </motion.div>
