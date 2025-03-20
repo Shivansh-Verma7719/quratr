@@ -94,8 +94,6 @@ export default function ProfilePage() {
                     <ShareButton
                       title={`${userProfile.first_name} ${userProfile.last_name}'s Profile`}
                       text={`Check out my profile on Quratr!`}
-                      variant="light"
-                      isIconOnly
                       iconSize={20}
                     />
                     <Button
