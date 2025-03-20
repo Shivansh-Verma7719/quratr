@@ -1,11 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useTheme } from "next-themes";
+// import { useTheme } from "next-themes";
 import {
   Home,
   ListCheck,
   LogIn,
-  // Newspaper,
   NotebookPen,
   PlusCircle,
   Users,
@@ -20,7 +19,7 @@ const BottomNav = ({ user }: { user: User | null }) => {
   const pathname = usePathname();
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const { theme } = useTheme();
+  // const { theme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -56,6 +55,19 @@ const BottomNav = ({ user }: { user: User | null }) => {
         { name: "Register", href: "/register", icon: NotebookPen },
       ];
 
+  // Get the icon color based on active status and theme
+  const getIconColor = (isActive: boolean) => {
+    if (!mounted) return "gray";
+    
+    if (isActive) {
+      // Use text color for active icons (will adapt to theme automatically)
+      return "var(--color-foreground)";
+    } else {
+      // Use a muted color for inactive icons
+      return "gray";
+    }
+  };
+
   if (!mounted) return null;
 
   return (
@@ -83,26 +95,14 @@ const BottomNav = ({ user }: { user: User | null }) => {
               >
                 {page.name === "Discover" ? (
                   <IconSwipe
-                    color={
-                      pathname === page.href
-                        ? theme === "dark"
-                          ? "white"
-                          : "black"
-                        : "gray"
-                    }
+                    color={getIconColor(pathname === page.href)}
                     size={30}
                   />
                 ) : (
                   <page.icon
                     width="30"
                     height="30"
-                    stroke={
-                      pathname === page.href
-                        ? theme === "dark"
-                          ? "white"
-                          : "black"
-                        : "gray"
-                    }
+                    stroke={getIconColor(pathname === page.href)}
                   />
                 )}
               </Link>

@@ -9,10 +9,13 @@ const NextThemesProvider = dynamic(
 )
 
 import { type ThemeProviderProps } from 'next-themes/dist/types'
+import { HeroUIProvider } from "@heroui/react";
 import dynamic from 'next/dynamic'
 
 export function Providers({ children, ...props }: ThemeProviderProps) {
-	return <NextThemesProvider {...props}>
+	return <HeroUIProvider>
+		<NextThemesProvider {...props}>
 			{children}
-	</NextThemesProvider>
+		</NextThemesProvider>
+	</HeroUIProvider>
 }

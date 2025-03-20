@@ -87,7 +87,7 @@ export default function DiscoverPage() {
   const [currentPlace, setCurrentPlace] = useState<Card | null>(null);
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
   const [showMatchBackground, setShowMatchBackground] = useState(false);
-  const { theme } = useTheme();
+  const { theme, resolvedTheme } = useTheme(); // Add resolvedTheme
 
   useEffect(() => {
     localStorage.setItem("selectedCities", JSON.stringify(selectedCities));
@@ -154,12 +154,16 @@ export default function DiscoverPage() {
       root.style.setProperty("--color-text-secondary", "#22c55e");
     } else {
       // Reset based on theme
-      if (theme === "dark") {
+      // Use resolvedTheme to determine the actual theme (dark or light)
+      const effectiveTheme = theme === "system" ? resolvedTheme : theme;
+
+      if (effectiveTheme === "dark") {
         root.style.setProperty("--color-background", "#0a0a0a");
         root.style.setProperty("--color-foreground", "#ededed");
         root.style.setProperty("--color-text", "#ededed");
         root.style.setProperty("--color-text-secondary", "#0a0a0a");
       } else {
+        // Default to light theme if effectiveTheme is light or undefined
         root.style.setProperty("--color-background", "#ffffff");
         root.style.setProperty("--color-foreground", "#0a0a0a");
         root.style.setProperty("--color-text", "#171717");
@@ -173,7 +177,7 @@ export default function DiscoverPage() {
         });
       }, 1500);
     }
-  }, [showMatchBackground, theme]);
+  }, [showMatchBackground, theme, resolvedTheme]);
 
   const handleUsersSelected = async (users: User[]) => {
     setIsLoading(true);
@@ -628,30 +632,33 @@ export default function DiscoverPage() {
                 )}
               </div>
             )}
-
-            <FloatingActionButton
-              cityLocalityMap={cityLocalityMap}
-              selectedCities={selectedCities}
-              setSelectedCities={setSelectedCities}
-              selectedLocalities={selectedLocalities}
-              setSelectedLocalities={setSelectedLocalities}
-              numberOfFilters={
-                selectedCities.length + selectedLocalities.length
-              }
-            />
+            {selectedUsers.length > 0 && (
+              <FloatingActionButton
+                cityLocalityMap={cityLocalityMap}
+                selectedCities={selectedCities}
+                setSelectedCities={setSelectedCities}
+                selectedLocalities={selectedLocalities}
+                setSelectedLocalities={setSelectedLocalities}
+                numberOfFilters={
+                  selectedCities.length + selectedLocalities.length
+                }
+              />
+            )}
           </div>
         </div>
 
-        <div className="fixed bottom-14 left-3 z-50">
-          <Button
-            color="primary"
-            variant="shadow"
-            className="mr-4 h-12 w-12 rounded-full"
-            onPress={() => setIsModalOpen(true)}
-            startContent={<Users className="h-6 w-6" />}
-            isIconOnly
-          />
-        </div>
+        {selectedUsers.length > 0 && (
+          <div className="fixed bottom-14 left-3 z-50">
+            <Button
+              color="primary"
+              variant="shadow"
+              className="mr-4 h-12 w-12 rounded-full"
+              onPress={() => setIsModalOpen(true)}
+              startContent={<Users className="h-6 w-6" />}
+              isIconOnly
+            />
+          </div>
+        )}
 
         <PlaceDrawer
           isVisible={matchAnimation}

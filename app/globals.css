@@ -34,7 +34,7 @@
   --color-background: #ffffff;
   --color-foreground: #0a0a0a;
   --color-text: #171717;
-  --color-text-secondary: #ffffff; /* gray-600 */
+  --color-text-secondary: #ffffff;
   --transition-duration: 1500ms;
 }
 
@@ -43,7 +43,6 @@
   --color-foreground: #ededed;
   --color-text: #ededed;
   --color-text-secondary: #0a0a0a;
-  /* Add more variables as needed */
 }
 
 html {
