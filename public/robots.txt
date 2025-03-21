@@ -1,6 +1,11 @@
 # *
 User-agent: *
 Allow: /
+Allow: /feedback
+Allow: /login
+Allow: /register
+Allow: /termsandconditions
+Allow: /privacy_policy
 Disallow: /api/
 Disallow: /discover
 Disallow: /curated
@@ -9,6 +14,7 @@ Disallow: /profile/edit
 Disallow: /onboarding
 Disallow: /settings
 Disallow: /feed
+Disallow: /group_swipe
 Disallow: /feed/new
 
 # Host
