@@ -79,7 +79,7 @@ const LoginForm: React.FC = () => {
 
       // User exists, proceed with password reset
       const { error } = await supabase.auth.resetPasswordForEmail(formData.email, {
-        redirectTo: `http://localhost:3000/account/reset-password`,
+        redirectTo: `https://quratr.com/account/reset-password`,
       });
 
       if (error) {
