@@ -3,20 +3,15 @@ import {
   Navbar,
   NavbarContent,
   NavbarItem,
-  DropdownItem,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
   Avatar,
   Button,
 } from "@heroui/react";
-import { Settings } from "lucide-react";
+import { LogOut } from "lucide-react";
 import QuratrLogoDark from "@/components/logos/logo_light";
 import QuratrLogo from "@/components/logos/logo";
 import { User } from "@supabase/supabase-js";
 import { UserProfile } from "@/app/layoutWrapper";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 const Topbar = ({
   user,
@@ -25,16 +20,6 @@ const Topbar = ({
   user: User | null;
   userProfile: UserProfile | null;
 }) => {
-  const router = useRouter();
-
-  const handleAction = (key: string) => {
-    if (key === "profile_link") {
-      router.push("/profile");
-    } else if (key === "logout") {
-      router.push("/logout");
-    }
-  };
-
   return (
     <Navbar
       className="border-b border-divider bg-background md:hidden"
@@ -45,51 +30,22 @@ const Topbar = ({
     >
       <NavbarContent justify="start" className={user ? "" : "hidden"}>
         <NavbarItem key="profile_dropdown">
-          <Dropdown placement="bottom-end" backdrop="blur">
-            <DropdownTrigger>
-              <Avatar
-                isBordered
-                as="button"
-                className="transition-transform"
-                color="primary"
-                showFallback
-                name={userProfile?.first_name + " " + userProfile?.last_name}
-                getInitials={(name) =>
-                  name
-                    ?.split(" ")
-                    .map((n) => n[0])
-                    .join("")
-                }
-                size="sm"
-              />
-            </DropdownTrigger>
-            <DropdownMenu
-              aria-label="Profile Actions"
-              variant="flat"
-              onAction={(key) => handleAction(key as string)}
-            >
-              <DropdownItem
-                key="profile"
-                className="h-14 gap-2 border-b border-divider"
-                textValue="Signed in as"
-              >
-                <p className="font-semibold">Signed in as</p>
-                <p className="font-semibold">{user?.email}</p>
-              </DropdownItem>
-              <DropdownItem
-                key="profile_link"
-                className="text-primary"
-              >
-                Profile
-              </DropdownItem>
-              <DropdownItem
-                key="logout"
-                className="text-danger"
-              >
-                Log Out
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
+          <Avatar
+            isBordered
+            as={Link}
+            href="/profile"
+            className="transition-transform"
+            color="primary"
+            showFallback
+            name={userProfile?.first_name + " " + userProfile?.last_name}
+            getInitials={(name) =>
+              name
+                ?.split(" ")
+                .map((n) => n[0])
+                .join("")
+            }
+            size="sm"
+          />
         </NavbarItem>
       </NavbarContent>
 
@@ -115,8 +71,8 @@ const Topbar = ({
 
       <NavbarContent justify="end" className={user ? "" : "hidden"}>
         <NavbarItem>
-          <Button as={Link} href="/profile/edit" isIconOnly variant="light" aria-label="Settings">
-            <Settings size={30} stroke="gray" />
+          <Button as={Link} href="/logout" isIconOnly variant="light" aria-label="Settings">
+            <LogOut size={30} stroke="gray" />
           </Button>
         </NavbarItem>
       </NavbarContent>
