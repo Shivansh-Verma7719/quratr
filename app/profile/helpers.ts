@@ -53,15 +53,24 @@ export async function fetchUserPosts(): Promise<Post[]> {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) return [];
+  if (!user) {
+    console.error("User not found");
+    return [];
+  }
 
-  const { data, error } = await supabase
-    .from("posts")
-    .select("*")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false });
+  // Call the RPC function to fetch posts for a specific user
+  const { data: posts, error } = await supabase.rpc("fetch_posts_by_id", {
+    p_user_id: user.id,
+  });
 
-  if (!data) return [];
+  if (error) {
+    console.error("Error fetching user posts:", error);
+    return [];
+  }
+
+  if (!posts || posts.length === 0) {
+    return [];
+  }
 
   // Fetch reactions for authenticated user
   const { data: reactions } = await supabase
@@ -70,7 +79,7 @@ export async function fetchUserPosts(): Promise<Post[]> {
     .eq("user_id", user.id)
     .in(
       "post_id",
-      data.map((post) => post.id)
+      posts.map((post: Post) => post.id)
     );
 
   // Create a map of liked posts
@@ -78,12 +87,8 @@ export async function fetchUserPosts(): Promise<Post[]> {
     reactions?.filter((r) => r.reaction === "like").map((r) => r.post_id) || []
   );
 
-  if (error) {
-    console.error("Error fetching user posts:", error);
-    return [];
-  }
-
-  return data.map((post) => ({
+  // Return posts with isLiked status
+  return posts.map((post: Post) => ({
     ...post,
     isLiked: likedPosts.has(post.id),
   }));
@@ -105,8 +110,6 @@ export async function fetchUserPostsById(userId: string): Promise<Post[]> {
   const { data: posts, error } = await supabase.rpc("fetch_posts_by_id", {
     p_user_id: userId,
   });
-
-  console.log(userId, posts);
 
   if (error) {
     console.error("Error fetching user posts:", error);
