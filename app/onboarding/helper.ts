@@ -79,30 +79,30 @@ export async function submitOnboarding(formData: OnboardingData) {
   return { success: true, error: null };
 }
 
-export async function checkOnboardingStatus() {
-  const supabase = createClient();
+// export async function checkOnboardingStatus() {
+//   const supabase = createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+//   const {
+//     data: { user },
+//   } = await supabase.auth.getUser();
 
-  if (!user) {
-    return { success: false, error: "User not found" };
-  }
+//   if (!user) {
+//     return { success: false, error: "User not found" };
+//   }
 
-  const { data: onboardingData, error: onboardingError } = await supabase
-    .from("profiles")
-    .select("is_onboarded")
-    .eq("id", user.id)
-    .single();
+//   const { data: onboardingData, error: onboardingError } = await supabase
+//     .from("profiles")
+//     .select("is_onboarded")
+//     .eq("id", user.id)
+//     .single();
 
-  if (onboardingData && onboardingData.is_onboarded) {
-    return { success: true, error: null };
-  }
+//   if (onboardingData && onboardingData.is_onboarded) {
+//     return { success: true, error: null };
+//   }
 
-  if (onboardingError) {
-    return { success: false, error: onboardingError };
-  }
+//   if (onboardingError) {
+//     return { success: false, error: onboardingError };
+//   }
 
-  return { success: false, error: "Onboarding not found" };
-}
+//   return { success: false, error: "Onboarding not found" };
+// }

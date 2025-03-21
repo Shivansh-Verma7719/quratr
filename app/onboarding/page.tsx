@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight, PartyPopper, ShieldAlert, User, UserIcon } from "lucide-react";
 import Footer from "@/components/footer/index";
-import { submitOnboarding, checkOnboardingStatus } from "./helper";
+import { submitOnboarding } from "./helper";
 import { useRouter } from "next/navigation";
 import { Button } from "@heroui/button";
 import { Card, CardHeader, CardBody } from "@heroui/card";
@@ -47,16 +47,41 @@ const OnboardingPage: React.FC = () => {
         return;
       }
 
+      // Extract metadata from OAuth if available
+      const metadata = data.user.user_metadata;
+
       // Check if user is already onboarded
-      const onboardingResponse = await checkOnboardingStatus();
-      if (onboardingResponse.success === true) {
+      // User is already onboarded, check if they have an avatar
+      const { data: profileData, error: profileError } = await supabase
+        .from("profiles")
+        .select("avatar, is_onboarded")
+        .eq("id", data.user.id)
+        .single();
+
+      if (profileData?.is_onboarded === true) {
+        if (!profileError && profileData) {
+          // If user doesn't have an avatar but has one in metadata, update it
+          if (!profileData.avatar && metadata && (metadata.avatar_url || metadata.picture)) {
+            const avatarUrl = metadata.avatar_url || metadata.picture;
+
+            // Update the user's profile with the avatar from metadata
+            const { error: updateError } = await supabase
+              .from("profiles")
+              .update({ avatar: avatarUrl })
+              .eq("id", data.user.id);
+
+            if (updateError) {
+              console.error("Error updating avatar:", updateError);
+            }
+          }
+        }
+
+        // Redirect to discover page regardless
         router.push("/discover");
         return;
       }
 
-      // Extract metadata from OAuth if available
-      const metadata = data.user.user_metadata;
-
+      // User is not onboarded, continue with normal onboarding flow
       if (metadata) {
         // Handle name - try full_name first, then name
         let firstName = "";
