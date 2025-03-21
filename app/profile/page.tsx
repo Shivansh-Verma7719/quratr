@@ -4,7 +4,8 @@ import { Card, CardHeader, CardBody } from "@heroui/card";
 import { Chip } from "@heroui/chip";
 import { Button } from "@heroui/button";
 import { motion } from "framer-motion";
-import { fetchUserProfile, fetchUserPosts, UserProfile, Post } from "./helpers";
+import { fetchUserProfile, fetchUserPosts, UserProfile } from "./helpers";
+import Post from "@/types/post"
 import Link from "next/link";
 import { Plus, Edit } from "lucide-react";
 import { Spinner, Avatar } from "@heroui/react";
@@ -77,6 +78,8 @@ export default function ProfilePage() {
                         as="button"
                         className="mr-3 transition-transform"
                         color="primary"
+                        src={userProfile.avatar}
+                        alt={userProfile.first_name + " " + userProfile.last_name}
                         showFallback
                         name={userProfile?.first_name + " " + userProfile?.last_name}
                         getInitials={(name) =>
@@ -85,6 +88,9 @@ export default function ProfilePage() {
                             .map((n) => n[0])
                             .join("")
                         }
+                        imgProps={{
+                          referrerPolicy: "no-referrer",
+                        }}
                         size="sm"
                       />
                       <h4 className="text-md font-semibold text-default-600">

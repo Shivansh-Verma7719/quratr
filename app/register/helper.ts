@@ -2,11 +2,8 @@
 import { createClient } from "@/utils/supabase/server";
 
 type FormData = {
-  username: string;
   email: string;
   password: string;
-  firstName: string;
-  lastName: string;
 };
 
 export async function signup(formData: FormData) {
@@ -20,20 +17,6 @@ export async function signup(formData: FormData) {
   if (signUpError) {
     console.log(signUpError);
     return { success: false, error: signUpError.message };
-  }
-
-  const { error: profileError } = await supabase.from("profiles").insert({
-    id: userData.user?.id,
-    username: formData.username,
-    email: formData.email,
-    first_name: formData.firstName,
-    last_name: formData.lastName,
-    is_onboarded: false,
-  });
-
-  if (profileError) {
-    console.log(profileError);
-    return { success: false, error: profileError.message };
   }
 
   if (userData && userData.user) {

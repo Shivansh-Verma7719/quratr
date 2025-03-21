@@ -36,8 +36,13 @@ const Topbar = ({
             href="/profile"
             className="transition-transform"
             color="primary"
+            src={userProfile?.avatar}
+            alt={userProfile?.first_name + " " + userProfile?.last_name}
             showFallback
             name={userProfile?.first_name + " " + userProfile?.last_name}
+            imgProps={{
+              referrerPolicy: "no-referrer",
+            }}
             getInitials={(name) =>
               name
                 ?.split(" ")

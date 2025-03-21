@@ -1,13 +1,20 @@
 import { createClient } from "@/utils/supabase/client";
 
+// Interface matches exactly what the RPC returns + isLiked
 export interface Post {
-  id: string;
-  username: string;
+  id: number;
+  created_at: string;
   content: string;
   image: string;
-  created_at: string;
-  isLiked: boolean;
   reaction_count: number;
+  profile_id: string; // Match RPC column name
+  profile_created_at: string;
+  profile_username: string;
+  profile_first_name: string | null;
+  profile_last_name: string | null;
+  profile_email: string;
+  profile_avatar: string | null;
+  isLiked: boolean; // Added client-side
 }
 
 export async function fetchPosts(
@@ -17,10 +24,9 @@ export async function fetchPosts(
   const supabase = createClient();
   const { data: userData } = await supabase.auth.getUser();
 
-  // Fetch posts
-  const { data, error } = await supabase
-    .from("posts")
-    .select("*")
+  // Call the RPC function to fetch posts with profile information
+  const { data: posts, error } = await supabase
+    .rpc("fetch_posts")
     .order("created_at", { ascending: false })
     .range(start, start + limit - 1);
 
@@ -29,11 +35,11 @@ export async function fetchPosts(
     return [];
   }
 
-  if (!data) return [];
+  if (!posts) return [];
 
   // If user is not authenticated, return posts with isLiked as false
   if (!userData?.user?.id) {
-    return data.map((post) => ({ ...post, isLiked: false }));
+    return posts;
   }
 
   // Fetch reactions for authenticated user
@@ -43,7 +49,7 @@ export async function fetchPosts(
     .eq("user_id", userData.user.id)
     .in(
       "post_id",
-      data.map((post) => post.id)
+      posts.map((post: Post) => post.id)
     );
 
   // Create a map of liked posts
@@ -52,13 +58,14 @@ export async function fetchPosts(
   );
 
   // Return posts with isLiked status
-  return data.map((post) => ({
+  return posts.map((post: Post) => ({
     ...post,
     isLiked: likedPosts.has(post.id),
   }));
 }
 
-export async function likePost(postId: string): Promise<void> {
+// The rest of the helper functions remain the same
+export async function likePost(postId: number): Promise<void> {
   const supabase = createClient();
   const { data: userData, error: userError } = await supabase.auth.getUser();
   if (userError || !userData) {
@@ -75,7 +82,7 @@ export async function likePost(postId: string): Promise<void> {
   }
 }
 
-export async function unlikePost(postId: string): Promise<void> {
+export async function unlikePost(postId: number): Promise<void> {
   const supabase = createClient();
   const { data: userData, error: userError } = await supabase.auth.getUser();
   if (userError || !userData) {

@@ -5,21 +5,13 @@ import { Avatar } from "@heroui/react";
 import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
 import { LikeButton } from "@/components/interactions/LikeButton";
-
-export interface Post {
-  id: string;
-  username: string;
-  content: string;
-  image: string;
-  created_at: string;
-  reaction_count: number;
-}
+import { Post } from "@/app/feed/helpers";
 
 interface PostProps {
   post: Post;
   index: number;
-  likePost: (postId: string) => void;
-  dislikePost: (postId: string) => void;
+  likePost: (postId: number) => void;
+  dislikePost: (postId: number) => void;
   isLiked: boolean;
 }
 
@@ -79,18 +71,23 @@ export const PostCard = ({
                 isBordered
                 className="mr-2 transition-transform"
                 color="secondary"
+                src={post.profile_avatar!}
+                alt={post.profile_username}
                 showFallback
-                name={post.username}
+                name={post.profile_first_name + " " + post.profile_last_name}
                 getInitials={(name) =>
                   name
                     ?.split(" ")
                     .map((n) => n[0])
                     .join("")
                 }
+                imgProps={{
+                  referrerPolicy: "no-referrer",
+                }}
                 size="sm"
               />
               <h4 className="text-medium font-semibold leading-none text-default-600 dark:text-white">
-                @{post.username}
+                @{post.profile_username}
               </h4>
             </div>
           </div>

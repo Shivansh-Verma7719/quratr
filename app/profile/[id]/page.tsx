@@ -13,7 +13,8 @@ import { ShareButton } from "@/components/Share";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { format } from "date-fns";
-import { UserProfile, Post } from "../helpers";
+import { UserProfile } from "../helpers";
+import Post from "@/types/post";
 import { useParams } from "next/navigation";
 
 export default function UserProfilePage() {
@@ -93,8 +94,6 @@ export default function UserProfilePage() {
             </div>
         );
     }
-
-    console.log(userPosts);
 
     return (
         <div className="flex min-h-screen w-full flex-col items-center justify-start bg-background px-5 py-7">

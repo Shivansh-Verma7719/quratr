@@ -2,8 +2,23 @@
 import { createClient } from "@/utils/supabase/client";
 
 type OnboardingData = {
+  firstName: string;
+  lastName: string;
+  username: string;
+  avatarUrl?: string; // Optional avatar URL from OAuth
   onboardingAnswers: string[];
 };
+
+  // Prepare profile data
+  type ProfileData = {
+    id: string;
+    username: string;
+    first_name: string;
+    last_name: string;
+    is_onboarded: boolean;
+    vector: number[];
+    avatar?: string;
+  };
 
 export async function submitOnboarding(formData: OnboardingData) {
   const supabase = createClient();
@@ -17,6 +32,36 @@ export async function submitOnboarding(formData: OnboardingData) {
     return { success: false, error: userError };
   }
 
+  // Convert onboarding answers to float array for vector field
+  const vectorValues = formData.onboardingAnswers.map((answer) =>
+    answer === "Yes" ? 1.0 : 0.0
+  );
+
+  const profileData: ProfileData = {
+    id: user.id,
+    username: formData.username,
+    first_name: formData.firstName,
+    last_name: formData.lastName,
+    is_onboarded: true,
+    vector: vectorValues, // Store the vector representation of user preferences
+  };
+
+  // Only add avatar if it exists
+  if (formData.avatarUrl) {
+    profileData.avatar = formData.avatarUrl;
+  }
+
+  // Update profile with user details and vector
+  const { error: profileError } = await supabase
+    .from("profiles")
+    .insert(profileData)
+
+  if (profileError) {
+    console.log("Profile update error:", profileError);
+    return { success: false, error: profileError };
+  }
+
+  // Insert onboarding answers
   const { error: onboardingError } = await supabase.from("onboarding").insert({
     id: user.id,
     "1": formData.onboardingAnswers[0] === "Yes" ? 1 : 0,
@@ -26,18 +71,8 @@ export async function submitOnboarding(formData: OnboardingData) {
     "10": formData.onboardingAnswers[4] === "Yes" ? 1 : 0,
   });
 
-  const { error: profileError } = await supabase
-    .from("profiles")
-    .update({ is_onboarded: true })
-    .eq("id", user?.id);
-
-  if (profileError) {
-    console.log(profileError);
-    return { success: false, error: profileError };
-  }
-
   if (onboardingError) {
-    console.log(onboardingError);
+    console.log("Onboarding error:", onboardingError);
     return { success: false, error: onboardingError };
   }
 

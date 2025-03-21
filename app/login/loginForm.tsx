@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { createClient } from "@/utils/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -125,6 +126,31 @@ const LoginForm: React.FC = () => {
     setSuccess("");
   };
 
+  const handleGoogleSignIn = async () => {
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const nextUrl = '/onboarding';
+      const supabase = createClient();
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${location.origin}/auth/callback?next=${nextUrl}`,
+        },
+      });
+
+      if (error) {
+        setError(error.message);
+        setIsLoading(false);
+      }
+      // No need to set success or handle loading state here as we're redirecting to Google
+    } catch (e) {
+      setError("Failed to connect with Google. Please try again.");
+      setIsLoading(false);
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit} className="mx-auto max-w-md overflow-hidden">
       <motion.div
@@ -140,6 +166,7 @@ const LoginForm: React.FC = () => {
         </h2>
       </motion.div>
 
+      {/* Email input field */}
       <Input
         type="email"
         isRequired
@@ -156,6 +183,7 @@ const LoginForm: React.FC = () => {
         }
       />
 
+      {/* Password field with animation */}
       <AnimatePresence mode="wait">
         {!isForgotPassword && (
           <motion.div
@@ -197,6 +225,7 @@ const LoginForm: React.FC = () => {
         )}
       </AnimatePresence>
 
+      {/* Forgot password link */}
       <div className="mb-4 flex w-full justify-end items-center">
         <motion.button
           type="button"
@@ -219,6 +248,7 @@ const LoginForm: React.FC = () => {
         </motion.button>
       </div>
 
+      {/* Submit button */}
       <motion.div
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
@@ -244,13 +274,14 @@ const LoginForm: React.FC = () => {
               ) : isForgotPassword ? (
                 "Send Reset Link"
               ) : (
-                "Login"
+                "Login with Email"
               )}
             </motion.div>
           </AnimatePresence>
         </Button>
       </motion.div>
 
+      {/* Error and success message cards */}
       <AnimatePresence>
         {error && (
           <motion.div
@@ -295,6 +326,7 @@ const LoginForm: React.FC = () => {
         )}
       </AnimatePresence>
 
+      {/* Register link */}
       <motion.p
         className="mt-4 text-center"
         initial={{ opacity: 0 }}
@@ -306,6 +338,40 @@ const LoginForm: React.FC = () => {
           Register here
         </Link>
       </motion.p>
+
+      {/* Separator before Google login */}
+      <div className="flex items-center my-4">
+        <div className="flex-grow h-px bg-gray-300 dark:bg-gray-700"></div>
+        <span className="px-3 text-sm text-gray-500 dark:text-gray-400">OR</span>
+        <div className="flex-grow h-px bg-gray-300 dark:bg-gray-700"></div>
+      </div>
+
+      {/* Google Sign In Button moved to the bottom */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.4 }}
+        className="mt-2"
+      >
+        <Button
+          type="button"
+          className="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
+          variant="bordered"
+          onPress={handleGoogleSignIn}
+          startContent={
+            <Image
+              src="/images/google.png"
+              alt="Google logo"
+              width={20}
+              height={20}
+              className="mr-1"
+            />
+          }
+          disabled={isLoading}
+        >
+          Sign in with Google
+        </Button>
+      </motion.div>
     </form>
   );
 };

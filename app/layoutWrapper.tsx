@@ -29,20 +29,24 @@ export const getUserProfile: (
     .single();
 
   const userProfile: UserProfile = {
+    id: user?.id,
     username: userData?.username,
     first_name: userData?.first_name,
     last_name: userData?.last_name,
     email: userData?.email,
+    avatar: userData?.avatar,
   };
 
   return userProfile;
 };
 
 export interface UserProfile {
+  id: string;
   username: string;
   first_name: string;
   last_name: string;
   email: string;
+  avatar?: string;
 }
 
 export default async function LayoutWrapper({

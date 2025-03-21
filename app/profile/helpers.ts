@@ -1,6 +1,8 @@
 import { createClient } from "@/utils/supabase/client";
+import Post from "@/types/post";
 
 export interface UserProfile {
+  avatar?: string;
   username: string;
   email: string;
   first_name: string;
@@ -8,16 +10,6 @@ export interface UserProfile {
   is_onboarded: boolean;
   created_at?: string;
   id: string;
-}
-
-export interface Post {
-  id: string;
-  username: string;
-  content: string;
-  image: string;
-  created_at: string;
-  isLiked: boolean;
-  reaction_count: number;
 }
 
 export async function fetchUserProfile(): Promise<UserProfile | null> {
@@ -50,8 +42,7 @@ export async function fetchUserProfile(): Promise<UserProfile | null> {
     is_onboarded: data.is_onboarded || false,
     id: data.id,
     created_at: data.created_at,
-    // avatar: data.avatar_url,
-    // bio: data.bio
+    avatar: data.avatar,
   };
 }
 
@@ -105,15 +96,24 @@ export async function fetchUserPostsById(userId: string): Promise<Post[]> {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) return [];
+  if (!user) {
+    console.error("User not found");
+    return [];
+  }
 
-  const { data, error } = await supabase
-    .from("posts")
-    .select("*")
-    .eq("user_id", userId);
+  // Call the RPC function to fetch posts for a specific user
+  const { data: posts, error } = await supabase.rpc("fetch_posts_by_id", {
+    p_user_id: userId,
+  });
+
+  console.log(userId, posts);
 
   if (error) {
-    console.error("Error fetching user post:", error);
+    console.error("Error fetching user posts:", error);
+    return [];
+  }
+
+  if (!posts || posts.length === 0) {
     return [];
   }
 
@@ -124,7 +124,7 @@ export async function fetchUserPostsById(userId: string): Promise<Post[]> {
     .eq("user_id", user.id)
     .in(
       "post_id",
-      data.map((post) => post.id)
+      posts.map((post: Post) => post.id)
     );
 
   // Create a map of liked posts
@@ -132,12 +132,8 @@ export async function fetchUserPostsById(userId: string): Promise<Post[]> {
     reactions?.filter((r) => r.reaction === "like").map((r) => r.post_id) || []
   );
 
-  if (error) {
-    console.error("Error fetching user posts:", error);
-    return [];
-  }
-
-  return data.map((post) => ({
+  // Return posts with isLiked status
+  return posts.map((post: Post) => ({
     ...post,
     isLiked: likedPosts.has(post.id),
   }));

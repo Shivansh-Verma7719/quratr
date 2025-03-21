@@ -5,10 +5,9 @@ export async function getInitialPosts(): Promise<Post[]> {
   const supabase = await createClient();
   const { data: userData } = await supabase.auth.getUser();
 
-  // Fetch initial posts
-  const { data, error } = await supabase
-    .from("posts")
-    .select("*")
+  // Call the RPC function to fetch posts with profile information
+  const { data: posts, error } = await supabase
+    .rpc("fetch_posts")
     .order("created_at", { ascending: false })
     .range(0, 9);
 
@@ -17,11 +16,11 @@ export async function getInitialPosts(): Promise<Post[]> {
     return [];
   }
 
-  if (!data) return [];
+  if (!posts) return [];
 
   // If user is not authenticated, return posts with isLiked as false
   if (!userData?.user?.id) {
-    return data.map((post) => ({ ...post, isLiked: false }));
+    return posts;
   }
 
   // Fetch reactions for authenticated user
@@ -31,7 +30,7 @@ export async function getInitialPosts(): Promise<Post[]> {
     .eq("user_id", userData.user.id)
     .in(
       "post_id",
-      data.map((post) => post.id)
+      posts.map((post: Post) => post.id)
     );
 
   // Create a map of liked posts
@@ -40,7 +39,7 @@ export async function getInitialPosts(): Promise<Post[]> {
   );
 
   // Return posts with isLiked status
-  return data.map((post) => ({
+  return posts.map((post: Post) => ({
     ...post,
     isLiked: likedPosts.has(post.id),
   }));
