@@ -80,10 +80,9 @@ export default function ResetPasswordPage() {
         setError(error.message);
       } else {
         setSuccess("Password updated successfully!");
-        // Wait 2 seconds before redirecting to login
         setTimeout(() => {
           router.push("/login");
-        }, 2000);
+        }, 1000);
       }
     } catch (e) {
       setError("An unexpected error occurred. Please try again.");
@@ -254,7 +253,7 @@ export default function ResetPasswordPage() {
                   </CardHeader>
                   <CardBody>
                     <p className="text-green-500">{success}</p>
-                    <p className="text-green-500 mt-1">Redirecting to login...</p>
+                    {/* <p className="text-green-500 mt-1">Redirecting to login...</p> */}
                   </CardBody>
                 </Card>
               </motion.div>

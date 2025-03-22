@@ -7,10 +7,10 @@ import { motion } from "framer-motion";
 import { fetchUserProfile, fetchUserPosts, UserProfile } from "./helpers";
 import Post from "@/types/post"
 import Link from "next/link";
-import { Plus, Edit } from "lucide-react";
+import { Plus, Settings } from "lucide-react";
 import { Spinner, Avatar } from "@heroui/react";
 import { PostCard } from "@/components/ui/Post";
-import { MobileThemeSwitcher } from "@/components/MobileThemeSwitcher";
+// import { MobileThemeSwitcher } from "@/components/MobileThemeSwitcher";
 import { likePost, unlikePost } from "../feed/helpers";
 import { ShareButton } from "@/components/Share";
 
@@ -112,10 +112,10 @@ export default function ProfilePage() {
                       isIconOnly
                       variant="light"
                       as={Link}
-                      href="/profile/edit"
+                      href="/account/settings"
                       aria-label="Edit profile"
                     >
-                      <Edit size={20} />
+                      <Settings size={20} />
                     </Button>
                   </div>
                 </div>
@@ -133,7 +133,7 @@ export default function ProfilePage() {
                       : "Onboarding incomplete"}
                   </Chip>
 
-                  <MobileThemeSwitcher />
+                  {/* <MobileThemeSwitcher /> */}
                 </div>
               </CardBody>
             </Card>

@@ -4,7 +4,7 @@ import { Card, CardHeader, CardBody } from "@heroui/card";
 import { Chip, Button, Spinner, Avatar, Divider } from "@heroui/react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowLeft, Calendar, Edit } from "lucide-react";
+import { ArrowLeft, Calendar, Settings } from "lucide-react";
 import { PostCard } from "@/components/ui/Post";
 import { MobileThemeSwitcher } from "@/components/MobileThemeSwitcher";
 import { likePost, unlikePost } from "../../feed/helpers";
@@ -167,10 +167,10 @@ export default function UserProfilePage() {
                                                 isIconOnly
                                                 variant="light"
                                                 as={Link}
-                                                href="/profile/edit"
+                                                href="/account/settings"
                                                 aria-label="Edit profile"
                                             >
-                                                <Edit size={20} />
+                                                <Settings size={20} />
                                             </Button>
                                         )}
                                     </div>
