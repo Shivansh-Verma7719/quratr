@@ -41,9 +41,23 @@ export async function resetAccount() {
       .delete()
       .eq("user_id", user.id);
 
+    // Set place_likes and place_dislikes to 0 in profiles table
+    const { error: profileError } = await supabase
+      .from("profiles")
+      .update({
+        place_likes: 0,
+        place_dislikes: 0,
+      })
+      .eq("user_id", user.id);
+
     if (dislikesError) {
       console.error("Error deleting dislikes:", dislikesError);
       throw dislikesError;
+    }
+
+    if (profileError) {
+      console.error("Error updating profile:", profileError);
+      throw profileError;
     }
 
     return true;
