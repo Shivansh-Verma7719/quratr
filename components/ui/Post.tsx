@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { motion } from "motion/react";
-import { Card, CardHeader, CardBody, CardFooter } from "@heroui/card";
-import { Avatar } from "@heroui/react";
+import { Avatar, Card, CardHeader, CardBody, CardFooter } from "@heroui/react";
 import Image from "next/image";
+import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 import { LikeButton } from "@/components/interactions/LikeButton";
 import { Post } from "@/app/feed/helpers";
@@ -66,10 +66,13 @@ export const PostCard = ({
       <Card className="w-full">
         <CardHeader className="justify-between">
           <div className="flex gap-5">
-            <div className="flex flex-row items-center justify-center p-1">
+            <Link
+              href={`/profile/${post.profile_username}`}
+              className="flex flex-row items-center justify-center p-1 group transition-colors hover:bg-default-100 rounded-lg"
+            >
               <Avatar
                 isBordered
-                className="mr-2 transition-transform"
+                className="mr-2 transition-transform group-hover:scale-105"
                 color="secondary"
                 src={post.profile_avatar!}
                 alt={post.profile_username}
@@ -84,12 +87,12 @@ export const PostCard = ({
                 imgProps={{
                   referrerPolicy: "no-referrer",
                 }}
-                size="sm"
+                size="md"
               />
-              <h4 className="text-medium font-semibold leading-none text-default-600 dark:text-white">
+              <h4 className="text-lg ml-1 font-semibold leading-none text-default-600 dark:text-white group-hover:text-primary-500">
                 @{post.profile_username}
               </h4>
-            </div>
+            </Link>
           </div>
         </CardHeader>
         <CardBody className="px-3 py-0 text-md md:text-lg text-default-600 dark:text-default-400">
