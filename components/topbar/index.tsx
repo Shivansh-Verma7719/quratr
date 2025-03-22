@@ -1,11 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import {
-  Navbar,
-  NavbarContent,
-  NavbarItem,
-  Avatar,
-} from "@heroui/react";
 import { motion } from "framer-motion";
 import QuratrLogoDark from "@/components/logos/logo_light";
 import QuratrLogo from "@/components/logos/logo";
@@ -13,6 +7,8 @@ import { User } from "@supabase/supabase-js";
 import { UserProfile } from "@/app/layoutWrapper";
 import Link from "next/link";
 import { useTheme } from "next-themes";
+import Search from "@/components/Search";
+import { Avatar } from "@heroui/react";
 
 const Topbar = ({
   user,
@@ -32,16 +28,10 @@ const Topbar = ({
   if (!mounted) return null;
 
   return (
-    <Navbar
-      className="border-b border-divider bg-background bg-opacity-90 backdrop-blur-sm md:hidden"
-      maxWidth="full"
-      height="3.5rem"
-      shouldHideOnScroll
-      id="topbar"
-    >
-      {/* Logo with text on the left */}
-      <NavbarContent justify="start">
-        <NavbarItem>
+    <header className="sticky top-0 z-50 w-full border-b border-divider bg-background bg-opacity-90 backdrop-blur-sm md:block">
+      <div className="flex h-14 items-center px-4">
+        {/* Left: Logo (fixed width) */}
+        <div className="flex-shrink-0">
           <Link href="/feed" className="flex items-center">
             <motion.div
               initial={{ opacity: 0, y: -20 }}
@@ -58,36 +48,43 @@ const Topbar = ({
               </h1>
             </motion.div>
           </Link>
-        </NavbarItem>
-      </NavbarContent>
+        </div>
 
-      {/* Profile avatar on the end */}
-      <NavbarContent justify="end" className={user ? "" : "hidden"}>
-        <NavbarItem key="profile">
-          <Avatar
-            isBordered
-            as={Link}
-            href="/profile"
-            className="transition-transform hover:scale-105"
-            color="primary"
-            src={userProfile?.avatar}
-            alt={userProfile?.first_name + " " + userProfile?.last_name}
-            showFallback
-            name={userProfile?.first_name + " " + userProfile?.last_name}
-            imgProps={{
-              referrerPolicy: "no-referrer",
-            }}
-            getInitials={(name) =>
-              name
-                ?.split(" ")
-                .map((n) => n[0])
-                .join("")
-            }
-            size="sm"
-          />
-        </NavbarItem>
-      </NavbarContent>
-    </Navbar>
+        {/* Middle: Search (flexible width) */}
+        {user && (
+          <div className="flex flex-1 justify-end mx-3 md:mx-4">
+            <Search />
+          </div>
+        )}
+
+        {/* Right: Avatar (fixed width) */}
+        {user && (
+          <div className="flex-shrink-0">
+            <Avatar
+              isBordered
+              as={Link}
+              href="/profile"
+              className="transition-transform hover:scale-105"
+              color="primary"
+              src={userProfile?.avatar}
+              alt={userProfile?.first_name + " " + userProfile?.last_name}
+              showFallback
+              name={userProfile?.first_name + " " + userProfile?.last_name}
+              imgProps={{
+                referrerPolicy: "no-referrer",
+              }}
+              getInitials={(name) =>
+                name
+                  ?.split(" ")
+                  .map((n) => n[0])
+                  .join("")
+              }
+              size="sm"
+            />
+          </div>
+        )}
+      </div>
+    </header>
   );
 };
 
