@@ -18,6 +18,7 @@ type OnboardingData = {
     is_onboarded: boolean;
     vector: number[];
     avatar?: string;
+    email: string;
   };
 
 export async function submitOnboarding(formData: OnboardingData) {
@@ -27,7 +28,7 @@ export async function submitOnboarding(formData: OnboardingData) {
     error: userError,
   } = await supabase.auth.getUser();
 
-  if (userError || !user) {
+  if (userError || !user || !user.id || !user.email) {
     console.log("User not found", userError);
     return { success: false, error: userError };
   }
@@ -42,6 +43,7 @@ export async function submitOnboarding(formData: OnboardingData) {
     username: formData.username,
     first_name: formData.firstName,
     last_name: formData.lastName,
+    email: user.email,
     is_onboarded: true,
     vector: vectorValues, // Store the vector representation of user preferences
   };
@@ -78,31 +80,3 @@ export async function submitOnboarding(formData: OnboardingData) {
 
   return { success: true, error: null };
 }
-
-// export async function checkOnboardingStatus() {
-//   const supabase = createClient();
-
-//   const {
-//     data: { user },
-//   } = await supabase.auth.getUser();
-
-//   if (!user) {
-//     return { success: false, error: "User not found" };
-//   }
-
-//   const { data: onboardingData, error: onboardingError } = await supabase
-//     .from("profiles")
-//     .select("is_onboarded")
-//     .eq("id", user.id)
-//     .single();
-
-//   if (onboardingData && onboardingData.is_onboarded) {
-//     return { success: true, error: null };
-//   }
-
-//   if (onboardingError) {
-//     return { success: false, error: onboardingError };
-//   }
-
-//   return { success: false, error: "Onboarding not found" };
-// }
