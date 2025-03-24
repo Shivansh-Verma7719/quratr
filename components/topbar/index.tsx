@@ -28,7 +28,7 @@ const Topbar = ({
   if (!mounted) return null;
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-divider bg-background bg-opacity-90 backdrop-blur-sm md:block">
+    <header className="sticky top-0 z-50 w-full border-b border-divider bg-background bg-opacity-90 backdrop-blur-sm hidden md:block">
       <div className="flex h-14 items-center px-4">
         {/* Left: Logo (fixed width) */}
         <div className="flex-shrink-0">
