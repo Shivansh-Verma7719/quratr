@@ -144,15 +144,30 @@ export default function CuratedClient({
 
   const fetchMorePlaces = async () => {
     if (isLoading || !hasMore) return;
-    setIsLoading(true);
-    const newPlaces = await fetchMoreLikedPlaces(places.length, 10);
-    if (newPlaces.length > 0) {
-      setPlaces((prevPlaces) => [...prevPlaces, ...newPlaces]);
-      setHasMore(newPlaces.length === 10);
-    } else {
+    
+    try {
+      setIsLoading(true);
+      const newPlaces = await fetchMoreLikedPlaces(places.length, 10);
+      
+      // Filter out places that are already in the list
+      const uniqueNewPlaces = newPlaces.filter(
+        (newPlace) => !places.some(existingPlace => existingPlace.id === newPlace.id)
+      );
+      
+      if (uniqueNewPlaces.length > 0) {
+        setPlaces((prevPlaces) => [...prevPlaces, ...uniqueNewPlaces]);
+        // There are more places if we got the full requested amount (10)
+        setHasMore(newPlaces.length === 10);
+      } else {
+        // If we got no new unique places, we've reached the end
+        setHasMore(false);
+      }
+    } catch (error) {
+      console.error("Error fetching more places:", error);
       setHasMore(false);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   // Keep existing helper functions
@@ -178,7 +193,7 @@ export default function CuratedClient({
 
   return (
     <>
-      <div className="flex min-h-[calc(100vh_-_123px)] w-full items-start justify-center bg-background px-5 py-2">
+      <div className="flex min-h-[calc(100vh_-_123px)] mb-16 w-full items-start justify-center bg-background px-5 py-2">
         <div className="w-full max-w-2xl">
           {places.length > 0 ? (
             <>
@@ -188,7 +203,7 @@ export default function CuratedClient({
               <AnimatePresence mode="popLayout">
                 {places.map((place, index) => (
                   <motion.div
-                    key={place.id}
+                    key={`place-${place.id}-${index}`}
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, x: -100 }}

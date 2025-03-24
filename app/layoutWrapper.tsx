@@ -63,7 +63,7 @@ export default async function LayoutWrapper({
         <Providers attribute="class" defaultTheme="system">
           <Topbar user={user} userProfile={userProfile} />
           <CustomNavbar user={user} />
-          <main className="mb-16 mt-0 h-full w-full md:mb-0 md:mt-[68px]">
+          <main className="mt-0 h-full w-full md:mb-0 md:mt-[68px]">
             {children}
           </main>
           <BottomNav user={user} />
