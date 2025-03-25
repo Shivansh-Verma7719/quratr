@@ -1,8 +1,11 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, Loader2, ChevronDown, X, MessageSquare, User, ThumbsUp, ThumbsDown, AlertCircle } from "lucide-react";
-import Image from "next/image";
+import { Send, Loader2, X, MessageSquare } from "lucide-react";
+import UserMessage from "@/components/ai/user_msg";
+import AgentMessage from "@/components/ai/agent_msg";
+import Blobs from "@/components/ai/bg-blobs";
+import { createClient } from "@/utils/supabase/client";
 
 // Define properly typed interfaces for API response
 interface PlaceRanking {
@@ -66,6 +69,18 @@ interface Conversation {
   isError?: boolean;
 }
 
+// Add this interface for UserProfile
+interface UserProfile {
+  id: string;
+  username: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  avatar?: string;
+  is_onboarded?: boolean;
+  created_at?: string;
+}
+
 export default function AIRecommenderPage() {
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -74,6 +89,42 @@ export default function AIRecommenderPage() {
   const messageEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  // Add state for user profile
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+
+  // Fetch user profile on component mount
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const supabase = createClient();
+
+      // Get current user
+      const { data: userData } = await supabase.auth.getUser();
+      if (!userData.user) return;
+
+      // Get profile data
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", userData.user.id)
+        .single();
+
+      if (!error && data) {
+        setUserProfile({
+          id: data.id,
+          username: data.username,
+          first_name: data.first_name,
+          last_name: data.last_name,
+          email: userData.user.email || '',
+          avatar: data.avatar,
+          is_onboarded: data.is_onboarded,
+          created_at: data.created_at
+        });
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
 
   // Auto-grow textarea
   const handleTextareaInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -85,12 +136,12 @@ export default function AIRecommenderPage() {
 
   const handleSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    
+
     if (!query.trim()) return;
-    
+
     // Add user message to conversation
     setConversations(prev => [
-      ...prev, 
+      ...prev,
       { type: "user", content: query, timestamp: new Date() }
     ]);
 
@@ -105,33 +156,34 @@ export default function AIRecommenderPage() {
 
     try {
       // Update in your handleSubmit function  
-      const response = await fetch(`/api/search?query=${encodeURIComponent(query)}`);      
+      const useDebug = process.env.NEXT_PUBLIC_ENV === "development";
+      const response = await fetch(`/api/search?query=${encodeURIComponent(query)}${useDebug ? "&debug=true" : ""}`);
       if (!response.ok) {
         throw new Error(`Request failed with status: ${response.status}`);
       }
-      
+
       const data: RecommendationResponse = await response.json();
 
       // Add AI response to conversation
       setConversations(prev => [
-        ...prev, 
-        { 
-          type: "agent", 
-          content: data.summary, 
+        ...prev,
+        {
+          type: "agent",
+          content: data.summary,
           response: data,
-          timestamp: new Date() 
+          timestamp: new Date()
         }
       ]);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Please try again.";
       setError(errorMessage);
-      
+
       // Add error message to conversation with error flag
       setConversations(prev => [
-        ...prev, 
-        { 
-          type: "agent", 
-          content: `I'm sorry, I couldn't process your request. ${errorMessage}`, 
+        ...prev,
+        {
+          type: "agent",
+          content: "I'm sorry, I couldn't process your request.",
           timestamp: new Date(),
           isError: true
         }
@@ -149,53 +201,25 @@ export default function AIRecommenderPage() {
   // Handle Cmd/Ctrl+Enter to submit
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (inputRef.current === document.activeElement && 
-          (e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+      if (inputRef.current === document.activeElement &&
+        (e.metaKey || e.ctrlKey) && e.key === 'Enter') {
         e.preventDefault();
         handleSubmit();
       }
     };
-    
+
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [query]);
 
   return (
     <div className="relative flex h-[90vh] w-full flex-col overflow-hidden bg-background/95">
-      {/* Enhanced background blobs with much higher visibility - work in both modes */}
-      <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
-        <motion.div 
-          className="absolute top-0 -left-10 h-[300px] w-[300px] rounded-full bg-primary/40 dark:bg-primary/25 blur-[60px]"
-          animate={{ 
-            x: [0, 20, -20, 0], 
-            y: [0, -30, 20, 0],
-            scale: [1, 1.1, 0.9, 1] 
-          }} 
-          transition={{ repeat: Infinity, duration: 15, ease: "easeInOut" }}
-        />
-        <motion.div 
-          className="absolute right-0 bottom-0 h-[400px] w-[400px] rounded-full bg-secondary/40 dark:bg-secondary/30 blur-[70px]"
-          animate={{ 
-            x: [0, -30, 15, 0], 
-            y: [0, 20, -30, 0],
-            scale: [1, 0.9, 1.05, 1] 
-          }} 
-          transition={{ repeat: Infinity, duration: 20, ease: "easeInOut", delay: 2 }}
-        />
-        <motion.div 
-          className="absolute top-1/3 right-1/4 h-[200px] w-[200px] rounded-full bg-blue-400/30 dark:bg-blue-500/20 blur-[50px]"
-          animate={{ 
-            x: [0, 30, -15, 0], 
-            y: [0, -20, 30, 0],
-            scale: [1, 1.1, 0.95, 1] 
-          }} 
-          transition={{ repeat: Infinity, duration: 18, ease: "easeInOut", delay: 1 }}
-        />
-      </div>
 
-      {/* Messages Container - Light/dark responsive */}
-      <div 
-        ref={chatContainerRef} 
+      <Blobs />
+
+      {/* Messages Container - Laptop optimized with better max-width */}
+      <div
+        ref={chatContainerRef}
         className="flex-1 overflow-y-auto pt-5 pb-28"
       >
         {conversations.length === 0 ? (
@@ -204,7 +228,7 @@ export default function AIRecommenderPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="max-w-xs space-y-5 -mt-12"
+              className="max-w-xs sm:max-w-sm lg:max-w-md space-y-5 -mt-12"
             >
               <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-primary/20 dark:bg-primary/15 shadow-lg">
                 <MessageSquare className="h-10 w-10 text-primary dark:text-primary" />
@@ -242,178 +266,74 @@ export default function AIRecommenderPage() {
           </div>
         ) : (
           <div className="space-y-4 px-3 pt-2">
-            <AnimatePresence initial={false}>
+            <AnimatePresence initial={false} mode="popLayout">
               {conversations.map((message, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2 }}
-                  className={`flex ${message.type === "user" ? "justify-end" : "justify-start"} relative`}
-                >
-                  {/* Avatar for user or agent */}
-                  <div className={`absolute ${message.type === "user" ? "right-2" : "left-2"} -top-4 h-7 w-7 rounded-full flex items-center justify-center ${
-                    message.type === "user" 
-                      ? "bg-primary shadow-sm" 
-                      : message.isError 
-                        ? "bg-red-500 shadow-sm" 
-                        : "bg-secondary shadow-sm"
-                  }`}>
-                    {message.type === "user" ? (
-                      <User className="h-3.5 w-3.5 text-white" />
-                    ) : message.isError ? (
-                      <AlertCircle className="h-3.5 w-3.5 text-white" />
-                    ) : (
-                      <MessageSquare className="h-3.5 w-3.5 text-white" />
-                    )}
-                  </div>
-
-                  <div
-                    className={`
-                      max-w-[85%] mb-2 rounded-2xl p-3 pt-4 shadow-sm
-                      ${message.type === "user" 
-                        ? "bg-primary/95 text-white ml-auto" 
-                        : message.isError
-                          ? "bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 mr-auto text-gray-800 dark:text-gray-100"
-                          : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 mr-auto text-gray-800 dark:text-gray-100"
-                      }
-                    `}
-                  >
-                    {message.type === "user" ? (
-                      <p className="text-sm">{message.content}</p>
-                    ) : (
-                      <div className="space-y-4">
-                        <p className="text-sm">{message.content}</p>
-                        
-                        {/* Recommendations Display */}
-                        {message.response && (
-                          <div className="mt-4 space-y-4">
-                            {message.response.recommendations.map((place) => (
-                              <div key={place.id} className="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md">
-                                {place.image_url && (
-                                  <div className="relative h-44 w-full overflow-hidden">
-                                    <Image
-                                      src={place.image_url}
-                                      alt={place.name}
-                                      fill
-                                      sizes="(max-width: 640px) 85vw, 400px"
-                                      className="object-cover"
-                                    />
-                                    {place.price_range && (
-                                      <div className="absolute right-2 top-2 rounded-full bg-black/80 px-2.5 py-1 text-xs text-white backdrop-blur-sm">
-                                        {place.price_range}
-                                      </div>
-                                    )}
-                                  </div>
-                                )}
-                                
-                                <div className="p-3">
-                                  <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100">{place.name}</h3>
-                                  
-                                  {place.cuisine && place.location && (
-                                    <p className="mt-1 text-xs text-gray-600 dark:text-gray-400">
-                                      {place.cuisine.split(',')[0]} • {place.location}
-                                    </p>
-                                  )}
-                                  
-                                  <p className="mt-2 text-xs text-gray-700 dark:text-gray-300">{place.description}</p>
-                                  
-                                  <div className="mt-3">
-                                    <details className="group text-xs">
-                                      <summary className="flex cursor-pointer items-center font-medium text-primary dark:text-primary">
-                                        <ChevronDown className="mr-1 h-3 w-3 transition-transform group-open:rotate-180" />
-                                        See details
-                                      </summary>
-                                      
-                                      <div className="mt-2 space-y-2 pl-4 text-xs">
-                                        {/* Match reasons */}
-                                        {place.match_reasons && place.match_reasons.length > 0 && (
-                                          <div>
-                                            <p className="font-medium text-gray-800 dark:text-gray-200">Perfect match because:</p>
-                                            <ul className="mt-1 list-disc space-y-1 pl-4 text-gray-600 dark:text-gray-400">
-                                              {place.match_reasons.map((reason, idx) => (
-                                                <li key={idx}>{reason}</li>
-                                              ))}
-                                            </ul>
-                                          </div>
-                                        )}
-                                        
-                                        {/* Highlights */}
-                                        {place.highlights && place.highlights.length > 0 && (
-                                          <div>
-                                            <p className="font-medium text-gray-800 dark:text-gray-200">Highlights:</p>
-                                            <ul className="mt-1 list-disc space-y-1 pl-4 text-gray-600 dark:text-gray-400">
-                                              {place.highlights.map((highlight, idx) => (
-                                                <li key={idx}>{highlight}</li>
-                                              ))}
-                                            </ul>
-                                          </div>
-                                        )}
-                                        
-                                        {place.atmosphere && (
-                                          <p className="text-gray-700 dark:text-gray-300">
-                                            <span className="font-medium text-gray-800 dark:text-gray-200">Vibe:</span> {place.atmosphere}
-                                          </p>
-                                        )}
-                                      </div>
-                                    </details>
-                                  </div>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                        
-                        {/* Feedback buttons */}
-                        <div className="flex items-center justify-end space-x-1 pt-1">
-                          <button 
-                            className="rounded-full p-1 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
-                            title="Helpful"
-                          >
-                            <ThumbsUp className="h-3 w-3" />
-                          </button>
-                          <button 
-                            className="rounded-full p-1 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
-                            title="Not helpful"
-                          >
-                            <ThumbsDown className="h-3 w-3" />
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </motion.div>
+                message.type === "user" ? (
+                  <UserMessage
+                    key={`user-${index}`}
+                    content={message.content}
+                    avatar={userProfile?.avatar}
+                    firstName={userProfile?.first_name || ""}
+                    lastName={userProfile?.last_name || ""}
+                  />
+                ) : (
+                  <AgentMessage
+                    key={`agent-${index}`}
+                    content={message.content}
+                    isError={message.isError}
+                    response={message.response}
+                    onHelpfulFeedback={() => {
+                      // Add your feedback handling logic here
+                      console.log("Marked as helpful:", message);
+                    }}
+                    onUnhelpfulFeedback={() => {
+                      // Add your feedback handling logic here
+                      console.log("Marked as not helpful:", message);
+                    }}
+                  />
+                )
               ))}
-              
+
               {isLoading && (
                 <motion.div
-                  initial={{ opacity: 0, y: 10 }}
+                  initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="flex justify-start"
+                  transition={{
+                    duration: 0.3,
+                    ease: [0.23, 1, 0.32, 1]
+                  }}
+                  className="flex justify-start relative"
                 >
-                  <div className="relative rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 shadow-sm ml-8">
-                    <div className="absolute left-2 -top-2 h-6 w-6 rounded-full bg-secondary flex items-center justify-center">
-                      <MessageSquare className="h-3 w-3 text-white" />
-                    </div>
+                  {/* Agent Avatar with separate animation */}
+                  <motion.div
+                    initial={{ scale: 0.4, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.25, delay: 0.1 }}
+                    className="absolute left-2 -top-4 h-7 z-50 w-7 rounded-full flex items-center justify-center bg-secondary shadow-sm"
+                  >
+                    <MessageSquare className="h-3.5 w-3.5 text-white" />
+                  </motion.div>
+
+                  {/* Message Content */}
+                  <div className="max-w-[85%] md:max-w-[75%] lg:max-w-[65%] mb-2 rounded-2xl p-3 pt-4 shadow-sm mr-auto bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-100 will-change-[opacity,transform]">
                     <div className="flex items-center space-x-2">
                       <Loader2 className="h-4 w-4 animate-spin text-primary" />
-                      <p className="text-xs text-gray-600 dark:text-gray-300">Finding recommendations...</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">Finding recommendations...</p>
                     </div>
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
-            
+
             <div ref={messageEndRef} />
           </div>
         )}
       </div>
 
-      {/* Input Area - Fixed above the bottom navbar with improved contrast */}
+      {/* Input Area - Fixed above the bottom navbar with improved contrast and laptop optimization */}
       <div className="fixed bottom-[2.5rem] left-0 right-0 border-t border-gray-200 dark:border-gray-800 bg-bacground p-3 backdrop-blur-md">
-        <form onSubmit={handleSubmit} className="mx-auto">
+        <form onSubmit={handleSubmit} className="mx-auto max-w-3xl">
           <div className="relative flex items-center overflow-hidden rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md focus-within:ring-2 focus-within:ring-primary/30">
             <textarea
               ref={inputRef}
@@ -429,7 +349,13 @@ export default function AIRecommenderPage() {
                 }
               }}
             />
-            
+
+            <div className="hidden md:flex absolute right-20 text-xs text-gray-400 items-center">
+              <kbd className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600 mr-1">Ctrl</kbd>
+              <span className="mx-0.5">+</span>
+              <kbd className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600">Enter</kbd>
+            </div>
+
             {query && (
               <button
                 type="button"
@@ -445,7 +371,7 @@ export default function AIRecommenderPage() {
                 <X className="h-4 w-4" />
               </button>
             )}
-            
+
             <button
               type="submit"
               disabled={isLoading || !query.trim()}
@@ -454,9 +380,9 @@ export default function AIRecommenderPage() {
               <Send className="h-4 w-4" />
             </button>
           </div>
-          
+
           {error && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 5 }}
               animate={{ opacity: 1, y: 0 }}
               className="mt-2 rounded-md bg-red-50 dark:bg-red-900/20 p-2 text-xs text-red-600 dark:text-red-300 border border-red-200 dark:border-red-800"

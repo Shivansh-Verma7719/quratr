@@ -267,7 +267,6 @@ export default function DiscoverPage() {
                               height={600}
                               priority={true}
                               loading="eager"
-                              quality={70}
                               placeholder="empty"
                             />
                             <CardBody className="absolute left-0 top-0 flex w-full flex-row items-center justify-between p-1 pt-2">

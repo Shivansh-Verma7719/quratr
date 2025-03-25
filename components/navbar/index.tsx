@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { motion, useTransform, useScroll } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import { ThemeSwitcher } from "../theme-switcher";
 import { useTheme } from "next-themes";
 import {
   Home,
@@ -93,10 +92,10 @@ const CustomNavbar: React.FC<{ user: User | null }> = ({ user }) => {
                 />
               </motion.a>
             ))}
-            <ThemeSwitcher />
+            {/* <ThemeSwitcher /> */}
           </div>
           <div className="md:hidden">
-            <ThemeSwitcher className="fixed right-12" />
+            {/* <ThemeSwitcher className="fixed right-12" /> */}
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}

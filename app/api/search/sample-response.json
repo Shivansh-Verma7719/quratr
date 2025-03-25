@@ -1,0 +1,347 @@
+{
+  "query": "Suggest some good coffee places in South Delhi",
+  "intent": {
+    "original_query": "Suggest some good coffee places in South Delhi",
+    "cuisine_types": ["coffee"],
+    "locations": ["South Delhi"],
+    "price_range": null,
+    "atmosphere": null,
+    "occasion": null,
+    "dietary_preferences": [],
+    "expanded_queries": [
+      "What are the best coffee shops in South Delhi?",
+      "Can you recommend popular coffee places in South Delhi?",
+      "Where can I find good coffee in South Delhi?"
+    ]
+  },
+  "places": [
+    {
+      "id": 1210,
+      "name": "abCoffee",
+      "address": "Pitampura",
+      "city": "New Delhi",
+      "cuisine": "Cafe, Coffee, Beverages, Bakery",
+      "tags": "",
+      "rating": 3.4,
+      "price": 300,
+      "description": "Home Delivery Takeaway Available Indoor Seating Serves Non Veg",
+      "image": "https://b.zmtcdn.com/data/pictures/7/21016877/87e8553099adfa80ea3504dd672e1811_o2_featured_v2.jpg?output-format=webp&fit=around|771.75:416.25&crop=771.75:416.25;*,*",
+      "ranking": {
+        "similarity_score": 0.579,
+        "relevance_score": 7.846,
+        "final_score": 0.702
+      }
+    },
+    {
+      "id": 1955,
+      "name": "First Coffee",
+      "address": "Pacific Mall - NSP",
+      "city": "New Delhi",
+      "cuisine": "Cafe, Coffee, Sandwich, Tea",
+      "tags": "",
+      "rating": 3.6,
+      "price": 400,
+      "description": "Breakfast Home Delivery Takeaway Available Indoor Seating Serves Non Veg",
+      "image": "https://b.zmtcdn.com/data/pictures/8/21253298/719f0d2a77e125b27d66ba29ba17bf67.jpg?output-format=webp&fit=around|771.75:416.25&crop=771.75:416.25;*,*",
+      "ranking": {
+        "similarity_score": 0.575,
+        "relevance_score": 7.231,
+        "final_score": 0.664
+      }
+    },
+    {
+      "id": 2569,
+      "name": "First Coffee",
+      "address": "Pacific Mall, Jasola",
+      "city": "New Delhi",
+      "cuisine": "Cafe, Coffee, Sandwich, Tea",
+      "tags": "",
+      "rating": 3.6,
+      "price": 400,
+      "description": "Breakfast Home Delivery Takeaway Available Indoor Seating Serves Non Veg",
+      "image": "https://b.zmtcdn.com/data/pictures/8/21253298/719f0d2a77e125b27d66ba29ba17bf67.jpg?output-format=webp&fit=around|771.75:416.25&crop=771.75:416.25;*,*",
+      "ranking": {
+        "similarity_score": 0.575,
+        "relevance_score": 6,
+        "final_score": 0.59
+      }
+    },
+    {
+      "id": 2697,
+      "name": "Costa Coffee",
+      "address": "DLF Courtyard Saket",
+      "city": "New Delhi",
+      "cuisine": "Cafe, Coffee, Sandwich, Desserts, Beverages",
+      "tags": "",
+      "rating": null,
+      "price": 300,
+      "description": "Home Delivery Takeaway Available Indoor Seating Street Parking",
+      "image": "https://b.zmtcdn.com/data/pictures/chains/4/944/34f99f84aca2dece4ba721080ea8f4ff.jpg?output-format=webp&fit=around|771.75:416.25&crop=771.75:416.25;*,*",
+      "ranking": {
+        "similarity_score": 0.574,
+        "relevance_score": 5.385,
+        "final_score": 0.553
+      }
+    },
+    {
+      "id": 571,
+      "name": "Himalayan Java Coffee",
+      "address": "Majnu ka Tila",
+      "city": "New Delhi",
+      "cuisine": "Cafe, Fast Food",
+      "tags": "",
+      "rating": 3.9,
+      "price": 400,
+      "description": "Home Delivery Takeaway Available Mall Parking Rooftop Indoor Seating Smoking Area Wifi Party Music Live Music Outdoor Seating",
+      "image": "https://b.zmtcdn.com/data/pictures/6/20477746/d9f4152847ede07181217bd9a944c03d.jpg?output-format=webp&fit=around|771.75:416.25&crop=771.75:416.25;*,*",
+      "ranking": {
+        "similarity_score": 0.573,
+        "relevance_score": 5.077,
+        "final_score": 0.534
+      }
+    },
+    {
+      "id": 192,
+      "name": "Dosa Coffee",
+      "address": "DLF Cyber Greens",
+      "city": "Gurgaon",
+      "cuisine": "South Indian, Beverages",
+      "tags": "",
+      "rating": 4.2,
+      "price": 500,
+      "description": null,
+      "image": "https://b.zmtcdn.com/data/pictures/chains/2/20693302/46ae8ede8f557fd0426bd437041536a4.jpg?output-format=webp&fit=around|771.75:416.25&crop=771.75:416.25;*,*",
+      "ranking": {
+        "similarity_score": 0.572,
+        "relevance_score": 3.846,
+        "final_score": 0.459
+      }
+    },
+    {
+      "id": 2715,
+      "name": "Costa Coffee",
+      "address": "IGI T3 Int - LS Kiosk",
+      "city": "New Delhi",
+      "cuisine": "Cafe, Coffee, Sandwich, Desserts, Beverages",
+      "tags": "",
+      "rating": null,
+      "price": 300,
+      "description": "Home Delivery Takeaway Available Indoor Seating Street Parking",
+      "image": "https://b.zmtcdn.com/data/pictures/chains/4/944/34f99f84aca2dece4ba721080ea8f4ff.jpg?output-format=webp&fit=around|771.75:416.25&crop=771.75:416.25;*,*",
+      "ranking": {
+        "similarity_score": 0.571,
+        "relevance_score": 2.462,
+        "final_score": 0.376
+      }
+    },
+    {
+      "id": 2576,
+      "name": "Starbucks Coffee",
+      "address": "Delhi High Court",
+      "city": "New Delhi",
+      "cuisine": "Cafe, Coffee, Beverages",
+      "tags": "",
+      "rating": 3.6,
+      "price": 900,
+      "description": "Breakfast Home Delivery Takeaway Available Indoor Seating Serves Non Veg",
+      "image": "https://b.zmtcdn.com/data/pictures/chains/1/301011/2c62020a8d06e8f90d603682eb003e2c_featured_v2.jpg?output-format=webp&fit=around|771.75:416.25&crop=771.75:416.25;*,*",
+      "ranking": {
+        "similarity_score": 0.57,
+        "relevance_score": 2,
+        "final_score": 0.348
+      }
+    },
+    {
+      "id": 2711,
+      "name": "Costa Coffee",
+      "address": "IGI T3 Int - LS Store",
+      "city": "New Delhi",
+      "cuisine": "Cafe, Coffee, Sandwich, Desserts, Beverages",
+      "tags": "",
+      "rating": null,
+      "price": 300,
+      "description": "Home Delivery Takeaway Available Indoor Seating Street Parking",
+      "image": "https://b.zmtcdn.com/data/pictures/chains/4/944/34f99f84aca2dece4ba721080ea8f4ff.jpg?output-format=webp&fit=around|771.75:416.25&crop=771.75:416.25;*,*",
+      "ranking": {
+        "similarity_score": 0.57,
+        "relevance_score": 1.385,
+        "final_score": 0.311
+      }
+    },
+    {
+      "id": 2409,
+      "name": "Kaffa Cerrado - The Roastery",
+      "address": "Okhla Phase 2",
+      "city": "New Delhi",
+      "cuisine": "Coffee, Beverages, Sandwich, Ice Cream",
+      "tags": "",
+      "rating": 4.2,
+      "price": 700,
+      "description": "Home Delivery Takeaway Available Wifi Indoor Seating All Day Breakfast Smoking Area",
+      "image": "https://b.zmtcdn.com/data/pictures/8/18899468/199011957e4f2947bc299ff84a57fcfa.jpg?output-format=webp&fit=around|771.75:416.25&crop=771.75:416.25;*,*",
+      "ranking": {
+        "similarity_score": 0.604,
+        "relevance_score": 0.923,
+        "final_score": 0.297
+      }
+    },
+    {
+      "id": 63,
+      "name": "Savorworks Coffee & Chocolate Atelier",
+      "address": "Greater Kailash 2 (GK2)",
+      "city": "New Delhi",
+      "cuisine": "Cafe, Desserts, Italian, Fast Food, Street Food, Beverages",
+      "tags": "",
+      "rating": 3.8,
+      "price": 950,
+      "description": "Breakfast Home Delivery Takeaway Available Indoor Seating Pet Friendly",
+      "image": "https://b.zmtcdn.com/data/pictures/6/20289306/1237e0e238e6a2fac6f012618927d343.jpg?output-format=webp&fit=around|771.75:416.25&crop=771.75:416.25;*,*",
+      "ranking": {
+        "similarity_score": 0.597,
+        "relevance_score": 0.769,
+        "final_score": 0.285
+      }
+    },
+    {
+      "id": 2600,
+      "name": "Starbucks Coffee",
+      "address": "Ambience Mall, Vasant Kunj",
+      "city": "New Delhi",
+      "cuisine": "Cafe, Coffee, Beverages",
+      "tags": "",
+      "rating": 3.6,
+      "price": 900,
+      "description": "Breakfast Home Delivery Takeaway Available Indoor Seating Serves Non Veg",
+      "image": "https://b.zmtcdn.com/data/pictures/chains/1/301011/2c62020a8d06e8f90d603682eb003e2c_featured_v2.jpg?output-format=webp&fit=around|771.75:416.25&crop=771.75:416.25;*,*",
+      "ranking": {
+        "similarity_score": 0.575,
+        "relevance_score": 0.615,
+        "final_score": 0.267
+      }
+    },
+    {
+      "id": 92,
+      "name": "Nothing Before Coffee",
+      "address": "Malviya Nagar",
+      "city": "New Delhi",
+      "cuisine": "Cafe, Coffee, Desserts, Tea, Shake, Beverages",
+      "tags": "",
+      "rating": 3.8,
+      "price": 300,
+      "description": "Home Delivery Takeaway Available Indoor Seating Serves Non Veg",
+      "image": "https://b.zmtcdn.com/data/pictures/1/21037551/8976f8bd29e041128c1903126f09cb96_o2_featured_v2.jpg?output-format=webp&fit=around|771.75:416.25&crop=771.75:416.25;*,*",
+      "ranking": {
+        "similarity_score": 0.572,
+        "relevance_score": 0.462,
+        "final_score": 0.257
+      }
+    },
+    {
+      "id": 15,
+      "name": "The Coffee Bean & Tea Leaf",
+      "address": "Epicuria, Rajouri Garden",
+      "city": "New Delhi",
+      "cuisine": "Coffee, Beverages, Bakery, Tea, Cafe, Desserts",
+      "tags": "",
+      "rating": 4,
+      "price": 850,
+      "description": "Breakfast Home Delivery Takeaway Available Indoor Seating",
+      "image": "https://b.zmtcdn.com/data/pictures/4/19983034/d0df1faa90c80e85aff897948f1a158a.jpg?output-format=webp&fit=around|771.75:416.25&crop=771.75:416.25;*,*",
+      "ranking": {
+        "similarity_score": 0.594,
+        "relevance_score": 0.154,
+        "final_score": 0.247
+      }
+    },
+    {
+      "id": 136,
+      "name": "Cafe43",
+      "address": "Shahpur Jat",
+      "city": "New Delhi",
+      "cuisine": "Coffee, Continental, Street Food, Beverages",
+      "tags": "",
+      "rating": 3.7,
+      "price": 400,
+      "description": null,
+      "image": "https://b.zmtcdn.com/data/pictures/chains/1/19535681/c00e4bbf3a8cb3b145396682bf729148.jpeg?output-format=webp&fit=around|771.75:416.25&crop=771.75:416.25;*,*",
+      "ranking": {
+        "similarity_score": 0.571,
+        "relevance_score": 0.308,
+        "final_score": 0.247
+      }
+    }
+  ],
+  "recommendations": [
+    {
+      "id": 2697,
+      "name": "Costa Coffee",
+      "description": "A popular coffee chain offering a cozy atmosphere with a variety of coffee and snacks.",
+      "match_reasons": [
+        "Located in South Delhi",
+        "Offers a range of coffee options"
+      ],
+      "highlights": ["Home Delivery", "Indoor Seating", "Street Parking"],
+      "cuisine": "Cafe, Coffee, Sandwich, Desserts, Beverages",
+      "price_range": "$$",
+      "location": "DLF Courtyard Saket",
+      "atmosphere": "Casual and inviting, perfect for a quick coffee break.",
+      "image_url": "https://b.zmtcdn.com/data/pictures/chains/4/944/34f99f84aca2dece4ba721080ea8f4ff.jpg?output-format=webp&fit=around|771.75:416.25&crop=771.75:416.25;*,*"
+    },
+    {
+      "id": 2409,
+      "name": "Kaffa Cerrado - The Roastery",
+      "description": "A unique coffee spot known for its artisanal brews and inviting ambiance.",
+      "match_reasons": ["Specializes in coffee", "Located in South Delhi"],
+      "highlights": ["Home Delivery", "All Day Breakfast", "Wifi Available"],
+      "cuisine": "Coffee, Beverages, Sandwich, Ice Cream",
+      "price_range": "$$$",
+      "location": "Okhla Phase 2",
+      "atmosphere": "Chic and modern, ideal for coffee enthusiasts.",
+      "image_url": "https://b.zmtcdn.com/data/pictures/8/18899468/199011957e4f2947bc299ff84a57fcfa.jpg?output-format=webp&fit=around|771.75:416.25&crop=771.75:416.25;*,*"
+    },
+    {
+      "id": 92,
+      "name": "Nothing Before Coffee",
+      "description": "A cozy café known for its rich coffee and relaxed vibe.",
+      "match_reasons": [
+        "Offers a variety of coffee options",
+        "Located in South Delhi"
+      ],
+      "highlights": ["Home Delivery", "Indoor Seating", "Serves Non Veg"],
+      "cuisine": "Cafe, Coffee, Desserts, Tea, Shake, Beverages",
+      "price_range": "$$",
+      "location": "Malviya Nagar",
+      "atmosphere": "Relaxed and friendly, perfect for catching up with friends.",
+      "image_url": "https://b.zmtcdn.com/data/pictures/1/21037551/8976f8bd29e041128c1903126f09cb96_o2_featured_v2.jpg?output-format=webp&fit=around|771.75:416.25&crop=771.75:416.25;*,*"
+    },
+    {
+      "id": 2576,
+      "name": "Starbucks Coffee",
+      "description": "The iconic coffeehouse chain known for its specialty coffee and comfortable seating.",
+      "match_reasons": ["Well-known coffee brand", "Located in South Delhi"],
+      "highlights": ["Home Delivery", "Indoor Seating", "Serves Non Veg"],
+      "cuisine": "Cafe, Coffee, Beverages",
+      "price_range": "$$$",
+      "location": "Delhi High Court",
+      "atmosphere": "Welcoming and familiar, great for both work and leisure.",
+      "image_url": "https://b.zmtcdn.com/data/pictures/chains/1/301011/2c62020a8d06e8f90d603682eb003e2c_featured_v2.jpg?output-format=webp&fit=around|771.75:416.25&crop=771.75:416.25;*,*"
+    },
+    {
+      "id": 63,
+      "name": "Savorworks Coffee & Chocolate Atelier",
+      "description": "A delightful spot for coffee lovers and dessert enthusiasts alike.",
+      "match_reasons": [
+        "Offers unique coffee and dessert options",
+        "Located in South Delhi"
+      ],
+      "highlights": ["Home Delivery", "Indoor Seating", "Pet Friendly"],
+      "cuisine": "Cafe, Desserts, Italian, Fast Food, Street Food, Beverages",
+      "price_range": "$$$",
+      "location": "Greater Kailash 2 (GK2)",
+      "atmosphere": "Charming and cozy, perfect for a sweet treat with coffee.",
+      "image_url": "https://b.zmtcdn.com/data/pictures/6/20289306/1237e0e238e6a2fac6f012618927d343.jpg?output-format=webp&fit=around|771.75:416.25&crop=771.75:416.25;*,*"
+    }
+  ],
+  "summary": "These coffee spots in South Delhi offer a variety of atmospheres and unique coffee experiences. From cozy cafes to popular chains, there's something for every coffee lover.",
+  "markdown_response": null
+}
