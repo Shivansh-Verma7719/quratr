@@ -76,11 +76,11 @@ h6 {
   font-family: "League Spartan", sans-serif;
 }
 
-@layer utilities {
+/* @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
-}
+} */
 
 .animate-theme {
   transition:

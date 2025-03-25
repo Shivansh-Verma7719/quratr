@@ -12,7 +12,7 @@ export default function MyStatsig({
   user: User;
 }) {
   const [mounted, setMounted] = useState(false);
-  const [isDev, setIsDev] = useState(false);
+  const [isDev, setIsDev] = useState<boolean>(false);
 
   const { client } = useClientAsyncInit(
     process.env.NEXT_PUBLIC_STATSIG_CLIENT_KEY!,
@@ -30,7 +30,7 @@ export default function MyStatsig({
   // Check the environment only after the component is mounted
   useEffect(() => {
     if (mounted) {
-      setIsDev(process.env.NEXT_PUBLIC_DEV === "true");
+      setIsDev(process.env.NEXT_PUBLIC_ENV == "development");
     }
   }, [mounted]);
 

@@ -20,13 +20,30 @@ const config: Config = {
         /* Add more colors as needed */
       },
       keyframes: {
-        bounceHorizontal: {
-          "0%, 100%": { transform: "translateX(0)" },
-          "50%": { transform: "translateX(10px)" },
+        // Keep the original animation
+        "shiny-text": {
+          "0%, 90%, 100%": {
+            "background-position": "calc(-100% - var(--shiny-width)) 0",
+          },
+          "30%, 60%": {
+            "background-position": "calc(100% + var(--shiny-width)) 0",
+          },
+        },
+        // Updated faster left-to-right only animation
+        "slow-shimmer": {
+          "0%": {
+            "background-position": "calc(-100% - var(--shiny-width)) 0",
+          },
+          "100%": {
+            "background-position": "calc(100% + var(--shiny-width)) 0",
+          },
         },
       },
       animation: {
-        bounceHorizontal: "bounceHorizontal 1s infinite",
+        "shiny-text": "shiny-text 4s infinite",
+        // Speed up animation from 6s to 3.5s with smoother easing
+        "slow-shimmer":
+          "slow-shimmer 4s cubic-bezier(0.45, 0, 0.25, 1) infinite",
       },
     },
   },

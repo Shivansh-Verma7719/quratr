@@ -154,14 +154,14 @@ export const AgentMessage: React.FC<AgentMessageProps> = ({
                 duration: 0.3,
                 ease: [0.23, 1, 0.32, 1] // Custom easing for smooth motion
             }}
-            className={`flex justify-start relative ${className}`}
+            className={`flex justify-start relative ${className} overflow-hidden`}
         >
             {/* Agent Avatar with separate animation for better performance */}
             <motion.div
                 initial={{ scale: 0.4, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.25, delay: 0.1 }}
-                className={`absolute z-50 left-2 -top-4 h-7 w-7 rounded-full flex items-center justify-center ${isError ? "bg-red-500 shadow-sm" : "bg-secondary shadow-sm"
+                className={`absolute z-20 left-2 -top-4 h-7 w-7 rounded-full flex items-center justify-center ${isError ? "bg-red-500 shadow-sm" : "bg-secondary shadow-sm"
                     }`}
             >
                 {isError ? (

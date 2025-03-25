@@ -214,19 +214,6 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
                                                     loading="eager"
                                                 />
                                                 <CardBody className="absolute left-0 top-0 flex w-full flex-row items-start justify-between p-3 pt-4">
-                                                    {/* <div className="flex flex-wrap gap-1.5 max-w-[80%]">
-                                                        {parseCuisine(recommendation.cuisine).map((cuisine, idx) => (
-                                                            <Chip
-                                                                key={idx}
-                                                                color="secondary"
-                                                                variant="solid"
-                                                                size="sm"
-                                                                className="backdrop-blur-sm bg-secondary/90"
-                                                            >
-                                                                {cuisine}
-                                                            </Chip>
-                                                        ))}
-                                                    </div> */}
                                                     {recommendation.price_range && (
                                                         <Chip
                                                             color="success"
@@ -277,8 +264,9 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
                                                                 color="success"
                                                                 startContent={<CircleCheck size={14} />}
                                                                 size="sm"
+                                                                className="flex items-center justify-center"
                                                             >
-                                                                Perfect match
+                                                                <p className="mt-0.5">Perfect match</p>
                                                             </Chip>
                                                         )}
                                                     </div>

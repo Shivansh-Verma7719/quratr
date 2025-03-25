@@ -1,11 +1,13 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, Loader2, X, MessageSquare } from "lucide-react";
+import { Send, X, MessageSquare } from "lucide-react";
 import UserMessage from "@/components/ai/user_msg";
 import AgentMessage from "@/components/ai/agent_msg";
 import Blobs from "@/components/ai/bg-blobs";
 import { createClient } from "@/utils/supabase/client";
+import { loadingMessages } from "./loadingMessages";
+import { ShimmerText } from "@/components/ui/Shimmer"; 
 
 // Define properly typed interfaces for API response
 interface PlaceRanking {
@@ -83,7 +85,7 @@ interface UserProfile {
 
 export default function AIRecommenderPage() {
   const [query, setQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [error, setError] = useState<string | null>(null);
   const messageEndRef = useRef<HTMLDivElement>(null);
@@ -189,7 +191,7 @@ export default function AIRecommenderPage() {
         }
       ]);
     } finally {
-      setIsLoading(false);
+      // setIsLoading(false);
     }
   };
 
@@ -256,7 +258,7 @@ export default function AIRecommenderPage() {
                         inputRef.current.focus();
                       }
                     }}
-                    className="w-full rounded-full border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 py-2.5 px-4 text-left text-xs text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors shadow-sm"
+                    className="w-full rounded-full border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 py-2.5 px-4 text-left text-xs text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors shadow-sm"
                   >
                     {suggestion}
                   </button>
@@ -301,25 +303,28 @@ export default function AIRecommenderPage() {
                   exit={{ opacity: 0, y: -10 }}
                   transition={{
                     duration: 0.3,
-                    ease: [0.23, 1, 0.32, 1]
+                    ease: [0.22, 1, 0.36, 1]
                   }}
                   className="flex justify-start relative"
                 >
-                  {/* Agent Avatar with separate animation */}
+                  {/* Agent Avatar with subtle animation */}
                   <motion.div
                     initial={{ scale: 0.4, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ duration: 0.25, delay: 0.1 }}
-                    className="absolute left-2 -top-4 h-7 z-50 w-7 rounded-full flex items-center justify-center bg-secondary shadow-sm"
+                    className="absolute left-2 -top-4 h-7 z-50 w-7 rounded-full flex items-center justify-center bg-secondary/80 shadow-sm backdrop-blur-sm"
                   >
                     <MessageSquare className="h-3.5 w-3.5 text-white" />
                   </motion.div>
 
-                  {/* Message Content */}
-                  <div className="max-w-[85%] md:max-w-[75%] lg:max-w-[65%] mb-2 rounded-2xl p-3 pt-4 shadow-sm mr-auto bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-100 will-change-[opacity,transform]">
-                    <div className="flex items-center space-x-2">
-                      <Loader2 className="h-4 w-4 animate-spin text-primary" />
-                      <p className="text-sm text-gray-600 dark:text-gray-300">Finding recommendations...</p>
+                  {/* Message Content with refined shimmering text */}
+                  <div className="max-w-[85%] md:max-w-[75%] lg:max-w-[65%] mb-2 rounded-2xl p-3 pt-4 shadow-sm mr-auto bg-white/80 dark:bg-gray-900/80 border border-gray-200/70 dark:border-gray-700/70 text-gray-800 dark:text-gray-100 backdrop-blur-sm">
+                    <div className="flex items-center min-h-[24px] ml-3">
+                    <ShimmerText
+                        messages={loadingMessages}
+                        className="text-md font-medium"
+                        displayTime={4}
+                        />
                     </div>
                   </div>
                 </motion.div>
@@ -334,7 +339,7 @@ export default function AIRecommenderPage() {
       {/* Input Area - Fixed above the bottom navbar with improved contrast and laptop optimization */}
       <div className="fixed bottom-[2.5rem] left-0 right-0 border-t border-gray-200 dark:border-gray-800 bg-bacground p-3 backdrop-blur-md">
         <form onSubmit={handleSubmit} className="mx-auto max-w-3xl">
-          <div className="relative flex items-center overflow-hidden rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md focus-within:ring-2 focus-within:ring-primary/30">
+          <div className="relative flex items-center overflow-hidden rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-md focus-within:ring-2 focus-within:ring-primary/30">
             <textarea
               ref={inputRef}
               value={query}
