@@ -75,9 +75,7 @@ const OnboardingPage: React.FC = () => {
             }
           }
         }
-
-        // Redirect to discover page regardless
-        router.push("/discover");
+        
         return;
       }
 
@@ -169,7 +167,6 @@ const OnboardingPage: React.FC = () => {
           if (result.success) {
             setSuccess(true);
             router.push("/discover");
-            router.refresh();
           } else {
             setError(result.error?.message || "Failed to submit onboarding");
           }

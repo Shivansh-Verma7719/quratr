@@ -34,13 +34,12 @@ export async function updateSession(request: NextRequest) {
     "/feed/",
     "/profile",
     "/api/places",
-    // "/settings",
     "/onboarding",
   ];
 
   const apiPages = ["/api/places"];
 
-  const onboardedPages = ["/discover", "/curated", "/profile/edit"];
+  const onboardedPages = ["/discover", "/curated", "/profile/edit", "/group_swipe"];
 
   const loginPages = ["/login", "/register"];
 
@@ -81,10 +80,10 @@ export async function updateSession(request: NextRequest) {
       .eq("id", user.data.user.id)
       .single();
 
-    if (onboardingError) {
+    if (onboardingError && isOnboardedPage) {
       console.log("middleware error");
       console.error(onboardingError);
-      return NextResponse.redirect(new URL("/error", request.url));
+      // return NextResponse.redirect(new URL("/error", request.url));
     }
     if (onboardingData && !onboardingData.is_onboarded) {
       return NextResponse.redirect(new URL("/onboarding", request.url));

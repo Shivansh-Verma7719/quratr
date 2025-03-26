@@ -104,7 +104,6 @@ const RegisterForm: React.FC = () => {
         } else {
           setSuccess("Redirecting...");
           router.push("/onboarding");
-          router.refresh();
         }
         setIsLoading(false);
       }
