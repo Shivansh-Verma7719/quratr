@@ -153,7 +153,7 @@ export default function UserProfilePage() {
                         {isCurrentUser && (
                             <Button
                                 as={Link}
-                                href="/posts/new"
+                                href="/feed/new"
                                 color="primary"
                                 variant="flat"
                                 size="lg"

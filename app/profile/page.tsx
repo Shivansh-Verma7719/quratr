@@ -90,7 +90,7 @@ export default function ProfilePage() {
             <p className="mb-4 text-xl">You haven&apos;t made any posts yet.</p>
             <Button
               as={Link}
-              href="/posts/new"
+              href="/feed/new"
               color="primary"
               variant="flat"
               size="lg"
