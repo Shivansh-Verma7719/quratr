@@ -43,7 +43,7 @@ const config: Config = {
         "shiny-text": "shiny-text 4s infinite",
         // Speed up animation from 6s to 3.5s with smoother easing
         "slow-shimmer":
-          "slow-shimmer 4s cubic-bezier(0.45, 0, 0.25, 1) infinite",
+          "slow-shimmer 2.5s cubic-bezier(0.45, 0, 0.25, 1) infinite",
       },
     },
   },

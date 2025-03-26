@@ -161,8 +161,8 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
 
     return (
         <div className={`relative h-[520px] w-full my-6 ${containerClassName}`}>
-            {/* Card container */}
-            <div className="relative h-full w-full">
+            {/* Card container with containment styles */}
+            <div className="relative h-full w-full overflow-hidden">
                 {allRecommendations
                     .slice(0, currentIndex)
                     .reverse()
@@ -173,6 +173,7 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
                             preventSwipe={recommendation.isLastCard ? ["up", "down", "left", "right"] : ["up", "down"]}
                             swipeRequirementType="position"
                             className="absolute left-0 top-0 h-full w-full"
+                            swipeThreshold={80} // Lower threshold for easier swiping in contained area
                         >
                             <div
                                 ref={(el) => {
@@ -226,7 +227,7 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
                                                     )}
                                                 </CardBody>
                                                 <CardFooter
-                                                    className="absolute bottom-1 z-10 ml-1 flex w-[calc(100%_-_8px)] bg-black bg-opacity-35 flex-col items-start overflow-hidden rounded-large border-1 border-white/20 py-1.5 shadow-lg before:rounded-xl"
+                                                    className="absolute bottom-1 z-10 ml-1 flex w-[calc(100%_-_8px)] bg-black bg-opacity-35 flex-col items-start overflow-hidden rounded-large border-1 border-white/20 py-1.5 shadow-lg"
                                                 >
                                                     <div className="flex w-full items-center justify-between">
                                                         <h3 className="text-2xl text-white font-bold line-clamp-1">
@@ -256,7 +257,7 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
                                                                 startContent={<Star size={14} />}
                                                                 size="sm"
                                                             >
-                                                                Similar place
+                                                                <p className="mt-[0.2rem]">Similar match</p>
                                                             </Chip>
                                                         ) : recommendation.match_reasons?.length > 0 && (
                                                             <Chip
@@ -266,7 +267,7 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
                                                                 size="sm"
                                                                 className="flex items-center justify-center"
                                                             >
-                                                                <p className="mt-0.5">Perfect match</p>
+                                                                <p className="mt-[0.2rem]">Perfect match</p>
                                                             </Chip>
                                                         )}
                                                     </div>

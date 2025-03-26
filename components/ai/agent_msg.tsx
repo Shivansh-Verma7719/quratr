@@ -154,14 +154,14 @@ export const AgentMessage: React.FC<AgentMessageProps> = ({
                 duration: 0.3,
                 ease: [0.23, 1, 0.32, 1] // Custom easing for smooth motion
             }}
-            className={`flex justify-start relative ${className} overflow-hidden`}
+            className={`flex justify-start relative ${className}`}
         >
-            {/* Agent Avatar with separate animation for better performance */}
+            {/* Agent Avatar with elevated z-index to ensure visibility */}
             <motion.div
                 initial={{ scale: 0.4, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.25, delay: 0.1 }}
-                className={`absolute z-20 left-2 -top-4 h-7 w-7 rounded-full flex items-center justify-center ${isError ? "bg-red-500 shadow-sm" : "bg-secondary shadow-sm"
+                className={`absolute z-10 left-2 -top-4 h-7 w-7 rounded-full flex items-center justify-center ${isError ? "bg-red-500 shadow-sm" : "bg-secondary shadow-sm"
                     }`}
             >
                 {isError ? (
@@ -171,7 +171,7 @@ export const AgentMessage: React.FC<AgentMessageProps> = ({
                 )}
             </motion.div>
 
-            {/* Message Content - with will-change for hardware acceleration */}
+            {/* Message Content with overflow handling */}
             <div
                 className={`
                   ${hasRecommendations
@@ -182,25 +182,26 @@ export const AgentMessage: React.FC<AgentMessageProps> = ({
                         ? "bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-gray-800 dark:text-gray-100"
                         : "bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-100"
                     }
-                  will-change-[opacity,transform]
+                  will-change-[opacity,transform] overflow-hidden
                 `}
             >
                 <div className="space-y-4">
                     <p className="text-sm">{content}</p>
 
-                    {/* Progressive loading for heavy content */}
+                    {/* Card container with overflow hidden */}
                     {hasRecommendations && (
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ duration: 0.4, delay: 0.3 }}
-                            className="mt-4"
+                            className="mt-4 relative"
                         >
                             <SwipeCard
                                 recommendations={allRecommendations}
                                 onLike={handleLike}
                                 onDislike={handleDislike}
                                 isLoading={cardsLoading}
+                                containerClassName="contained-swipe-card"
                             />
                         </motion.div>
                     )}

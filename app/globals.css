@@ -87,3 +87,19 @@ h6 {
     background-color var(--transition-duration) ease-in-out,
     color var(--transition-duration) ease-in-out;
 }
+
+/* Add to your global.css or create a specific CSS module */
+.contained-swipe-card .react-tinder-card {
+  overflow: hidden !important;
+  position: absolute !important;
+}
+
+/* Make sure transform doesn't break out of container */
+.contained-swipe-card .react-tinder-card > div {
+  transform-origin: center center !important;
+}
+
+/* Ensure react-tinder-card respects overflow boundaries */
+.contained-swipe-card .react-tinder-card.swiped {
+  z-index: 10 !important;
+}
