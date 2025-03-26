@@ -1,13 +1,11 @@
 import { createClient } from "@/utils/supabase/server";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import AIRecommenderClient from "./ai-client";
-import { UserProfile } from "@/app/ai";
+import { UserProfile } from "@/types/ai";
 
 export default async function AIPage() {
   // Initialize the server Supabase client
-  const cookieStore = cookies();
-  const supabase = await createClient(cookieStore);
+  const supabase = await createClient();
 
   // Check if the user is logged in
   const { data: { user } } = await supabase.auth.getUser();

@@ -8,7 +8,7 @@ import Blobs from "@/components/ai/bg-blobs";
 import { loadingMessages } from "@/app/ai/loadingMessages";
 import { ShimmerText } from "@/components/ui/Shimmer";
 import AIInputBox from "@/components/ai/input";
-import { UserProfile, Conversation, RecommendationResponse } from "@/app/ai/types";
+import { UserProfile, Conversation, RecommendationResponse } from "@/types/ai";
 
 interface AIRecommenderClientProps {
   userProfile: UserProfile | null;
