@@ -35,79 +35,97 @@ const OnboardingPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
-  const [hasLoadedUserData, setHasLoadedUserData] = useState(false);
+  const [isPageLoading, setIsPageLoading] = useState(true);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      const supabase = createClient();
-      const { data, error } = await supabase.auth.getUser();
+    const checkUserStatus = async () => {
+      try {
+        setIsPageLoading(true);
+        const supabase = createClient();
 
-      if (error || !data.user) {
-        console.error("Error fetching user:", error);
-        return;
-      }
+        // Step 1: Get the authenticated user
+        const { data: userData, error: userError } = await supabase.auth.getUser();
 
-      // Extract metadata from OAuth if available
-      const metadata = data.user.user_metadata;
+        if (userError || !userData.user) {
+          console.error("Error fetching user:", userError);
+          setError("Authentication error. Please try logging in again.");
+          setIsPageLoading(false);
+          return;
+        }
 
-      // Check if user is already onboarded
-      // User is already onboarded, check if they have an avatar
-      const { data: profileData, error: profileError } = await supabase
-        .from("profiles")
-        .select("avatar, is_onboarded")
-        .eq("id", data.user.id)
-        .single();
+        const userId = userData.user.id;
+        const metadata = userData.user.user_metadata || {};
 
-      if (profileData?.is_onboarded === true) {
-        if (!profileError && profileData) {
-          // If user doesn't have an avatar but has one in metadata, update it
-          if (!profileData.avatar && metadata && (metadata.avatar_url || metadata.picture)) {
+        // Step 2: Check if user profile exists and onboarding status
+        const { data: profileData, error: profileError } = await supabase
+          .from("profiles")
+          .select("avatar, is_onboarded, first_name, last_name, username")
+          .eq("id", userId)
+          .single();
+
+        if (profileError && profileError.code !== "PGRST116") {
+          // PGRST116 is "no rows returned" - expected for new users
+          console.error("Error fetching profile:", profileError);
+          setError("Error loading your profile data.");
+          setIsPageLoading(false);
+          return;
+        }
+
+        // Step 3: Handle already onboarded users
+        if (profileData?.is_onboarded === true) {
+          console.log("User already onboarded, redirecting to discover");
+
+          // Optional: Update avatar if user has one from OAuth but not in profile
+          if (!profileData.avatar && (metadata.avatar_url || metadata.picture)) {
             const avatarUrl = metadata.avatar_url || metadata.picture;
 
-            // Update the user's profile with the avatar from metadata
-            const { error: updateError } = await supabase
+            await supabase
               .from("profiles")
               .update({ avatar: avatarUrl })
-              .eq("id", data.user.id);
-
-            if (updateError) {
-              console.error("Error updating avatar:", updateError);
-            }
+              .eq("id", userId);
           }
-        }
-        
-        return;
-      }
 
-      // User is not onboarded, continue with normal onboarding flow
-      if (metadata) {
-        // Handle name - try full_name first, then name
+          // Redirect to discover page
+          router.push("/discover");
+          return;
+        }
+
+        // Step 4: Handle new or not-yet-onboarded users
+        // Pre-fill the form with data from OAuth metadata if available
         let firstName = "";
         let lastName = "";
+        let avatarUrl = "";
 
+        // If not in profile, try to get from OAuth metadata
         if (metadata.full_name || metadata.name) {
           const fullName = (metadata.full_name || metadata.name).split(" ");
           firstName = fullName[0] || "";
           lastName = fullName.slice(1).join(" ") || "";
         }
 
-        // Check for avatar URL
-        const avatarUrl = metadata.avatar_url || metadata.picture || "";
+        // Get avatar from OAuth if not already set
+        if (!avatarUrl && (metadata.avatar_url || metadata.picture)) {
+          avatarUrl = metadata.avatar_url || metadata.picture || "";
+        }
 
-        // Pre-fill the form data with available information
+        // Update form with prefilled data
         setFormData(prev => ({
           ...prev,
           firstName: firstName || prev.firstName,
           lastName: lastName || prev.lastName,
+          username: profileData?.username || prev.username,
           avatarUrl: avatarUrl || prev.avatarUrl,
-          // Don't pre-fill username as it needs to be chosen by the user
         }));
-      }
 
-      setHasLoadedUserData(true);
+        setIsPageLoading(false);
+      } catch (error) {
+        console.error("Unexpected error during user status check:", error);
+        setError("An unexpected error occurred. Please try again.");
+        setIsPageLoading(false);
+      }
     };
 
-    fetchUserData();
+    checkUserStatus();
   }, [router]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -162,22 +180,20 @@ const OnboardingPage: React.FC = () => {
   const handleSubmit = async () => {
     if (step === 4 && validateAllSteps()) {
       setIsLoading(true);
-      await submitOnboarding(formData)
-        .then((result) => {
-          if (result.success) {
-            setSuccess(true);
-            router.push("/discover");
-          } else {
-            setError(result.error?.message || "Failed to submit onboarding");
-          }
-        })
-        .catch((error) => {
-          console.error("Failed to submit onboarding:", error);
-          setError("Failed to submit onboarding");
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
+      try {
+        const result = await submitOnboarding(formData);
+        if (result.success) {
+          setSuccess(true);
+          setTimeout(() => router.push("/discover"), 1500); // Small delay to show success message
+        } else {
+          setError(result.error?.message || "Failed to submit onboarding");
+        }
+      } catch (error) {
+        console.error("Failed to submit onboarding:", error);
+        setError("Failed to submit onboarding. Please try again.");
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -273,115 +289,124 @@ const OnboardingPage: React.FC = () => {
     }
   };
 
+  if (isPageLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="animate-pulse flex flex-col items-center">
+          <div className="h-12 w-12 rounded-full bg-gray-300 mb-4"></div>
+          <div className="h-4 w-48 bg-gray-300 rounded"></div>
+          <p className="mt-4 text-gray-500">Loading your profile...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen overflow-x-hidden bg-background font-sans text-text">
-      {/* Only render the main content after we've checked user data */}
-      {hasLoadedUserData && (
-        <main className="container mx-auto px-4 py-16 sm:px-6 sm:py-24">
-          <div className="mx-auto max-w-md">
-            <div className="mb-8 h-2 rounded-full bg-gray-200">
-              <motion.div
-                className="h-2 rounded-full bg-blue-500"
-                initial={{ width: 0 }}
-                animate={{ width: `${getProgressPercentage()}%` }}
-                transition={{ duration: 0.5 }}
-              ></motion.div>
-            </div>
+      <main className="container mx-auto px-4 py-16 sm:px-6 sm:py-24">
+        <div className="mx-auto max-w-md">
+          <div className="mb-8 h-2 rounded-full bg-gray-200">
+            <motion.div
+              className="h-2 rounded-full bg-blue-500"
+              initial={{ width: 0 }}
+              animate={{ width: `${getProgressPercentage()}%` }}
+              transition={{ duration: 0.5 }}
+            ></motion.div>
+          </div>
 
-            <AnimatePresence mode="wait">
-              {section === "profile" ? renderProfileSection() : renderQuestionsSection()}
-            </AnimatePresence>
+          <AnimatePresence mode="wait">
+            {section === "profile" ? renderProfileSection() : renderQuestionsSection()}
+          </AnimatePresence>
 
-            <div className="mt-8 flex justify-between">
-              {(section === "questions" || step > 0) && (
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  type="button"
-                  onClick={handlePrevious}
-                  className="flex items-center rounded-full bg-gray-300 px-4 py-2 text-gray-700"
-                >
-                  <ArrowLeft className="mr-2" /> Previous
-                </motion.button>
-              )}
+          <div className="mt-8 flex justify-between">
+            {(section === "questions" || step > 0) && (
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                type="button"
+                onClick={handlePrevious}
+                className="flex items-center rounded-full bg-gray-300 px-4 py-2 text-gray-700"
+              >
+                <ArrowLeft className="mr-2" /> Previous
+              </motion.button>
+            )}
 
-              {(section === "profile" || step < 4) ? (
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  type="button"
-                  onClick={handleNext}
-                  className={`ml-auto flex items-center rounded-full bg-blue-500 px-4 py-2 text-white ${(section === "profile" && !validateProfile()) ||
+            {(section === "profile" || step < 4) ? (
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                type="button"
+                onClick={handleNext}
+                className={`ml-auto flex items-center rounded-full bg-blue-500 px-4 py-2 text-white ${(section === "profile" && !validateProfile()) ||
                     (section === "questions" && !validateStep())
                     ? "cursor-not-allowed opacity-50" : ""
-                    }`}
-                  disabled={(section === "profile" && !validateProfile()) ||
-                    (section === "questions" && !validateStep())}
-                >
-                  Next <ArrowRight className="ml-2" />
-                </motion.button>
-              ) : (
-                <Button
-                  onPress={handleSubmit}
-                  color="primary"
-                  variant="flat"
-                  size="lg"
-                  isLoading={isLoading}
-                  disabled={isLoading || !validateAllSteps()}
-                  className={`ml-auto flex items-center rounded-full bg-green-500 px-4 py-2 text-white ${!validateAllSteps() ? "cursor-not-allowed opacity-50" : ""
-                    }`}
-                >
-                  Submit
-                </Button>
-              )}
-            </div>
-
-            {success && (
-              <Card
-                radius="lg"
-                className="mt-4 bg-green-500/20"
-                isBlurred
-                shadow="sm"
+                  }`}
+                disabled={(section === "profile" && !validateProfile()) ||
+                  (section === "questions" && !validateStep())}
               >
-                <CardHeader>
-                  <PartyPopper className="mr-2 text-green-500" />
-                  <h1 className="text-green-500">Onboarded!</h1>
-                </CardHeader>
-                <CardBody>
-                  <b>Begin your curated journey!</b>
-                  <Button
-                    color="primary"
-                    className="mt-2"
-                    variant="flat"
-                    startContent={<IconSwipe />}
-                    as="a"
-                    href="/discover"
-                  >
-                    Start Swiping
-                  </Button>
-                </CardBody>
-              </Card>
-            )}
-
-            {error && (
-              <Card
-                radius="lg"
-                className="mt-4 bg-red-500/20"
-                isBlurred
-                shadow="sm"
+                Next <ArrowRight className="ml-2" />
+              </motion.button>
+            ) : (
+              <Button
+                onPress={handleSubmit}
+                color="primary"
+                variant="flat"
+                size="lg"
+                isLoading={isLoading}
+                disabled={isLoading || !validateAllSteps()}
+                className={`ml-auto flex items-center rounded-full bg-green-500 px-4 py-2 text-white ${!validateAllSteps() ? "cursor-not-allowed opacity-50" : ""
+                  }`}
               >
-                <CardHeader>
-                  <ShieldAlert className="mr-2 text-red-500" />
-                  <h1 className="text-red-500">Error</h1>
-                </CardHeader>
-                <CardBody>
-                  <p className="text-red-500">{error}</p>
-                </CardBody>
-              </Card>
+                Submit
+              </Button>
             )}
           </div>
-        </main>
-      )}
+
+          {success && (
+            <Card
+              radius="lg"
+              className="mt-4 bg-green-500/20"
+              isBlurred
+              shadow="sm"
+            >
+              <CardHeader>
+                <PartyPopper className="mr-2 text-green-500" />
+                <h1 className="text-green-500">Onboarded!</h1>
+              </CardHeader>
+              <CardBody>
+                <b>Begin your curated journey!</b>
+                <Button
+                  color="primary"
+                  className="mt-2"
+                  variant="flat"
+                  startContent={<IconSwipe />}
+                  as="a"
+                  href="/discover"
+                >
+                  Start Swiping
+                </Button>
+              </CardBody>
+            </Card>
+          )}
+
+          {error && (
+            <Card
+              radius="lg"
+              className="mt-4 bg-red-500/20"
+              isBlurred
+              shadow="sm"
+            >
+              <CardHeader>
+                <ShieldAlert className="mr-2 text-red-500" />
+                <h1 className="text-red-500">Error</h1>
+              </CardHeader>
+              <CardBody>
+                <p className="text-red-500">{error}</p>
+              </CardBody>
+            </Card>
+          )}
+        </div>
+      </main>
       <Footer />
     </div>
   );
