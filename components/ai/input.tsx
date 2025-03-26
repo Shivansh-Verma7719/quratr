@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, RefObject } from "react";
+import React, { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Send, X } from "lucide-react";
 
@@ -9,7 +9,7 @@ interface AIInputBoxProps {
   isLoading?: boolean;
   error?: string | null;
   placeholder?: string;
-  inputRef?: RefObject<HTMLTextAreaElement>;
+  inputRef?: React.RefObject<HTMLTextAreaElement | null>;
   className?: string;
   containerClassName?: string;
   fixed?: boolean;
