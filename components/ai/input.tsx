@@ -62,7 +62,7 @@ const AIInputBox: React.FC<AIInputBoxProps> = ({
   }, [onSubmit]);
 
   const positionClass = fixed ? 
-    "fixed bottom-[2.5rem] z-30 left-0 right-0" : 
+    "fixed bottom-[2.5rem] md:bottom-0 z-30 left-0 right-0" : 
     "relative";
 
   return (
@@ -74,7 +74,7 @@ const AIInputBox: React.FC<AIInputBoxProps> = ({
         }} 
         className={`mx-auto max-w-3xl ${className}`}
       >
-        <div className="relative flex mb-1 items-center overflow-hidden rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-md focus-within:ring-2 focus-within:ring-primary/30">
+        <div className="relative flex mb-1 md:mb-0 items-center overflow-hidden rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-md focus-within:ring-2 focus-within:ring-primary/30">
           <textarea
             ref={inputRef}
             value={query}
