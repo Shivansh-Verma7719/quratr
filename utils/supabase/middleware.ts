@@ -83,7 +83,7 @@ export async function updateSession(request: NextRequest) {
     if (onboardingError && isOnboardedPage) {
       console.log("middleware error");
       console.error(onboardingError);
-      // return NextResponse.redirect(new URL("/error", request.url));
+      return NextResponse.redirect(new URL("/onboarding", request.url));
     }
     if (onboardingData && !onboardingData.is_onboarded) {
       return NextResponse.redirect(new URL("/onboarding", request.url));
