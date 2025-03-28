@@ -210,8 +210,11 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
                                                     alt={recommendation.name}
                                                     className="h-full w-full object-cover"
                                                     src={recommendation.image_url}
-                                                    fill
                                                     priority={true}
+                                                    // width={400}
+                                                    // height={400}
+                                                    fill
+                                                    quality={100}
                                                     loading="eager"
                                                 />
                                                 <CardBody className="absolute left-0 top-0 flex w-full flex-row items-start justify-between p-3 pt-4">
