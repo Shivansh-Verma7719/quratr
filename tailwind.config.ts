@@ -20,15 +20,6 @@ const config: Config = {
         /* Add more colors as needed */
       },
       keyframes: {
-        // Keep the original animation
-        "shiny-text": {
-          "0%, 90%, 100%": {
-            "background-position": "calc(-100% - var(--shiny-width)) 0",
-          },
-          "30%, 60%": {
-            "background-position": "calc(100% + var(--shiny-width)) 0",
-          },
-        },
         // Updated faster left-to-right only animation
         "slow-shimmer": {
           "0%": {
@@ -40,8 +31,6 @@ const config: Config = {
         },
       },
       animation: {
-        "shiny-text": "shiny-text 4s infinite",
-        // Speed up animation from 6s to 3.5s with smoother easing
         "slow-shimmer":
           "slow-shimmer 2.5s cubic-bezier(0.45, 0, 0.25, 1) infinite",
       },

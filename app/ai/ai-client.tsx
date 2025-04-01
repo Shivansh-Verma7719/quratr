@@ -1,10 +1,10 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { MessageSquare } from "lucide-react";
 import UserMessage from "@/components/ai/user_msg";
 import AgentMessage from "@/components/ai/agent_msg";
-import Blobs from "@/components/ai/bg-blobs";
+// import Blobs from "@/components/ai/bg-blobs";
 import { loadingMessages } from "@/app/ai/loadingMessages";
 import { ShimmerText } from "@/components/ui/Shimmer";
 import AIInputBox from "@/components/ai/input";
@@ -46,8 +46,8 @@ export default function AIRecommenderClient({ userProfile, userAttributes }: AIR
     }
 
     try {
-      const useDebug = process.env.NEXT_PUBLIC_ENV === "development";
-      // const useDebug = true;
+      // const useDebug = process.env.NEXT_PUBLIC_ENV === "development";
+      const useDebug = true;
 
       // Use POST request with full payload
       const response = await fetch(`/api/search`, {
@@ -102,23 +102,10 @@ export default function AIRecommenderClient({ userProfile, userAttributes }: AIR
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [conversations]);
 
-  // Handle Cmd/Ctrl+Enter to submit
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (inputRef.current === document.activeElement &&
-        (e.metaKey || e.ctrlKey) && e.key === 'Enter') {
-        e.preventDefault();
-        handleSubmit();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [query]);
 
   return (
-    <div className="relative flex h-[90vh] w-full flex-col overflow-hidden bg-background/95">
-      <Blobs />
+    <div className="relative flex h-[90vh] w-full flex-col overflow-hidden bg-background">
+      {/* <Blobs /> */}
 
       <div
         ref={chatContainerRef}

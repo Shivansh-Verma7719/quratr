@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef } from "react";
 import { motion } from "framer-motion";
 import { Send, X } from "lucide-react";
 
@@ -47,20 +47,6 @@ const AIInputBox: React.FC<AIInputBoxProps> = ({
     }
   };
 
-  // Handle Cmd/Ctrl+Enter to submit
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (inputRef.current === document.activeElement &&
-        (e.metaKey || e.ctrlKey) && e.key === 'Enter') {
-        e.preventDefault();
-        onSubmit();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onSubmit]);
-
   const positionClass = fixed ? 
     "fixed bottom-[2.5rem] md:bottom-0 z-30 left-0 right-0" : 
     "relative";
@@ -89,12 +75,6 @@ const AIInputBox: React.FC<AIInputBoxProps> = ({
               }
             }}
           />
-
-          <div className="hidden md:flex absolute right-20 text-xs text-gray-400 items-center">
-            <kbd className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600 mr-1">Ctrl</kbd>
-            <span className="mx-0.5">+</span>
-            <kbd className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600">Enter</kbd>
-          </div>
 
           {query && (
             <button
