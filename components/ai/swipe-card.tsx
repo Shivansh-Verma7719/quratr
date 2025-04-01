@@ -134,7 +134,7 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
 
     // Skeleton loader for the cards
     const CardSkeleton = () => (
-        <div className="relative h-[520px] w-full my-6">
+        <div className="relative h-[570px] w-full my-6">
             <Card radius="lg" className="h-full w-full border-none shadow-xl">
                 <Skeleton className="h-full w-full rounded-lg" />
                 <CardBody className="absolute left-0 top-0 flex w-full flex-row items-start justify-between p-3 pt-4">
@@ -155,10 +155,6 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
         </div>
     );
 
-    if (recommendations.length === 0) {
-        return <CardSkeleton />;
-    }
-
     if (externalLoading) {
         return <CardSkeleton />;
     }
@@ -167,7 +163,7 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
     const visibleCards = cards.filter(card => !removedCards.includes(card.id));
 
     return (
-        <div className={`relative h-[520px] w-full my-6 ${containerClassName}`}>
+        <div className={`relative h-[570px] w-full my-6 ${containerClassName}`}>
             {/* Card container with improved containment styles */}
             <div className="relative h-full w-full overflow-hidden">
                 {visibleCards.reverse().map((recommendation, index) => (
