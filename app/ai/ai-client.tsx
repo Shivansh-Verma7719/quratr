@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { MessageSquare } from "lucide-react";
 import UserMessage from "@/components/ai/user_msg";
 import AgentMessage from "@/components/ai/agent_msg";
-// import Blobs from "@/components/ai/bg-blobs";
+import Blobs from "@/components/ai/bg-blobs";
 import { loadingMessages } from "@/app/ai/loadingMessages";
 import { ShimmerText } from "@/components/ui/Shimmer";
 import AIInputBox from "@/components/ai/input";
@@ -104,8 +104,8 @@ export default function AIRecommenderClient({ userProfile, userAttributes }: AIR
 
 
   return (
-    <div className="relative flex h-[90vh] w-full flex-col overflow-hidden bg-background">
-      {/* <Blobs /> */}
+    <div className="relative flex h-[90vh] w-full flex-col overflow-hidden bg-background/95">
+      <Blobs />
 
       <div
         ref={chatContainerRef}

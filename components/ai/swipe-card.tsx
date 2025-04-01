@@ -136,7 +136,7 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
     // Skeleton loader for the cards
     const CardSkeleton = () => (
         <div className="relative h-[530px] w-full my-6">
-            <Card radius="lg" className="h-full w-full border-none">
+            <Card radius="lg" className="h-full w-full border-none shadow-xl">
                 <Skeleton className="h-full w-full rounded-lg" />
                 <CardBody className="absolute left-0 top-0 flex w-full flex-row items-start justify-between p-3 pt-4">
                     <div className="flex flex-wrap gap-1.5 max-w-[80%]">
@@ -146,7 +146,7 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
                     <Skeleton className="h-6 w-16 rounded-full" />
                 </CardBody>
                 <CardFooter
-                    className="absolute bottom-1 z-10 ml-1 flex w-[calc(100%_-_8px)] bg-black bg-opacity-35 flex-col items-start overflow-hidden rounded-large border-1 border-white/20 py-1.5 before:rounded-xl"
+                    className="absolute bottom-1 z-10 ml-1 flex w-[calc(100%_-_8px)] bg-black bg-opacity-35 flex-col items-start overflow-hidden rounded-large border-1 border-white/20 py-1.5 shadow-lg before:rounded-xl"
                 >
                     <Skeleton className="h-7 w-3/4 rounded-lg mb-2" />
                     <Skeleton className="h-5 w-1/2 rounded-lg mb-1" />
@@ -218,7 +218,7 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
                                 <Card
                                     isFooterBlurred
                                     radius="lg"
-                                    className="h-full w-full border-none"
+                                    className="h-full w-full border-none shadow-xl"
                                 >
                                     {recommendation.isLastCard ? (
                                         <div className="flex h-full w-full flex-col items-center justify-center bg-gray-100 dark:bg-gray-800 p-6">
@@ -252,7 +252,7 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
                                                 )}
                                             </CardBody>
                                             <CardFooter
-                                                className="absolute bottom-1 z-10 ml-1 flex w-[calc(100%_-_8px)] bg-black bg-opacity-35 flex-col items-start overflow-hidden rounded-large border-1 border-white/20 py-1.5"
+                                                className="absolute bottom-1 z-10 ml-1 flex w-[calc(100%_-_8px)] bg-black bg-opacity-35 flex-col items-start overflow-hidden rounded-large border-1 border-white/20 py-1.5 shadow-lg"
                                             >
                                                 <div className="flex w-full items-center justify-between">
                                                     <h3 className="text-2xl text-white font-bold line-clamp-1">
@@ -320,7 +320,7 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
                                 <Card
                                     radius="lg"
                                     isBlurred
-                                    className="h-full w-full border-none overflow-auto"
+                                    className="h-full w-full border-none overflow-auto shadow-xl"
                                 >
                                     <div className="absolute inset-0" />
                                     <CardBody className="relative z-10 p-4 overflow-auto bg-black bg-opacity-60">
