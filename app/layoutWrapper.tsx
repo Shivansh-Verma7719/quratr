@@ -10,6 +10,7 @@ import MyStatsig from "./my-statsig";
 const getUser = async () => {
   const supabase = await createClient();
   const { data: fetchedUser } = await supabase.auth.getUser();
+  // console.log("Fetched user:", fetchedUser);
   return fetchedUser?.user;
 };
 
