@@ -46,8 +46,8 @@ export default function AIRecommenderClient({ userProfile, userAttributes }: AIR
     }
 
     try {
-      // const useDebug = process.env.NEXT_PUBLIC_ENV === "development";
-      const useDebug = true; // Set to true for debugging purposes
+      const useDebug = process.env.NEXT_PUBLIC_ENV === "development";
+      // const useDebug = true; // Set to true for debugging purposes
 
       // Use POST request with full payload
       const response = await fetch(`/api/search`, {

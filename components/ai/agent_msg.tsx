@@ -194,7 +194,7 @@ export const AgentMessage: React.FC<AgentMessageProps> = ({
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ duration: 0.4, delay: 0.3 }}
-                            className="mt-4 relative"
+                            className="mt-6 relative"
                         >
                             <SwipeCard
                                 recommendations={allRecommendations}
