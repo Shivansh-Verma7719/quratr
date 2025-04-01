@@ -211,8 +211,6 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
                                                     className="h-full w-full object-cover"
                                                     src={recommendation.image_url}
                                                     priority={true}
-                                                    // width={400}
-                                                    // height={400}
                                                     fill
                                                     quality={100}
                                                     loading="eager"

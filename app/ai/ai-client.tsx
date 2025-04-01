@@ -10,11 +10,13 @@ import { ShimmerText } from "@/components/ui/Shimmer";
 import AIInputBox from "@/components/ai/input";
 import { UserProfile, Conversation, RecommendationResponse } from "@/types/ai";
 
+// Update the interface to include userAttributes
 interface AIRecommenderClientProps {
   userProfile: UserProfile | null;
+  userAttributes: number[];
 }
 
-export default function AIRecommenderClient({ userProfile }: AIRecommenderClientProps) {
+export default function AIRecommenderClient({ userProfile, userAttributes }: AIRecommenderClientProps) {
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [conversations, setConversations] = useState<Conversation[]>([]);
@@ -44,8 +46,22 @@ export default function AIRecommenderClient({ userProfile }: AIRecommenderClient
     }
 
     try {
-      const useDebug = process.env.NEXT_PUBLIC_ENV === "development";
-      const response = await fetch(`/api/search?query=${encodeURIComponent(query)}${useDebug ? "&debug=true" : ""}`);
+      // const useDebug = process.env.NEXT_PUBLIC_ENV === "development";
+      const useDebug = false; // Set to true for debugging purposes
+
+      // Use POST request with full payload
+      const response = await fetch(`/api/search`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: query,
+          userAttributes: userAttributes,
+          debug: useDebug ? "true" : "false"
+        }),
+      });
+
       if (!response.ok) {
         throw new Error(`Request failed with status: ${response.status}`);
       }
