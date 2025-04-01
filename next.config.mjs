@@ -12,6 +12,7 @@ const nextConfig = {
     staleTimes: {
       dynamic: 0,
     },
+    // reactCompiler: true,
   },
 };
 
