@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function Blobs() {
     return (
-        <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div className="fixed inset-0 overflow-hidden pointer-events-none">
             <div
                 className="absolute top-0 -left-10 h-[300px] w-[300px] lg:h-[400px] lg:w-[400px] rounded-full bg-primary/40 dark:bg-primary/25 blur-[60px]"
             />
