@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import { motion, useTransform, useScroll } from "framer-motion";
-import { Menu, X } from "lucide-react";
 import { useTheme } from "next-themes";
 import {
   Home,
@@ -12,6 +11,9 @@ import {
   User as UserIcon,
   ListChecks,
   Settings,
+  Menu,
+  Sparkles,
+  X
 } from "lucide-react";
 import Logo from "../logos/logo";
 import Link from "next/link";
@@ -33,8 +35,6 @@ const CustomNavbar: React.FC<{ user: User | null }> = ({ user }) => {
   let pages = [
     { name: "Home", href: "/", icon: Home },
     { name: "About", href: "/#about", icon: DoorOpen },
-    // { name: "Discover", href: "/discover", icon: BadgePlus },
-    // { name: "Feed", href: "/feed", icon: Newspaper },
     { name: "Login", href: "/login", icon: UserIcon },
     { name: "Register", href: "/register", icon: Settings },
   ];
@@ -42,6 +42,7 @@ const CustomNavbar: React.FC<{ user: User | null }> = ({ user }) => {
   if (user) {
     pages = [
       { name: "Home", href: "/", icon: Home },
+      { name: "AI", href: "/ai", icon: Sparkles },
       { name: "Discover", href: "/discover", icon: BadgePlus },
       { name: "Feed", href: "/feed", icon: Newspaper },
       { name: "Profile", href: "/profile", icon: UserIcon },

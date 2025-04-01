@@ -2,8 +2,9 @@
 import React, { useState, useEffect } from "react";
 import { fetchPosts, Post, likePost, unlikePost } from "./helpers";
 import { motion } from "motion/react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Plus } from "lucide-react";
 import { PostCard } from "@/components/ui/Post";
+import Link from "next/link";
 
 interface FeedClientProps {
   initialPosts: Post[];
@@ -67,6 +68,8 @@ export default function FeedClient({ initialPosts }: FeedClientProps) {
           )}
         </div>
       </div>
+
+      {/* Scroll to top button */}
       <div className="fixed left-1/2 top-[3.5rem] -translate-x-1/2">
         <motion.div
           className="cursor-pointer rounded-full bg-[#fed4e4] p-3 text-black shadow-lg sm:p-4"
@@ -86,6 +89,24 @@ export default function FeedClient({ initialPosts }: FeedClientProps) {
           <ArrowRight className="h-5 w-5 rotate-[-90deg] transform sm:h-6 sm:w-6" />
         </motion.div>
       </div>
+
+      {/* Create new post button */}
+      <motion.div
+        className="fixed bottom-14 right-3 z-50"
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ delay: 0.3 }}
+      >
+        <Link href="/feed/new">
+          <motion.div
+            className="flex h-12 w-12 items-center justify-center rounded-full bg-primary shadow-lg"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <Plus className="h-6 w-6 text-white" />
+          </motion.div>
+        </Link>
+      </motion.div>
     </>
   );
 }

@@ -8,6 +8,8 @@ import {
   User,
   ListChecks,
   Settings,
+  Sparkles,
+  Users,
 } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
 import { useEffect, useState } from 'react';
@@ -52,6 +54,8 @@ export const usePages = () => {
         { name: "Feed", href: "/feed", icon: Newspaper },
         { name: "Profile", href: "/profile", icon: User },
         { name: "Curated", href: "/curated", icon: ListChecks },
+        { name: "AI", href: "/ai", icon: Sparkles },
+        { name: "Group Experience", href: "/group_swipe", icon: Users },
         { name: "Logout", href: "/logout", icon: LogOut },
       ]);
     } else {

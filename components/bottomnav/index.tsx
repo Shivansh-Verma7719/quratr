@@ -6,8 +6,8 @@ import {
   ListCheck,
   LogIn,
   NotebookPen,
-  PlusCircle,
   Users,
+  Sparkles,
 } from "lucide-react";
 import { IconSwipe } from "@tabler/icons-react";
 import Link from "next/link";
@@ -47,7 +47,7 @@ const BottomNav = ({ user }: { user: User | null }) => {
         { name: "Discover", href: "/discover", icon: IconSwipe },
         { name: "Curated", href: "/curated", icon: ListCheck },
         { name: "Group Experience", href: "/group_swipe", icon: Users },
-        { name: "Post", href: "/feed/new", icon: PlusCircle },
+        { name: "AI", href: "/ai", icon: Sparkles },
       ]
     : [
         { name: "Home", href: "/", icon: Home },
