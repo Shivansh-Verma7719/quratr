@@ -199,7 +199,7 @@ export default function DiscoverPage() {
       if (index === 1) {
         setCurrentIndex((prevIndex) => prevIndex + 5);
       }
-    }, 1000);
+    }, 1500);
   };
 
   const handleCardFlip = (cardId: string, e?: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {

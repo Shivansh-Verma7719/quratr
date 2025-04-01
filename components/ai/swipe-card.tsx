@@ -37,11 +37,12 @@ interface SwipeCardProps {
     isLoading?: boolean;
 }
 
+const MAX_VISIBLE_CARDS = 10; // Only render up to 10 cards at a time
+
 const SwipeCard: React.FC<SwipeCardProps> = ({
     recommendations,
     onLike = () => { },
     onDislike = () => { },
-    containerClassName = "",
     isLoading: externalLoading = false,
 }) => {
     // Add a last card to show "All Caught Up!" message
@@ -155,18 +156,28 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
         </div>
     );
 
-    if (externalLoading) {
+    if (recommendations.length === 0 || externalLoading) {
         return <CardSkeleton />;
     }
 
-    // Filter out cards that have been removed
-    const visibleCards = cards.filter(card => !removedCards.includes(card.id));
+    // Filter out removed cards and limit the number rendered
+    const filteredCards = cards
+        .filter(card => !removedCards.includes(card.id));
+
+    // Take only the first MAX_VISIBLE_CARDS cards or special "last card"
+    const visibleCards = filteredCards
+        .slice(0, MAX_VISIBLE_CARDS)
+        .concat(
+            filteredCards.length > MAX_VISIBLE_CARDS &&
+                filteredCards.find(c => c.isLastCard) ?
+                [filteredCards.find(c => c.isLastCard)!] : []
+        );
 
     return (
-        <div className={`relative h-[530px] w-full my-6 ${containerClassName}`}>
+        <div className={`relative h-[530px] w-full my-6 mt-8`}>
             {/* Card container with improved containment and padding */}
             <div className="relative h-full w-full">
-                {visibleCards.reverse().map((recommendation, index) => (
+                {visibleCards.slice().reverse().map((recommendation, index) => (
                     <TinderCard
                         key={recommendation.id}
                         onSwipe={(direction) => onSwipe(direction, recommendation.id)}
@@ -186,13 +197,13 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
                             style={{
                                 zIndex: visibleCards.length - index, // Higher z-index for top cards
                                 position: "relative", // Ensure z-index works properly
-                                // Add a slight offset for cards to create a stack effect
-                                transform: `translateY(${index * -1}px)`,
+                                transform: `translateY(${index * -2}px)`, // Slightly larger offset for better depth effect
                                 transitionProperty: "transform, opacity",
-                                transitionDuration: "0.3s",
+                                transitionDuration: "0.3s", // Faster transitions for smoother feel
                                 transitionTimingFunction: "ease-out"
                             }}
                         >
+                            {/* Card content remains the same */}
                             <ReactCardFlip
                                 isFlipped={flippedCards[recommendation.id] || false}
                                 containerClassName="h-full w-full"
@@ -219,10 +230,10 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
                                                 alt={recommendation.name}
                                                 className="h-full w-full object-cover"
                                                 src={recommendation.image_url}
-                                                priority={true}
+                                                priority={index < 3} // Only prioritize first 3 images
                                                 fill
-                                                quality={100}
-                                                loading="eager"
+                                                quality={index < 5 ? 100 : 80} // Lower quality for cards further down the stack
+                                                loading={index < 3 ? "eager" : "lazy"}
                                             />
                                             <CardBody className="absolute left-0 top-0 flex w-full flex-row items-start justify-between p-3 pt-4">
                                                 {recommendation.price_range && (
@@ -301,7 +312,7 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
                                     )}
                                 </Card>
 
-                                {/* Back of card */}
+                                {/* Rest of card back content - unchanged */}
                                 <Card
                                     radius="lg"
                                     isBlurred
@@ -315,6 +326,7 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
                                             transition={{ duration: 0.3 }}
                                             className="flex h-full w-full flex-col space-y-3"
                                         >
+                                            {/* Rest of content unchanged */}
                                             <div className="flex justify-between items-center">
                                                 <motion.h2
                                                     initial={{ x: -20, opacity: 0 }}

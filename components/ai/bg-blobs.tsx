@@ -5,7 +5,7 @@ export default function Blobs() {
     return (
         <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
             <motion.div
-                className="absolute top-0 -left-10 h-[300px] w-[300px] lg:h-[400px] lg:w-[400px] rounded-full bg-primary/40 dark:bg-primary/25 blur-[60px]"
+                className="absolute top-0 -left-10 h-[200px] w-[200px] lg:h-[400px] lg:w-[400px] rounded-full bg-primary/40 dark:bg-primary/25 blur-[60px]"
                 animate={{
                     x: [0, 20, -20, 0],
                     y: [0, -30, 20, 0],
@@ -14,7 +14,7 @@ export default function Blobs() {
                 transition={{ repeat: Infinity, duration: 15, ease: "easeInOut" }}
             />
             <motion.div
-                className="absolute right-0 bottom-0 h-[400px] w-[400px] lg:h-[500px] lg:w-[500px] rounded-full bg-secondary/40 dark:bg-secondary/30 blur-[70px]"
+                className="absolute right-0 bottom-0 h-[200px] w-[200px] lg:h-[500px] lg:w-[500px] rounded-full bg-secondary/40 dark:bg-secondary/30 blur-[70px]"
                 animate={{
                     x: [0, -30, 15, 0],
                     y: [0, 20, -30, 0],

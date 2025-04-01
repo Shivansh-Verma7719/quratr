@@ -201,7 +201,6 @@ export const AgentMessage: React.FC<AgentMessageProps> = ({
                                 onLike={handleLike}
                                 onDislike={handleDislike}
                                 isLoading={cardsLoading}
-                                containerClassName="contained-swipe-card"
                             />
                         </motion.div>
                     )}
