@@ -163,7 +163,7 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
     const visibleCards = cards.filter(card => !removedCards.includes(card.id));
 
     return (
-        <div className={`relative h-[570px] w-full my-6 ${containerClassName}`}>
+        <div className={`relative h-[550px] w-full my-8 ${containerClassName}`}>
             {/* Card container with improved containment styles */}
             <div className="relative h-full w-full overflow-hidden">
                 {visibleCards.reverse().map((recommendation, index) => (
