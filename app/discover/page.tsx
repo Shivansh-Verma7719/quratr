@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import TinderCard from "react-tinder-card";
 import { Card, CardBody, CardFooter } from "@heroui/card";
 import { Spinner } from "@heroui/react";
@@ -45,10 +45,12 @@ export default function DiscoverPage() {
   const [currentIndex, setCurrentIndex] = useState(5);
   const [isLoading, setIsLoading] = useState(true);
   const [originalCards, setOriginalCards] = useState<Card[]>([]);
-  const [flippedCards, setFlippedCards] = useState<{ [key: string]: boolean }>(
-    {}
-  );
+  const [flippedCards, setFlippedCards] = useState<{ [key: string]: boolean }>({});
+  const [swipeInProgress, setSwipeInProgress] = useState(false);
+  const [removedCards, setRemovedCards] = useState<string[]>([]);
   const [cityLocalityMap, setCityLocalityMap] = useState<CityLocalityMap>({});
+  const cardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  
   const [selectedCities, setSelectedCities] = useState<string[]>(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("selectedCities");
@@ -56,6 +58,7 @@ export default function DiscoverPage() {
     }
     return [];
   });
+  
   const [selectedLocalities, setSelectedLocalities] = useState<string[]>(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("selectedLocalities");
@@ -104,6 +107,7 @@ export default function DiscoverPage() {
           setCards(newCards as Card[]);
           setOriginalCards(newCards as Card[]);
           setCityLocalityMap(cityLocalityMap);
+          setRemovedCards([]);
 
           // Populate the flippedCards state with all card IDs
           const initialFlippedState = newCards.reduce(
@@ -126,7 +130,7 @@ export default function DiscoverPage() {
 
   useEffect(() => {
     fetchCards();
-  }, []);
+  }, [fetchCards]);
 
   useEffect(() => {
     if (selectedCities.length === 0 && selectedLocalities.length === 0) {
@@ -164,6 +168,14 @@ export default function DiscoverPage() {
   }, [selectedCities, selectedLocalities, originalCards]);
 
   const onSwipe = async (direction: string, cardId: string, index: number) => {
+    // Skip handling for last card
+    const card = cards.find(card => card.id === cardId);
+    if (card?.isLastCard) {
+      return;
+    }
+
+    setSwipeInProgress(true);
+
     if (direction === "right") {
       await likePlace(cardId);
       const newOriginalCards = originalCards.filter(
@@ -178,28 +190,59 @@ export default function DiscoverPage() {
       setOriginalCards(newOriginalCards);
     }
 
-    if (index === 1) {
-      setCurrentIndex((prevIndex) => prevIndex + 5);
-    }
+    // Mark card as removed with a delay to allow for animation
+    setTimeout(() => {
+      setRemovedCards(prev => [...prev, cardId]);
+      setSwipeInProgress(false);
+      
+      // Only load more cards when we're down to the last one
+      if (index === 1) {
+        setCurrentIndex((prevIndex) => prevIndex + 5);
+      }
+    }, 1000);
   };
 
-  const handleCardFlip = (cardId: string) => {
-    if (!cards.find((card) => card.id === cardId)?.isLastCard) {
+  const handleCardFlip = (cardId: string, e?: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+    if (e) {
+      // Prevent event bubbling to avoid triggering swipe
+      e.stopPropagation();
+    }
+
+    // Don't flip if card is being swiped or has been removed
+    if (!swipeInProgress && !removedCards.includes(cardId) && !cards.find((card) => card.id === cardId)?.isLastCard) {
       setFlippedCards((prev) => ({ ...prev, [cardId]: !prev[cardId] }));
     }
   };
 
+  const handleTouchStart = (cardId: string, e: React.TouchEvent<HTMLDivElement>) => {
+    const touchStartTime = new Date().getTime();
+    e.currentTarget.dataset.touchStartTime = touchStartTime.toString();
+  };
+
+  const handleTouchEnd = (cardId: string, e: React.TouchEvent<HTMLDivElement>) => {
+    const touchEndTime = new Date().getTime();
+    const touchStartTime = parseInt(
+      e.currentTarget.dataset.touchStartTime || "0",
+      10
+    );
+    if (touchEndTime - touchStartTime < 250) {
+      handleCardFlip(cardId, e);
+    }
+  };
+
+  // Filter out removed cards
+  const visibleCards = cards.filter(card => !removedCards.includes(card.id)).slice(0, currentIndex);
+
   return (
     <>
-      <div className="flex h-[calc(100vh_-_123px)] w-full items-center justify-center overflow-hidden px-5 py-4">
+      <div className="flex h-[calc(100vh_-_143px)] w-full items-center justify-center overflow-hidden px-5 py-4">
         <div className="relative h-[95%] w-[95%] md:h-[600px] md:w-[600px]">
           {isLoading ? (
             <div className="flex h-full items-center justify-center">
               <Spinner size="lg" />
             </div>
           ) : (
-            cards
-              .slice(0, currentIndex)
+            visibleCards
               .reverse()
               .map((card, index) => (
                 <TinderCard
@@ -212,29 +255,28 @@ export default function DiscoverPage() {
                   }
                   swipeThreshold={100}
                   swipeRequirementType="position"
-                  className={`absolute left-0 top-0 h-full w-full`}
+                  className="absolute left-0 top-0 h-full w-full"
                 >
                   <div
-                    onClick={() => handleCardFlip(card.id)}
-                    onTouchStart={(e) => {
-                      const touchStartTime = new Date().getTime();
-                      e.currentTarget.dataset.touchStartTime =
-                        touchStartTime.toString();
+                    ref={(el) => {
+                      cardRefs.current[card.id] = el;
                     }}
-                    onTouchEnd={(e) => {
-                      const touchEndTime = new Date().getTime();
-                      const touchStartTime = parseInt(
-                        e.currentTarget.dataset.touchStartTime || "0",
-                        10
-                      );
-                      if (touchEndTime - touchStartTime < 250) {
-                        handleCardFlip(card.id);
-                      }
+                    onClick={(e) => handleCardFlip(card.id, e)}
+                    onTouchStart={(e) => handleTouchStart(card.id, e)}
+                    onTouchEnd={(e) => handleTouchEnd(card.id, e)}
+                    className="h-full w-full cursor-pointer"
+                    style={{
+                      zIndex: visibleCards.length - index, // Higher z-index for top cards
+                      position: "relative", // Ensure z-index works properly
+                      // Add a slight offset for cards to create a stack effect
+                      transform: `translateY(${index * 4}px)`,
+                      transitionProperty: "transform, opacity",
+                      transitionDuration: "0.5s",
+                      transitionTimingFunction: "ease-out",
                     }}
-                    className="h-full w-full"
                   >
                     <ReactCardFlip
-                      isFlipped={flippedCards[card.id]}
+                      isFlipped={flippedCards[card.id] || false}
                       containerClassName="h-full w-full"
                       flipSpeedBackToFront={0.3}
                       flipSpeedFrontToBack={0.3}
@@ -243,16 +285,15 @@ export default function DiscoverPage() {
                       <Card
                         isFooterBlurred
                         radius="lg"
-                        className="h-full w-full border-none"
+                        className="h-full w-full border-none shadow-lg"
                       >
                         {card.isLastCard ? (
-                          <div className="flex h-full flex-col items-center justify-center bg-gray-100 dark:bg-gray-800">
+                          <div className="flex h-full w-full flex-col items-center justify-center bg-gray-100 dark:bg-gray-800 p-6">
                             <h2 className="mb-4 text-2xl font-bold">
                               All Caught Up!
                             </h2>
                             <PartyPopper size={100} />
                             <p className="px-4 text-center">
-                              {/* Swipe more :) !!!!!!!!!!!!!!!!!!!! */}
                               Sit back and relax while we get you more
                               experiences to swipe on.
                             </p>
@@ -303,9 +344,6 @@ export default function DiscoverPage() {
                               <p className="m-0 text-2xl text-white">
                                 {card.locality}
                               </p>
-                              {/* <p className="text-2xl text-white m-0">
-                                {card.matchScore}
-                              </p> */}
                               {card.group_experience === "1" && (
                                 <Chip
                                   variant="faded"
@@ -325,10 +363,10 @@ export default function DiscoverPage() {
                       <Card
                         isBlurred
                         radius="lg"
-                        className="h-full w-full border-none"
+                        className="h-full w-full border-none shadow-lg"
                       >
                         {card.isLastCard ? (
-                          <div className="flex h-full flex-col items-center justify-center bg-gray-100 dark:bg-gray-800">
+                          <div className="flex h-full w-full flex-col items-center justify-center bg-gray-100 dark:bg-gray-800 p-6">
                             <h2 className="mb-4 text-2xl font-bold">
                               All Caught Up!
                             </h2>
@@ -336,7 +374,7 @@ export default function DiscoverPage() {
                           </div>
                         ) : (
                           <>
-                            <CardBody className="absolute left-0 top-0 h-full w-full bg-black bg-opacity-50">
+                            <CardBody className="absolute left-0 top-0 h-full w-full bg-black bg-opacity-50 overflow-auto">
                               <motion.div
                                 key={`container-${card.id}-${
                                   flippedCards[card.id]
