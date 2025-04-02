@@ -1,157 +1,33 @@
 "use client";
-import { useState, useEffect, Suspense, useRef } from "react";
+import { useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
-import dynamic from "next/dynamic";
 import discoveryImage from "@/public/images/landing/2.jpg";
-import { Spinner, Skeleton } from "@heroui/react";
+import DynamicFeatureSection from "@/components/featureSection";
+import Hero from "@/components/ui/Hero";
+import Footer from "@/components/footer";
 
-const DynamicFeatureSection = dynamic(
-  () => import("@/components/featureSection"),
-  {
-    loading: () => (
-      <div className="flex h-[600px] items-center justify-center">
-        <Spinner />
-      </div>
-    ),
-    ssr: false,
-  }
-);
-
-const DynamicFooter = dynamic(() => import("@/components/footer"), {
-  ssr: true,
-});
 
 export default function QuratrLandingPage() {
   const [scrollY, setScrollY] = useState(0);
   const { scrollYProgress } = useScroll();
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [playbackRate, setPlaybackRate] = useState(1);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-  const heroScale = useTransform(scrollYProgress, [0, 0.2], [1, 0.9]);
-  const heroBorderRadius = useTransform(scrollYProgress, [0, 0.2], [0, 50]);
+
   const aboutOpacity = useTransform(scrollYProgress, [0.4, 0.6], [0, 1]);
   const ctaScale = useTransform(scrollYProgress, [0.6, 0.8], [0.8, 1]);
 
-  const VideoSkeleton = () => {
-    return (
-      <div className="absolute inset-0 flex h-screen w-full items-center justify-center">
-        <Skeleton className="h-full w-full rounded-none" />
-      </div>
-    );
-  };
-
-  useEffect(() => {
-    let startTime: number;
-    const duration = 5000; // 5 seconds
-    const startSpeed = 1;
-    const endSpeed = 0.4;
-
-    const animatePlaybackSpeed = (timestamp: number) => {
-      if (!startTime) startTime = timestamp;
-      const elapsed = timestamp - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-
-      // Calculate current speed using easeOut function for smooth deceleration
-      const currentSpeed =
-        startSpeed - (startSpeed - endSpeed) * easeOutQuad(progress);
-
-      if (videoRef.current) {
-        videoRef.current.playbackRate = currentSpeed;
-        setPlaybackRate(currentSpeed);
-      }
-
-      if (progress < 1) {
-        requestAnimationFrame(animatePlaybackSpeed);
-      }
-    };
-
-    // Easing function for smooth transition
-    function easeOutQuad(x: number): number {
-      return 1 - (1 - x) * (1 - x);
-    }
-
-    requestAnimationFrame(animatePlaybackSpeed);
-  }, []);
-
   return (
     <div className="min-h-screen overflow-x-hidden font-sans">
-      <div className="bg-white">
-        <motion.section
-          id="hero"
-          style={{
-            scale: heroScale,
-            borderRadius: heroBorderRadius,
-            position: "relative",
-            overflow: "hidden",
-          }}
-          className="h-screen w-full p-0 text-center"
-        >
-          <Suspense fallback={<VideoSkeleton />}>
-            <script>
-              {`
-              document.addEventListener('DOMContentLoaded', function() {
-                var video = document.querySelector('video');
-                video.playbackRate = ${playbackRate};
-              });
-            `}
-            </script>
-            <video
-              ref={videoRef}
-              autoPlay
-              loop
-              muted
-              playsInline
-              preload="auto"
-              className="z-0"
-              style={{
-                position: "absolute",
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-              }}
-            >
-              <source src="/videos/hero.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          </Suspense>
-          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center">
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7 }}
-              className="mb-6 text-4xl font-bold text-white sm:text-5xl md:text-7xl"
-            >
-              Curate your next Experience
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-              className="mb-12 text-lg text-white sm:text-xl md:text-2xl"
-            >
-              Discover personalized experiences with a swipe
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.7, delay: 0.4 }}
-            >
-              <a href="/login">
-                <button className="group inline-flex items-center rounded-full bg-[#fed4e4] px-6 py-3 text-base text-black transition-all hover:scale-110 sm:px-8 sm:py-4 sm:text-lg">
-                  Start Exploring
-                  <ArrowRight className="ml-2 transition-transform duration-300 group-hover:animate-bounceHorizontal" />
-                </button>
-              </a>
-            </motion.div>
-          </div>
-        </motion.section>
+      <div className="bg-background">
+        <Hero
+          scrollProgress={scrollYProgress}
+          />
         {/*  */}
         <DynamicFeatureSection />
 
@@ -177,9 +53,6 @@ export default function QuratrLandingPage() {
                   curated recommendations for the modern, experience-driven
                   generation.
                 </p>
-                {/* <button className="bg-[#fed4e4] text-black px-6 sm:px-8 py-2 sm:py-3 rounded-full hover:scale-110 transition-all">
-                    Learn More
-                  </button> */}
               </motion.div>
               <motion.div
                 initial={{ opacity: 0, x: 50 }}
@@ -224,7 +97,7 @@ export default function QuratrLandingPage() {
         </motion.section>
         {/* <BackgroundLinesDemo /> */}
       </div>
-      <DynamicFooter />
+      <Footer />
       <motion.div
         className="fixed bottom-4 right-4 hidden cursor-pointer rounded-full bg-[#fed4e4] p-3 text-black shadow-lg sm:bottom-8 sm:right-8 sm:p-4 md:block"
         style={{
