@@ -16,9 +16,9 @@ export async function resetAccount() {
   const supabase = createClient();
   
   // Get the current user
-  const { data: { user }, error: userError } = await supabase.auth.getUser();
+  const { data: { session }, error: userError } = await supabase.auth.getSession();
   
-  if (userError || !user) {
+  if (userError || !session?.user.id) {
     console.error("Error getting user:", userError);
     throw new Error("Unable to authenticate user");
   }
@@ -28,7 +28,7 @@ export async function resetAccount() {
     const { error: likesError } = await supabase
       .from("likes")
       .delete()
-      .eq("user_id", user.id);
+      .eq("user_id", session.user.id);
 
     if (likesError) {
       console.error("Error deleting likes:", likesError);
@@ -39,7 +39,7 @@ export async function resetAccount() {
     const { error: dislikesError } = await supabase
       .from("dislikes")
       .delete()
-      .eq("user_id", user.id);
+      .eq("user_id", session.user.id);
 
     // Set place_likes and place_dislikes to 0 in profiles table
     const { error: profileError } = await supabase
@@ -48,7 +48,7 @@ export async function resetAccount() {
         place_likes: 0,
         place_dislikes: 0,
       })
-      .eq("user_id", user.id);
+      .eq("id", session.user.id);
 
     if (dislikesError) {
       console.error("Error deleting dislikes:", dislikesError);

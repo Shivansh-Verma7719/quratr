@@ -14,7 +14,8 @@ import {
     ModalBody,
     ModalFooter,
     useDisclosure,
-    Divider
+    Divider,
+    Alert
 } from "@heroui/react";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -43,6 +44,7 @@ export default function SettingsPage() {
     const [isLoggingOut, setIsLoggingOut] = useState(false);
     const [isResetting, setIsResetting] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState<string | null>(null);
 
     const {
         isOpen: isResetModalOpen,
@@ -76,7 +78,7 @@ export default function SettingsPage() {
             setIsResetting(true);
             setError(null);
             await resetAccount();
-            router.push("/onboarding");
+            setSuccess("Account reset successfully.");
         } catch (err) {
             console.error("Reset account error:", err);
             setError("Failed to reset account. Please try again.");
@@ -159,7 +161,7 @@ export default function SettingsPage() {
                                             <DropdownTrigger>
                                                 <Button
                                                     variant="light"
-                                                    className="min-w-0 h-auto p-0 bg-transparent"
+                                                    className="h-auto p-0 bg-transparent"
                                                     endContent={<ChevronDown size={16} />}
                                                 >
                                                     {getThemeText()}
@@ -213,9 +215,10 @@ export default function SettingsPage() {
                     </Card>
 
                     {error && (
-                        <div className="mt-4 rounded-lg bg-danger-100 p-3 text-danger-700">
-                            {error}
-                        </div>
+                        <Alert color="danger" title={error} className="mt-4"/>
+                    )}
+                    {success && (
+                        <Alert color="success" title={success} className="mt-4"/>
                     )}
                 </motion.div>
             </div>
