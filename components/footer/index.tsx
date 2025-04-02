@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Instagram } from "lucide-react";
 import { useTheme } from "next-themes";
 import { getPages } from "../pages";
 import Logo_Light from "@/components/logos/logo_light";
 import Logo from "@/components/logos/logo";
+import { IconBrandInstagram, IconBrandThreads, IconBrandX } from "@tabler/icons-react";
 
 const Footer: React.FC = () => {
   const { theme } = useTheme();
@@ -66,24 +66,30 @@ const Footer: React.FC = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Socials</h3>
             <ul className="space-y-2">
-              {/* <li><Link href="#" className="text-gray-400 transition-colors flex items-center"><Facebook className="w-5 h-5 mr-2" /> Facebook</Link></li> */}
               <li>
                 <Link
                   href="https://www.instagram.com/quratr.app"
                   className="text-gray-400 transition-colors flex items-center"
                 >
-                  <Instagram className="w-5 h-5 mr-2" /> Instagram
+                  <IconBrandInstagram size={20} className="mr-2" /> Instagram
                 </Link>
               </li>
-              {/* <li><Link href="#" className="text-gray-400 transition-colors flex items-center"><Twitter className="w-5 h-5 mr-2" /> Twitter</Link></li> */}
-              {/* <li>
+              <li>
                 <Link
-                  href="#"
+                  href="https://www.threads.net/@quratr.app"
                   className="text-gray-400 transition-colors flex items-center"
                 >
-                  <Linkedin className="w-5 h-5 mr-2" /> LinkedIn
+                  <IconBrandThreads size={20} className="mr-2" /> Threads
                 </Link>
-              </li> */}
+              </li>
+              <li>
+                <Link
+                  href="https://x.com/quratrapp"
+                  className="text-gray-400 transition-colors flex items-center"
+                >
+                  <IconBrandX size={20} className="mr-2" /> X
+                </Link>
+              </li>
             </ul>
           </div>
           <div>
