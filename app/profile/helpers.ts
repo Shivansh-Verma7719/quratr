@@ -10,6 +10,8 @@ export interface UserProfile {
   is_onboarded: boolean;
   created_at?: string;
   id: string;
+  places_likes?: number;
+  places_dislikes?: number;
 }
 
 export async function fetchUserProfile(): Promise<UserProfile | null> {

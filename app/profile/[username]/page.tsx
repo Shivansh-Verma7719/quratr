@@ -117,6 +117,11 @@ export default function UserProfilePage() {
                             userProfile={userProfile} 
                             isCurrentUser={isCurrentUser}
                             isEditable={true}
+                            userStats={{
+                                placesLiked: userProfile.place_likes,
+                                placesDisliked: userProfile.place_dislikes,
+                                postsCreated: userPosts.length,
+                            }}
                         />
                     </motion.div>
                 )}

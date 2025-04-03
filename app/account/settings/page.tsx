@@ -215,10 +215,10 @@ export default function SettingsPage() {
                     </Card>
 
                     {error && (
-                        <Alert color="danger" title={error} className="mt-4"/>
+                        <Alert color="danger" title={error} className="mt-4" />
                     )}
                     {success && (
-                        <Alert color="success" title={success} className="mt-4"/>
+                        <Alert color="success" title={success} className="mt-4" />
                     )}
                 </motion.div>
             </div>
