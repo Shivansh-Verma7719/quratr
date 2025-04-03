@@ -118,8 +118,8 @@ export default function UserProfilePage() {
                             isCurrentUser={isCurrentUser}
                             isEditable={true}
                             userStats={{
-                                placesLiked: userProfile.place_likes,
-                                placesDisliked: userProfile.place_dislikes,
+                                placesLiked: userProfile.place_likes ?? 0,
+                                placesDisliked: userProfile.place_dislikes ?? 0,
                                 postsCreated: userPosts.length,
                             }}
                         />
