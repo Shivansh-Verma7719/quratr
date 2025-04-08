@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     images: [
       {
-        url: "https://quratr.com/images/logo.png",
+        url: "https://quratr.com/images/logo_dark.png",
         alt: "Quratr - Your Personalized App for Curated Experiences",
       },
     ],
