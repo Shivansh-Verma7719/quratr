@@ -9,33 +9,143 @@ import { Button } from "@heroui/button";
 import { Card, CardHeader, CardBody } from "@heroui/react";
 import { Input } from "@heroui/input";
 import { IconSwipe } from "@tabler/icons-react";
-import QuestionCard from "@/components/ui/Question";
+import SwipeCard from "@/components/swipe/SwipeCard";
 import { createClient } from "@/utils/supabase/client";
+import { normalizeVector, updateUserVector, createZeroVector } from "@/utils/vectors/util";
 import Image from "next/image";
 
-const onboardingQuestions = [
-  "You like night clubs?",
-  "You're ready to spend for premium experiences?",
-  "Do you like spending time alone at cafés?",
-  "Are you looking for hidden gems?",
-  "Are you looking to do cool things with new people?",
-];
+interface Place {
+  id: number;
+  name: string;
+  description: string;
+  cuisine?: string;
+  address?: string;
+  city?: string;
+  image_url?: string;
+  rating?: number;
+  likes?: number;
+  price?: number;
+  tags?: string;
+  group_experience?: string;
+}
+
+interface PlaceWithEmbedding extends Place {
+  embedding: number[];
+}
 
 const OnboardingPage: React.FC = () => {
   const router = useRouter();
-  const [section, setSection] = useState("profile"); // 'profile' or 'questions'
-  const [step, setStep] = useState(0);
+  const [section, setSection] = useState("profile"); // 'profile' or 'swipe'
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     username: "",
     avatarUrl: "",
-    onboardingAnswers: Array(5).fill(""),
   });
+  const [places, setPlaces] = useState<PlaceWithEmbedding[]>([]);
+  const [currentSwipeIndex, setCurrentSwipeIndex] = useState(0);
+  const [userVector, setUserVector] = useState<number[]>(createZeroVector(1536));
+  const [swipeCount, setSwipeCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingPlaces, setIsLoadingPlaces] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
   const [isPageLoading, setIsPageLoading] = useState(true);
+
+  const placeIds = [165, 216, 206, 1918]; // The specific place IDs to fetch
+
+  // Function to fetch places and their embeddings
+  const fetchPlacesWithEmbeddings = async () => {
+    try {
+      setIsLoadingPlaces(true);
+      const supabase = createClient();
+
+      // First try to fetch the specific places
+      const { data: placesData, error: placesError } = await supabase
+        .from("placesv2")
+        .select("*")
+        .in("id", placeIds);
+
+      if (placesError) {
+        console.error("Error fetching places:", placesError);
+        setError("Failed to load places data");
+        return;
+      }
+
+      // If we don't have enough places, fetch some random ones
+      let finalPlacesData = placesData || [];
+      if (finalPlacesData.length < 4) {
+        const { data: randomPlaces, error: randomError } = await supabase
+          .from("placesv2")
+          .select("*")
+          .not("id", "in", `(${finalPlacesData.map(p => p.id).join(",")})`)
+          .limit(4 - finalPlacesData.length);
+
+        if (!randomError && randomPlaces) {
+          finalPlacesData = [...finalPlacesData, ...randomPlaces];
+        }
+      }
+
+      if (finalPlacesData.length === 0) {
+        setError("No places available for onboarding");
+        return;
+      }
+
+      // Get the actual place IDs we'll be using
+      const finalPlaceIds = finalPlacesData.map(p => p.id);
+
+      // Fetch embeddings for these places
+      const { data: embeddingsData, error: embeddingsError } = await supabase
+        .from("place_vectors")
+        .select("place_id, embedding")
+        .in("place_id", finalPlaceIds);
+
+      if (embeddingsError) {
+        console.error("Error fetching embeddings:", embeddingsError);
+        setError("Failed to load place embeddings");
+        return;
+      }
+
+      // Combine places with their embeddings
+      const placesWithEmbeddings: PlaceWithEmbedding[] = finalPlacesData.map(place => {
+        const embeddingData = embeddingsData.find(e => e.place_id === place.id);
+        return {
+          ...place,
+          embedding: embeddingData?.embedding || createZeroVector(1536)
+        };
+      });
+
+      setPlaces(placesWithEmbeddings);
+    } catch (error) {
+      console.error("Error in fetchPlacesWithEmbeddings:", error);
+      setError("Failed to load places data");
+    } finally {
+      setIsLoadingPlaces(false);
+    }
+  };
+
+  // Function to handle swipe actions
+  const handleSwipe = (place: Place, liked: boolean) => {
+    const placeWithEmbedding = places.find(p => p.id === place.id);
+    if (!placeWithEmbedding) return;
+
+    // Update the user vector based on the swipe using utility function
+    setUserVector(prevVector => updateUserVector(prevVector, placeWithEmbedding.embedding, liked));
+
+    const newSwipeCount = swipeCount + 1;
+    setSwipeCount(newSwipeCount);
+    setCurrentSwipeIndex(prev => prev + 1);
+
+    // Auto-submit when all places are swiped
+    if (newSwipeCount >= places.length && places.length > 0) {
+      setTimeout(() => {
+        handleSubmit();
+      }, 1000); // Small delay to show completion message
+    }
+  };
+
+  const handleLike = (place: Place) => handleSwipe(place, true);
+  const handleDislike = (place: Place) => handleSwipe(place, false);
 
   useEffect(() => {
     const checkUserStatus = async () => {
@@ -132,12 +242,6 @@ const OnboardingPage: React.FC = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleOnboardingAnswer = (answer: string) => {
-    const newAnswers = [...formData.onboardingAnswers];
-    newAnswers[step] = answer;
-    setFormData({ ...formData, onboardingAnswers: newAnswers });
-  };
-
   const validateProfile = () => {
     return (
       formData.firstName.trim() !== "" &&
@@ -146,45 +250,34 @@ const OnboardingPage: React.FC = () => {
     );
   };
 
-  const validateStep = () => {
-    return formData.onboardingAnswers[step] !== "";
-  };
-
   const handleNext = () => {
-    if (section === "profile") {
-      if (validateProfile()) {
-        setSection("questions");
-      }
-    } else if (validateStep() && step < 4) {
-      setStep(step + 1);
+    if (section === "profile" && validateProfile()) {
+      setSection("swipe");
+      fetchPlacesWithEmbeddings();
     }
   };
 
   const handlePrevious = () => {
-    if (section === "questions") {
-      if (step > 0) {
-        setStep(step - 1);
-      } else {
-        setSection("profile");
-      }
+    if (section === "swipe") {
+      setSection("profile");
     }
   };
 
-  const validateAllSteps = () => {
-    return (
-      validateProfile() &&
-      formData.onboardingAnswers.every((answer) => answer !== "")
-    );
-  };
-
   const handleSubmit = async () => {
-    if (step === 4 && validateAllSteps()) {
+    if (swipeCount >= places.length && places.length > 0) { // User has swiped on all places
       setIsLoading(true);
       try {
-        const result = await submitOnboarding(formData);
+        // Normalize the user vector
+        const normalizedVector = normalizeVector(userVector);
+
+        const result = await submitOnboarding({
+          ...formData,
+          userVector: normalizedVector
+        });
+
         if (result.success) {
           setSuccess(true);
-          setTimeout(() => router.push("/discover"), 1500); // Small delay to show success message
+          setTimeout(() => router.push("/discover"), 1500);
         } else {
           setError(result.error?.message || "Failed to submit onboarding");
         }
@@ -269,23 +362,92 @@ const OnboardingPage: React.FC = () => {
     );
   };
 
-  const renderQuestionsSection = () => {
-    if (step >= 0 && step <= 4) {
+  const renderSwipeSection = () => {
+    if (isLoadingPlaces) {
       return (
-        <QuestionCard
-          question={onboardingQuestions[step]}
-          currentAnswer={formData.onboardingAnswers[step]}
-          onAnswerChange={handleOnboardingAnswer}
-        />
+        <motion.div
+          key="loading"
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -50 }}
+          className="space-y-4 text-center"
+        >
+          <h2 className="mb-6 text-xl font-bold">Loading places...</h2>
+          <div className="animate-pulse flex flex-col items-center">
+            <div className="h-64 w-full bg-gray-300 rounded-lg mb-4"></div>
+            <div className="h-4 w-3/4 bg-gray-300 rounded"></div>
+          </div>
+        </motion.div>
       );
     }
+
+    if (places.length === 0) {
+      return (
+        <motion.div
+          key="error"
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -50 }}
+          className="space-y-4 text-center"
+        >
+          <h2 className="mb-6 text-xl font-bold text-red-500">Failed to load places</h2>
+          <p>Please try again later.</p>
+        </motion.div>
+      );
+    }
+
+    return (
+      <motion.div
+        key="swipe"
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: -50 }}
+        className="space-y-4"
+      >
+        <div className="text-center mb-4">
+          <h2 className="text-xl font-bold">Discover Your Taste</h2>
+          <p className="text-gray-600 mt-2">
+            Swipe right ❤️ if you like the place, left ❌ if you don&apos;t
+          </p>
+          <p className="text-sm text-gray-500 mt-1">
+            {swipeCount} of {places.length} places reviewed
+          </p>
+        </div>
+
+        {swipeCount < places.length ? (
+          <div className="h-[400px] flex items-center justify-center">
+            <SwipeCard
+              places={places.slice(currentSwipeIndex, currentSwipeIndex + 1)}
+              onLike={handleLike}
+              onDislike={handleDislike}
+              isLoading={isLoadingPlaces}
+            />
+          </div>
+        ) : (
+          <div className="text-center py-8">
+            <h3 className="text-lg font-semibold text-green-600 mb-4">
+              🎉 Perfect! We&apos;ve learned your preferences
+            </h3>
+            <p className="text-gray-600 mb-6">
+              Your taste profile has been created based on your swipes.
+              Redirecting you to discover amazing places...
+            </p>
+            {isLoading && (
+              <div className="animate-pulse">
+                <div className="h-4 w-48 bg-gray-300 rounded mx-auto"></div>
+              </div>
+            )}
+          </div>
+        )}
+      </motion.div>
+    );
   };
 
   const getProgressPercentage = () => {
     if (section === "profile") {
-      return 10;
+      return 20;
     } else {
-      return 20 + ((step + 1) / 5) * 80;
+      return 20 + (swipeCount / Math.max(places.length, 1)) * 80;
     }
   };
 
@@ -315,11 +477,11 @@ const OnboardingPage: React.FC = () => {
           </div>
 
           <AnimatePresence mode="wait">
-            {section === "profile" ? renderProfileSection() : renderQuestionsSection()}
+            {section === "profile" ? renderProfileSection() : renderSwipeSection()}
           </AnimatePresence>
 
           <div className="mt-8 flex justify-between">
-            {(section === "questions" || step > 0) && (
+            {section === "swipe" && (
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -331,34 +493,18 @@ const OnboardingPage: React.FC = () => {
               </motion.button>
             )}
 
-            {(section === "profile" || step < 4) ? (
+            {section === "profile" && (
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 type="button"
                 onClick={handleNext}
-                className={`ml-auto flex items-center rounded-full bg-blue-500 px-4 py-2 text-white ${(section === "profile" && !validateProfile()) ||
-                    (section === "questions" && !validateStep())
-                    ? "cursor-not-allowed opacity-50" : ""
+                className={`ml-auto flex items-center rounded-full bg-blue-500 px-4 py-2 text-white ${!validateProfile() ? "cursor-not-allowed opacity-50" : ""
                   }`}
-                disabled={(section === "profile" && !validateProfile()) ||
-                  (section === "questions" && !validateStep())}
+                disabled={!validateProfile()}
               >
                 Next <ArrowRight className="ml-2" />
               </motion.button>
-            ) : (
-              <Button
-                onPress={handleSubmit}
-                color="primary"
-                variant="flat"
-                size="lg"
-                isLoading={isLoading}
-                disabled={isLoading || !validateAllSteps()}
-                className={`ml-auto flex items-center rounded-full bg-green-500 px-4 py-2 text-white ${!validateAllSteps() ? "cursor-not-allowed opacity-50" : ""
-                  }`}
-              >
-                Submit
-              </Button>
             )}
           </div>
 

@@ -147,6 +147,7 @@ const LoginForm: React.FC = () => {
       // No need to set success or handle loading state here as we're redirecting to Google
     } catch (e) {
       setError("Failed to connect with Google. Please try again.");
+      console.error("Google Sign In Error:", e);
       setIsLoading(false);
     }
   };
