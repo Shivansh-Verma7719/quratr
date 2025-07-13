@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import QuratrLogoDark from "@/components/logos/logo_light";
-import QuratrLogo from "@/components/logos/logo";
+import QuratrLogoDark from "@/components/ui/logos/logo_light";
+import QuratrLogo from "@/components/ui/logos/logo";
 import { User } from "@supabase/supabase-js";
 import { UserProfile } from "@/app/layoutWrapper";
 import Link from "next/link";

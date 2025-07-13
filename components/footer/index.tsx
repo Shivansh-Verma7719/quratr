@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { getPages } from "../pages";
-import Logo_Light from "@/components/logos/logo_light";
-import Logo from "@/components/logos/logo";
+import Logo_Light from "@/components/ui/logos/logo_light";
+import Logo from "@/components/ui/logos/logo";
 import { IconBrandInstagram, IconBrandThreads, IconBrandX } from "@tabler/icons-react";
 
 const Footer: React.FC = () => {

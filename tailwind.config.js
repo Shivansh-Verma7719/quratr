@@ -1,8 +1,8 @@
-import { heroui } from "@heroui/theme";
-import type { Config } from "tailwindcss";
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { heroui } = require("@heroui/react");
 import typography from "@tailwindcss/typography";
 
-const config: Config = {
+module.exports = {
   darkMode: "class", // Ensure class-based dark mode is enabled
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -22,9 +22,7 @@ const config: Config = {
       keyframes: {
         // Updated faster left-to-right only animation
         "slow-shimmer": {
-          "0%": {
-            "background-position": "calc(-100% - var(--shiny-width)) 0",
-          },
+          "0%": { "background-position": "calc(-100% - var(--shiny-width)) 0" },
           "100%": {
             "background-position": "calc(100% + var(--shiny-width)) 0",
           },
@@ -38,4 +36,3 @@ const config: Config = {
   },
   plugins: [typography, heroui()],
 };
-export default config;

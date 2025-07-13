@@ -6,7 +6,7 @@ import Footer from "@/components/footer/index";
 import { submitOnboarding } from "./helper";
 import { useRouter } from "next/navigation";
 import { Button } from "@heroui/button";
-import { Card, CardHeader, CardBody } from "@heroui/card";
+import { Card, CardHeader, CardBody } from "@heroui/react";
 import { Input } from "@heroui/input";
 import { IconSwipe } from "@tabler/icons-react";
 import QuestionCard from "@/components/ui/Question";

@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import discoveryImage from "@/public/images/landing/2.jpg";
-import DynamicFeatureSection from "@/components/featureSection";
+import DynamicFeatureSection from "@/components/landing/featureSection";
 import Hero from "@/components/ui/Hero";
 import Footer from "@/components/footer";
 

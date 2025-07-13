@@ -15,9 +15,9 @@ import {
   Sparkles,
   X
 } from "lucide-react";
-import Logo from "../logos/logo";
+import Logo from "../ui/logos/logo";
 import Link from "next/link";
-import Logo_Light from "../logos/logo_light";
+import Logo_Light from "../ui/logos/logo_light";
 import { User } from "@supabase/supabase-js";
 
 const CustomNavbar: React.FC<{ user: User | null }> = ({ user }) => {
