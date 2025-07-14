@@ -18,13 +18,13 @@ const AnimatedGradient = () => (
 const Hero: React.FC<HeroProps> = ({ scrollProgress }) => {
   // Container ref for section-specific scroll measurements
   const [viewportHeight, setViewportHeight] = useState(0);
-  
+
   useEffect(() => {
     // Set initial viewport height and update on resize
     const updateViewportHeight = () => {
       setViewportHeight(window.innerHeight);
     };
-    
+
     updateViewportHeight();
     window.addEventListener('resize', updateViewportHeight);
     return () => window.removeEventListener('resize', updateViewportHeight);
@@ -33,33 +33,50 @@ const Hero: React.FC<HeroProps> = ({ scrollProgress }) => {
   // Transform values based on scroll progress with parallax effects
   const heroScale = useTransform(scrollProgress, [0, 0.2], [1, 0.9]);
   const heroBorderRadius = useTransform(scrollProgress, [0, 0.2], [0, 50]);
-  
+
   // Parallax effect for background image (moves slower than scroll)
   const backgroundY = useTransform(
-    scrollProgress, 
-    [0, 1], 
+    scrollProgress,
+    [0, 1],
     [0, viewportHeight * 0.5]
   );
-  
+
   // Parallax effects for decorative elements
   const floatingElementY1 = useTransform(
-    scrollProgress, 
-    [0, 0.5], 
+    scrollProgress,
+    [0, 0.5],
     [0, -viewportHeight * 0.15]
   );
-  
+
   const floatingElementY2 = useTransform(
-    scrollProgress, 
-    [0, 0.5], 
+    scrollProgress,
+    [0, 0.5],
     [0, viewportHeight * 0.2]
   );
-  
-  const floatingOpacity = useTransform(scrollProgress, [0, 0.35], [1, 0]);
-  
+
+  // Smooth horizontal movement transforms for floating elements
+  const floatingElementX1 = useTransform(
+    scrollProgress,
+    [0, 0.3, 0.5],
+    [0, 25, 40]
+  );
+
+  const floatingElementX2 = useTransform(
+    scrollProgress,
+    [0, 0.3, 0.5],
+    [0, -40, -60]
+  );
+
+  const floatingElementX3 = useTransform(
+    scrollProgress,
+    [0, 0.4, 0.5],
+    [0, -60, -100]
+  );
+
   // Content parallax (moves faster for enhanced depth perception)
   const contentY = useTransform(
-    scrollProgress, 
-    [0, 0.3], 
+    scrollProgress,
+    [0, 0.3],
     [0, -viewportHeight * 0.1]
   );
 
@@ -73,7 +90,7 @@ const Hero: React.FC<HeroProps> = ({ scrollProgress }) => {
       className="relative h-screen w-full overflow-hidden p-0 text-center"
     >
       {/* Background image with parallax */}
-      <motion.div 
+      <motion.div
         className="absolute inset-0 z-0 will-change-transform"
         style={{ y: backgroundY }}
       >
@@ -94,10 +111,9 @@ const Hero: React.FC<HeroProps> = ({ scrollProgress }) => {
       {/* Parallax floating decorative elements */}
       <motion.div
         className="absolute right-[15%] top-1/4 z-20 hidden lg:block will-change-transform"
-        style={{ 
-          y: floatingElementY1, 
-          opacity: floatingOpacity,
-          x: useTransform(scrollProgress, [0, 0.5], [0, 40]),
+        style={{
+          y: floatingElementY1,
+          x: floatingElementX1,
         }}
       >
         <div className="h-48 w-48 rounded-full bg-pink-400/30 backdrop-blur-xl" />
@@ -105,10 +121,9 @@ const Hero: React.FC<HeroProps> = ({ scrollProgress }) => {
 
       <motion.div
         className="absolute bottom-1/3 left-[10%] z-20 hidden lg:block will-change-transform"
-        style={{ 
+        style={{
           y: floatingElementY2,
-          opacity: floatingOpacity,
-          x: useTransform(scrollProgress, [0, 0.5], [0, -60]),
+          x: floatingElementX2,
         }}
       >
         <div className="h-32 w-32 rounded-full bg-purple-400/30 backdrop-blur-xl" />
@@ -117,9 +132,8 @@ const Hero: React.FC<HeroProps> = ({ scrollProgress }) => {
       {/* Additional floating element for enhanced depth */}
       <motion.div
         className="absolute top-[60%] left-[60%] z-20 hidden lg:block will-change-transform"
-        style={{ 
-          y: useTransform(scrollProgress, [0, 0.5], [0, -100]),
-          opacity: floatingOpacity,
+        style={{
+          y: floatingElementX3,
           scale: useTransform(scrollProgress, [0, 0.5], [1, 0.8]),
         }}
       >
@@ -127,7 +141,7 @@ const Hero: React.FC<HeroProps> = ({ scrollProgress }) => {
       </motion.div>
 
       {/* Hero content with parallax effect */}
-      <motion.div 
+      <motion.div
         className="absolute inset-0 z-30 flex flex-col items-center justify-center px-4 will-change-transform"
         style={{ y: contentY }}
       >
