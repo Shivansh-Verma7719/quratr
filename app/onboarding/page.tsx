@@ -2,12 +2,13 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight, PartyPopper, ShieldAlert, User, UserIcon } from "lucide-react";
-import Footer from "@/components/footer/index";
 import { submitOnboarding } from "./helper";
 import { useRouter } from "next/navigation";
 import { Button } from "@heroui/button";
-import { Card, CardHeader, CardBody } from "@heroui/react";
+import { Card, CardHeader, CardBody, Progress } from "@heroui/react";
 import { Input } from "@heroui/input";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from "@heroui/modal";
+import { useDisclosure } from "@heroui/react";
 import { IconSwipe } from "@tabler/icons-react";
 import SwipeCard from "@/components/swipe/SwipeCard";
 import { createClient } from "@/utils/supabase/client";
@@ -43,7 +44,6 @@ const OnboardingPage: React.FC = () => {
     avatarUrl: "",
   });
   const [places, setPlaces] = useState<PlaceWithEmbedding[]>([]);
-  const [currentSwipeIndex, setCurrentSwipeIndex] = useState(0);
   const [userVector, setUserVector] = useState<number[]>(createZeroVector(1536));
   const [swipeCount, setSwipeCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -51,6 +51,7 @@ const OnboardingPage: React.FC = () => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
   const [isPageLoading, setIsPageLoading] = useState(true);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const placeIds = [165, 216, 206, 1918]; // The specific place IDs to fetch
 
@@ -124,6 +125,8 @@ const OnboardingPage: React.FC = () => {
     }
   };
 
+  console.log("Initial user vector:", places);
+
   // Function to handle swipe actions
   const handleSwipe = (place: Place, liked: boolean) => {
     const placeWithEmbedding = places.find(p => p.id === place.id);
@@ -134,7 +137,6 @@ const OnboardingPage: React.FC = () => {
 
     const newSwipeCount = swipeCount + 1;
     setSwipeCount(newSwipeCount);
-    setCurrentSwipeIndex(prev => prev + 1);
 
     // Auto-submit when all places are swiped
     if (newSwipeCount >= places.length && places.length > 0) {
@@ -254,6 +256,8 @@ const OnboardingPage: React.FC = () => {
     if (section === "profile" && validateProfile()) {
       setSection("swipe");
       fetchPlacesWithEmbeddings();
+      // Open the modal to show progress after moving to swipe section
+      setTimeout(() => onOpen(), 500);
     }
   };
 
@@ -404,20 +408,11 @@ const OnboardingPage: React.FC = () => {
         exit={{ opacity: 0, x: -50 }}
         className="space-y-4"
       >
-        <div className="text-center mb-4">
-          <h2 className="text-xl font-bold">Discover Your Taste</h2>
-          <p className="text-gray-600 mt-2">
-            Swipe right ❤️ if you like the place, left ❌ if you don&apos;t
-          </p>
-          <p className="text-sm text-gray-500 mt-1">
-            {swipeCount} of {places.length} places reviewed
-          </p>
-        </div>
 
         {swipeCount < places.length ? (
-          <div className="h-[400px] flex items-center justify-center">
+          <div className="h-[400px] pt-40 flex items-center justify-center">
             <SwipeCard
-              places={places.slice(currentSwipeIndex, currentSwipeIndex + 1)}
+              places={places}
               onLike={handleLike}
               onDislike={handleDislike}
               isLoading={isLoadingPlaces}
@@ -445,9 +440,10 @@ const OnboardingPage: React.FC = () => {
 
   const getProgressPercentage = () => {
     if (section === "profile") {
-      return 20;
+      return 50; // First step: profile completion
     } else {
-      return 20 + (swipeCount / Math.max(places.length, 1)) * 80;
+      // Second step: swipe progress (50% + swipe completion percentage)
+      return 50 + (swipeCount / Math.max(places.length, 1)) * 50;
     }
   };
 
@@ -467,30 +463,51 @@ const OnboardingPage: React.FC = () => {
     <div className="min-h-screen overflow-x-hidden bg-background font-sans text-text">
       <main className="container mx-auto px-4 py-16 sm:px-6 sm:py-24">
         <div className="mx-auto max-w-md">
-          <div className="mb-8 h-2 rounded-full bg-gray-200">
-            <motion.div
-              className="h-2 rounded-full bg-blue-500"
-              initial={{ width: 0 }}
-              animate={{ width: `${getProgressPercentage()}%` }}
-              transition={{ duration: 0.5 }}
-            ></motion.div>
-          </div>
 
           <AnimatePresence mode="wait">
             {section === "profile" ? renderProfileSection() : renderSwipeSection()}
           </AnimatePresence>
 
+          {/* Floating Progress Button - Always visible except when completed */}
+          {!(swipeCount >= places.length && places.length > 0) && (
+            <motion.div
+              className="absolute bottom-14 left-1/2 transform -translate-x-1/2 z-50"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div
+                onClick={onOpen}
+                className="flex items-center justify-center bg-background/80 backdrop-blur-md rounded-full px-4 py-4 shadow-lg border border-default-200 cursor-pointer hover:bg-background/90 transition-colors"
+              >
+                <Progress
+                  value={getProgressPercentage()}
+                  className="w-32"
+                  color={swipeCount >= places.length && places.length > 0 ? "success" : "primary"}
+                  size="md"
+                />
+              </div>
+            </motion.div>
+          )}
+
           <div className="mt-8 flex justify-between">
             {section === "swipe" && (
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                type="button"
-                onClick={handlePrevious}
-                className="flex items-center rounded-full bg-gray-300 px-4 py-2 text-gray-700"
+              <motion.div
+                className="fixed bottom-14 left-6 z-50"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
               >
-                <ArrowLeft className="mr-2" /> Previous
-              </motion.button>
+                <Button
+                  type="button"
+                  onPress={handlePrevious}
+                  isIconOnly
+                  radius="full"
+                  className="bg-gray-300 text-gray-700 shadow-lg"
+                >
+                  <ArrowLeft />
+                </Button>
+              </motion.div>
             )}
 
             {section === "profile" && (
@@ -553,7 +570,103 @@ const OnboardingPage: React.FC = () => {
           )}
         </div>
       </main>
-      <Footer />
+
+      {/* Progress Modal */}
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        placement="bottom"
+        backdrop="blur"
+        size="md"
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                <h3 className="text-lg font-semibold">
+                  {section === "profile" ? "Profile Setup" : "Taste Discovery"}
+                </h3>
+                <p className="text-sm text-gray-600">
+                  {section === "profile"
+                    ? "Complete your profile information"
+                    : "Help us learn your preferences by swiping"}
+                </p>
+              </ModalHeader>
+              <ModalBody>
+                <div className="space-y-4">
+                  {/* Progress Bar */}
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Onboarding Progress</span>
+                      <span>{Math.round(getProgressPercentage())}%</span>
+                    </div>
+                    <div className="h-2 rounded-full bg-default-200 dark:bg-default-300">
+                      <div
+                        className={`h-2 rounded-full transition-all duration-500 ${swipeCount >= places.length && places.length > 0 ? "bg-success-500" : "bg-primary-500"
+                          }`}
+                        style={{ width: `${getProgressPercentage()}%` }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Step Information */}
+                  <div className="space-y-3">
+                    <div className={`flex items-center space-x-3 p-3 rounded-lg ${section === "profile" ? "bg-primary-50 dark:bg-primary-100/10 border border-primary-200 dark:border-primary-800" : "bg-success-50 dark:bg-success-100/10 border border-success-200 dark:border-success-800"
+                      }`}>
+                      <div className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold ${section === "profile" ? "bg-primary-500" : "bg-success-500"
+                        }`}>
+                        ✓
+                      </div>
+                      <div>
+                        <p className="font-medium text-sm">Profile Information</p>
+                        <p className="text-xs text-default-500">Name and username setup</p>
+                      </div>
+                    </div>
+
+                    <div className={`flex items-center space-x-3 p-3 rounded-lg ${section === "swipe" ? "bg-primary-50 dark:bg-primary-100/10 border border-primary-200 dark:border-primary-800" : "bg-default-100 dark:bg-default-100/10 border border-default-200 dark:border-default-800"
+                      }`}>
+                      <div className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold ${section === "swipe" ? "bg-primary-500" : swipeCount >= places.length && places.length > 0 ? "bg-success-500" : "bg-default-400"
+                        }`}>
+                        {swipeCount >= places.length && places.length > 0 ? "✓" : "2"}
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-medium text-sm">Taste Preferences</p>
+                        <p className="text-xs text-default-500">Swipe through places to build your profile</p>
+                        {section === "swipe" && (
+                          <div className="mt-2 flex items-center space-x-1">
+                            <div className="flex space-x-1">
+                              {Array.from({ length: places.length }).map((_, index) => (
+                                <div
+                                  key={index}
+                                  className={`w-2 h-2 rounded-full transition-colors duration-300 ${index < swipeCount ? "bg-success-500" : "bg-default-300"
+                                    }`}
+                                />
+                              ))}
+                            </div>
+                            <span className="text-xs text-default-500 ml-2">
+                              {swipeCount} of {places.length}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ModalBody>
+              <ModalFooter>
+                <Button
+                  color="primary"
+                  variant="light"
+                  onPress={onClose}
+                  className="w-full"
+                >
+                  {section === "profile" ? "Continue Setup" : "Continue Swiping"}
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </div>
   );
 };

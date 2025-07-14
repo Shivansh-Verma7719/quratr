@@ -22,7 +22,7 @@ interface Place {
     cuisine?: string;
     address?: string;
     city?: string;
-    image_url?: string;
+    image?: string;
     isLastCard?: boolean;
     rating?: number;
     likes?: number;
@@ -171,7 +171,7 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
         );
 
     return (
-        <div className="flex h-[calc(100vh_-_143px)] w-full items-center justify-center overflow-hidden px-5 py-4">
+        <div className="flex h-[calc(100vh_-_143px)] w-full items-center justify-center overflow-hidden py-4">
             <div className="relative h-[95%] w-[95%] md:h-[600px] md:w-[600px]">
                 {visibleCards.slice().reverse().map((place, index) => (
                     <TinderCard
@@ -219,12 +219,12 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
                                                 Sit back and relax while we get you more experiences to swipe on.
                                             </p>
                                         </div>
-                                    ) : place.image_url ? (
+                                    ) : place.image ? (
                                         <>
                                             <Image
                                                 alt={place.name}
                                                 className="h-full w-full object-cover md:h-[600px] md:w-[600px]"
-                                                src={place.image_url}
+                                                src={place.image}
                                                 width={600}
                                                 height={600}
                                                 priority={index < 3} // Only prioritize first 3 images
