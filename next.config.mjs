@@ -12,6 +12,7 @@ const nextConfig = {
     staleTimes: {
       dynamic: 0,
     },
+    useLightningcss: true,
     // reactCompiler: true,
   },
 };
