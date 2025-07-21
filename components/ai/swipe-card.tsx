@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import TinderCard from "react-tinder-card";
 import ReactCardFlip from "react-card-flip";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import Image from "next/image";
-import { Card, CardBody, CardFooter } from "@heroui/card";
-import { Chip } from "@heroui/chip";
-import { Skeleton } from "@heroui/react";
+import {
+    Skeleton,
+    Chip,
+    Card,
+    CardBody,
+    CardFooter
+} from "@heroui/react";
 import {
     CircleCheck,
     HomeIcon,

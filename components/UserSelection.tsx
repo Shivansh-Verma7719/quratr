@@ -5,8 +5,8 @@ import {
   DrawerHeader,
   DrawerBody,
   DrawerFooter,
-} from "@heroui/drawer";
-import { Button } from "@heroui/button";
+  Button
+} from "@heroui/react";
 import { createClient } from "@/utils/supabase/client";
 import { UserSelect } from "@/components/ui/UserSelect";
 

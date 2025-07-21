@@ -1,9 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Input } from "@heroui/input";
-import { Button } from "@heroui/button";
-import { Card, CardBody } from "@heroui/card";
+import { motion } from "motion/react";
+import {
+  Card,
+  CardBody,
+  Input,
+  Button
+} from "@heroui/react";
 import {
   UserProfile,
   updateUserProfile,
@@ -54,9 +57,9 @@ export default function ProfileEditPage() {
     setOnboardingPreferences((prev) =>
       prev
         ? {
-            ...prev,
-            [preferenceKey]: value,
-          }
+          ...prev,
+          [preferenceKey]: value,
+        }
         : null
     );
   };
@@ -81,110 +84,110 @@ export default function ProfileEditPage() {
   };
 
   return (
-      <div className="flex justify-center items-start py-7 px-5 min-h-screen w-full bg-background">
-        <div className="w-full max-w-2xl">
-          <motion.h1
-            initial={{ opacity: 0, y: -20 }}
+    <div className="flex justify-center items-start py-7 px-5 min-h-screen w-full bg-background">
+      <div className="w-full max-w-2xl">
+        <motion.h1
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-3xl font-bold mb-6 text-center"
+        >
+          Edit Your Profile
+        </motion.h1>
+        <form onSubmit={handleSubmit}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-3xl font-bold mb-6 text-center"
+            transition={{ duration: 0.5, delay: 0.2 }}
           >
-            Edit Your Profile
-          </motion.h1>
-          <form onSubmit={handleSubmit}>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <Card className="mb-6">
-                <CardBody>
-                  <h2 className="text-xl font-semibold mb-4">
-                    Personal Information
-                  </h2>
-                  <div className="space-y-4">
-                    <Input
-                      label="Username"
-                      value={userProfile?.username || ""}
-                      onChange={(e) =>
-                        handleProfileChange("username", e.target.value)
-                      }
-                    />
-                    <Input
-                      label="First Name"
-                      value={userProfile?.first_name || ""}
-                      onChange={(e) =>
-                        handleProfileChange("first_name", e.target.value)
-                      }
-                    />
-                    <Input
-                      label="Last Name"
-                      value={userProfile?.last_name || ""}
-                      onChange={(e) =>
-                        handleProfileChange("last_name", e.target.value)
-                      }
-                    />
-                  </div>
-                </CardBody>
-              </Card>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-            >
-              <Card className="mb-6">
-                <CardBody>
-                  <h2 className="text-xl font-semibold mb-4">
-                    Onboarding Preferences
-                  </h2>
-                  <div className="space-y-4">
-                    {onboardingQuestions.map((question, index) => (
-                      <div key={index}>
-                        <p className="mb-2">{question}</p>
-                        <div className="flex space-x-4 justify-center">
-                          {["No", "Yes"].map((option, optionIndex) => (
-                            <Button
-                              key={option}
-                              color={
-                                onboardingPreferences &&
+            <Card className="mb-6">
+              <CardBody>
+                <h2 className="text-xl font-semibold mb-4">
+                  Personal Information
+                </h2>
+                <div className="space-y-4">
+                  <Input
+                    label="Username"
+                    value={userProfile?.username || ""}
+                    onChange={(e) =>
+                      handleProfileChange("username", e.target.value)
+                    }
+                  />
+                  <Input
+                    label="First Name"
+                    value={userProfile?.first_name || ""}
+                    onChange={(e) =>
+                      handleProfileChange("first_name", e.target.value)
+                    }
+                  />
+                  <Input
+                    label="Last Name"
+                    value={userProfile?.last_name || ""}
+                    onChange={(e) =>
+                      handleProfileChange("last_name", e.target.value)
+                    }
+                  />
+                </div>
+              </CardBody>
+            </Card>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            <Card className="mb-6">
+              <CardBody>
+                <h2 className="text-xl font-semibold mb-4">
+                  Onboarding Preferences
+                </h2>
+                <div className="space-y-4">
+                  {onboardingQuestions.map((question, index) => (
+                    <div key={index}>
+                      <p className="mb-2">{question}</p>
+                      <div className="flex space-x-4 justify-center">
+                        {["No", "Yes"].map((option, optionIndex) => (
+                          <Button
+                            key={option}
+                            color={
+                              onboardingPreferences &&
                                 onboardingPreferences[index + 1] === optionIndex
-                                  ? "primary"
-                                  : "default"
-                              }
-                              onPress={() =>
-                                handlePreferenceChange(index, optionIndex)
-                              }
-                            >
-                              {option}
-                            </Button>
-                          ))}
-                        </div>
+                                ? "primary"
+                                : "default"
+                            }
+                            onPress={() =>
+                              handlePreferenceChange(index, optionIndex)
+                            }
+                          >
+                            {option}
+                          </Button>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                </CardBody>
-              </Card>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-              className="flex justify-center"
+                    </div>
+                  ))}
+                </div>
+              </CardBody>
+            </Card>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+            className="flex justify-center"
+          >
+            <Button
+              type="submit"
+              color="primary"
+              variant="flat"
+              size="lg"
+              isLoading={isLoading}
+              className="w-full mb-8"
             >
-              <Button
-                type="submit"
-                color="primary"
-                variant="flat"
-                size="lg"
-                isLoading={isLoading}
-                className="w-full mb-8"
-              >
-                Save Changes
-              </Button>
-            </motion.div>
-          </form>
-        </div>
+              Save Changes
+            </Button>
+          </motion.div>
+        </form>
       </div>
+    </div>
   );
 }

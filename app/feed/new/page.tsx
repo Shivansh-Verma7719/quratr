@@ -2,8 +2,10 @@
 import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Button } from "@heroui/button";
-import { Textarea } from "@heroui/input";
+import {
+  Textarea,
+  Button
+} from "@heroui/react";
 import { Camera, X } from "lucide-react";
 import { createNewPost } from "./helper";
 import { useRouter } from "next/navigation";

@@ -1,8 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Input } from "@heroui/input";
-import { Button } from "@heroui/button";
-import { Card, CardBody, CardHeader } from "@heroui/card";
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Button,
+  Input
+} from "@heroui/react";
 import {
   EyeIcon,
   EyeOffIcon,
@@ -12,7 +16,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 
 export default function ResetPasswordPage() {
   const router = useRouter();

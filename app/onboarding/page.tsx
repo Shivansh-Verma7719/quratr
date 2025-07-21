@@ -4,11 +4,20 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight, PartyPopper, ShieldAlert, User, UserIcon } from "lucide-react";
 import { submitOnboarding } from "./helper";
 import { useRouter } from "next/navigation";
-import { Button } from "@heroui/button";
-import { Card, CardHeader, CardBody, Progress } from "@heroui/react";
-import { Input } from "@heroui/input";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from "@heroui/modal";
-import { useDisclosure } from "@heroui/react";
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  Progress,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+  Button,
+  Input
+} from "@heroui/react";
 import { IconSwipe } from "@tabler/icons-react";
 import SwipeCard from "@/components/swipe/SwipeCard";
 import { createClient } from "@/utils/supabase/client";
@@ -656,7 +665,7 @@ const OnboardingPage: React.FC = () => {
               <ModalFooter>
                 <Button
                   color="primary"
-                  variant="light"
+                  variant="flat"
                   onPress={onClose}
                   className="w-full"
                 >

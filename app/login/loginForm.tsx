@@ -1,9 +1,11 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { login } from "./actions";
-import { Input } from "@heroui/input";
-import { Button } from "@heroui/button";
-import { Card, CardBody, CardHeader } from "@heroui/card";
+import {
+  Input,
+  Button,
+  Alert
+} from "@heroui/react";
 import {
   EyeIcon,
   EyeOffIcon,
@@ -16,7 +18,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/utils/supabase/client";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 
 const LoginForm: React.FC = () => {
   const router = useRouter();
@@ -282,7 +284,7 @@ const LoginForm: React.FC = () => {
         </Button>
       </motion.div>
 
-      {/* Error and success message cards */}
+      {/* Error and success message alerts */}
       <AnimatePresence>
         {error && (
           <motion.div
@@ -292,15 +294,13 @@ const LoginForm: React.FC = () => {
             transition={{ duration: 0.3 }}
             className="mt-4"
           >
-            <Card radius="lg" className="bg-red-500/20" isBlurred shadow="sm">
-              <CardHeader>
-                <ShieldAlert className="mr-2 text-red-500" />
-                <h1 className="text-red-500">Error</h1>
-              </CardHeader>
-              <CardBody>
-                <p className="text-red-500">{error}</p>
-              </CardBody>
-            </Card>
+            <Alert
+              color="danger"
+              variant="flat"
+              title="Error"
+              description={error}
+              icon={<ShieldAlert />}
+            />
           </motion.div>
         )}
       </AnimatePresence>
@@ -314,15 +314,12 @@ const LoginForm: React.FC = () => {
             transition={{ duration: 0.3 }}
             className="mt-4"
           >
-            <Card radius="lg" className="bg-green-500/20" isBlurred shadow="sm">
-              <CardHeader>
-                <CheckCheck className="mr-2 text-green-500" />
-                <h1 className="text-green-500">Success</h1>
-              </CardHeader>
-              <CardBody>
-                <p className="text-green-500">{success}</p>
-              </CardBody>
-            </Card>
+            <Alert
+              color="success"
+              variant="flat"
+              title="Success"
+              description={success}
+            />
           </motion.div>
         )}
       </AnimatePresence>

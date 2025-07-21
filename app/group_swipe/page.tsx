@@ -1,11 +1,16 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import TinderCard from "react-tinder-card";
-import { Card, CardBody, CardFooter } from "@heroui/card";
-import { Spinner, Button } from "@heroui/react";
 import Image from "next/image";
 import { fetchGroupMatches } from "./clientHelpers";
-import { Chip } from "@heroui/chip";
+import {
+  Chip,
+  Card,
+  CardBody,
+  CardFooter,
+  Spinner,
+  Button
+} from "@heroui/react";
 import {
   CircleCheck,
   PartyPopper,
@@ -16,7 +21,7 @@ import {
   Users,
 } from "lucide-react";
 import ReactCardFlip from "react-card-flip";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import FloatingActionButton from "@/components/FloatingActionButton";
 import { UserSelectionDrawer } from "@/components/UserSelection";
 import { PlaceDrawer } from "@/components/ui/Overlay";

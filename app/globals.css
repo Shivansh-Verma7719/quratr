@@ -1,15 +1,30 @@
 @import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&family=Roboto:ital,wght@0,100..700;1,100..700&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
-@font-face {
-  font-family: "CodecPro-Regular";
-  src: url("/fonts/CodecPro-Regular.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
+ @import "tailwindcss";
+ @plugin './hero.ts';
+ @plugin "@tailwindcss/typography";
+
+ @source '../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
+ @custom-variant dark (&:is(.dark *));
+
+ @theme {
+  /* color tokens */
+  --color-background: #ffffff;
+  --color-foreground: #0a0a0a;
+  --color-text: #171717;
+  --color-text-secondary: #ffffff;
+  /* transition timing */
+  --transition-duration: 1500ms;
+
+  /* animation token */
+  --animate-slow-shimmer: slow-shimmer 2.5s cubic-bezier(0.45, 0, 0.25, 1) infinite;
+
+  /* keyframes for the shimmer */
+  @keyframes slow-shimmer {
+    0%   { background-position: calc(-100% - var(--shiny-width)) 0; }
+    100% { background-position: calc(100% + var(--shiny-width)) 0; }
+  }
 }
 
 @layer base {

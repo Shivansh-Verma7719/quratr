@@ -1,14 +1,18 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { signup } from "./helper";
-import { Input } from "@heroui/input";
-import { Button } from "@heroui/button";
-import { Card, CardBody, CardHeader } from "@heroui/card";
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Input,
+  Button,
+  Checkbox
+} from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import axios from "axios";
 import GoogleCaptchaWrapper from "@/app/googleCaptchaWrapper";
-import { Checkbox } from "@heroui/checkbox";
 import Image from "next/image";
 import { createClient } from "@/utils/supabase/client";
 
@@ -22,7 +26,7 @@ import {
 } from "lucide-react";
 import PasswordStrengthBar from "react-password-strength-bar";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 const RegisterForm: React.FC = () => {
   const router = useRouter();
