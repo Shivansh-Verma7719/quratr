@@ -15,9 +15,9 @@ import {
   Sparkles,
   X
 } from "lucide-react";
-import Logo from "../ui/logos/logo";
+import Logo from "@/components/ui/logos/logo_full";
 import Link from "next/link";
-import Logo_Light from "../ui/logos/logo_light";
+import Logo_Light from "@/components/ui/logos/logo_full_light";
 import { User } from "@supabase/supabase-js";
 
 const CustomNavbar: React.FC<{ user: User | null }> = ({ user }) => {
@@ -67,13 +67,7 @@ const CustomNavbar: React.FC<{ user: User | null }> = ({ user }) => {
               transition={{ duration: 0.5 }}
               className="flex flex-row bg-clip-text text-2xl font-bold text-text"
             >
-              <ThemeLogo width={35} height={35} />
-              <h1
-                className="ml-0 translate-y-[0.3rem] p-0 text-2xl font-bold"
-                style={{ marginLeft: "0px" }}
-              >
-                uratr
-              </h1>
+              <ThemeLogo width={150} height={50} />
             </motion.div>
           </Link>
           <div className="hidden space-x-1 md:flex">

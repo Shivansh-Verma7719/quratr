@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { getPages } from "../pages";
-import Logo_Light from "@/components/ui/logos/logo_light";
-import Logo from "@/components/ui/logos/logo";
+import Logo_Light from "@/components/ui/logos/logo_full_light";
+import Logo from "@/components/ui/logos/logo_full";
 import { IconBrandInstagram, IconBrandThreads, IconBrandX } from "@tabler/icons-react";
 
 const Footer: React.FC = () => {
@@ -35,13 +35,7 @@ const Footer: React.FC = () => {
           <div className="col-span-1 lg:col-span-2">
             <Link href="/">
               <div className="flex items-center space-x-2 mb-4 text-2xl font-bold">
-                <ThemeLogo width={35} height={35} />
-                <h1
-                  className="text-2xl p-0 ml-0 font-bold translate-y-[0.3rem]"
-                  style={{ marginLeft: "0px" }}
-                >
-                  uratr
-                </h1>
+                <ThemeLogo width={150} height={50} />
               </div>
             </Link>
             <p className="text-gray-400 mb-4">
