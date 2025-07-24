@@ -12,22 +12,7 @@ import {
   likePlace,
   dislikePlace
 } from "./clientHelpers";
-
-interface Place {
-  id: number;
-  name: string;
-  description: string;
-  cuisine?: string;
-  address?: string;
-  city?: string;
-  image_url?: string;
-  isLastCard?: boolean;
-  rating?: number;
-  likes?: number;
-  price?: number;
-  tags?: string;
-  group_experience?: string;
-}
+import { Place } from "@/types/place";
 
 interface CityLocalityMap {
   [key: string]: string[];
@@ -86,28 +71,12 @@ export default function DiscoverPage() {
       // Fetch initial places chunk
       const placesData = await fetchPlacesChunk(CHUNK_SIZE, 0);
       if (placesData) {
-        // Transform the data to match the expected format
-        const transformedPlaces: Place[] = placesData.map(place => ({
-          id: place.place_id,
-          name: place.name,
-          description: place.description || "",
-          image_url: place.image,
-          rating: parseFloat(place.rating),
-          cuisine: Array.isArray(place.cuisine) ? place.cuisine.join(", ") : place.cuisine?.[0] || "",
-          price: place.price,
-          address: place.address,
-          city: place.city,
-          tags: Array.isArray(place.cuisine) ? place.cuisine.join(", ") : place.cuisine?.[0] || "",
-          group_experience: "0", // Default value, adjust based on your data
-          likes: 0 // Default value, adjust based on your data
-        }));
-
-        setPlaces(transformedPlaces);
+        setPlaces(placesData);
         setOffset(CHUNK_SIZE);
 
         // Create city locality map (simplified version for now)
         const cityMap: CityLocalityMap = {};
-        transformedPlaces.forEach(place => {
+        placesData.forEach(place => {
           if (place.city) {
             if (!cityMap[place.city]) {
               cityMap[place.city] = [];
@@ -139,22 +108,8 @@ export default function DiscoverPage() {
     try {
       const morePlaces = await fetchPlacesChunk(CHUNK_SIZE, offset);
       if (morePlaces && morePlaces.length > 0) {
-        const transformedPlaces: Place[] = morePlaces.map(place => ({
-          id: place.place_id,
-          name: place.name,
-          description: place.description || "",
-          image_url: place.image,
-          rating: parseFloat(place.rating),
-          cuisine: Array.isArray(place.cuisine) ? place.cuisine.join(", ") : place.cuisine?.[0] || "",
-          price: place.price,
-          address: place.address,
-          city: place.city,
-          tags: Array.isArray(place.cuisine) ? place.cuisine.join(", ") : place.cuisine?.[0] || "",
-          group_experience: "0",
-          likes: 0
-        }));
 
-        setPlaces(prev => [...prev, ...transformedPlaces]);
+        setPlaces(prev => [...prev, ...morePlaces]);
         setOffset(prev => prev + CHUNK_SIZE);
       }
     } catch (error) {

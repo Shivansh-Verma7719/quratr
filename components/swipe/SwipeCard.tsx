@@ -18,22 +18,7 @@ import {
     Heart,
     Star,
 } from "lucide-react";
-
-interface Place {
-    id: number;
-    name: string;
-    description: string;
-    cuisine?: string;
-    address?: string;
-    city?: string;
-    image?: string;
-    isLastCard?: boolean;
-    rating?: number;
-    likes?: number;
-    price?: number;
-    tags?: string;
-    group_experience?: string;
-}
+import { Place } from "@/types/place";
 
 interface SwipeCardProps {
     places: Place[];
@@ -223,12 +208,12 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
                                                 Sit back and relax while we get you more experiences to swipe on.
                                             </p>
                                         </div>
-                                    ) : place.image ? (
+                                    ) : (
                                         <>
                                             <Image
                                                 alt={place.name}
                                                 className="h-full w-full object-cover md:h-[600px] md:w-[600px]"
-                                                src={place.image}
+                                                src={place.image || ""}
                                                 width={600}
                                                 height={600}
                                                 priority={index < 3} // Only prioritize first 3 images
@@ -268,6 +253,9 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
                                                         </p>
                                                     )}
                                                 </div>
+                                                <p className="m-0 text-2xl text-white">
+                                                    {place.address}, {place.city}
+                                                </p>
                                                 {place.group_experience === "1" && (
                                                     <Chip
                                                         variant="faded"
@@ -280,21 +268,6 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
                                                 )}
                                             </CardFooter>
                                         </>
-                                    ) : (
-                                        <div className="flex h-full w-full flex-col items-center justify-center bg-gray-100 dark:bg-gray-800 p-6">
-                                            <h3 className="text-2xl font-bold mb-3">{place.name}</h3>
-                                            {place.address && (
-                                                <p className="text-lg text-gray-600 dark:text-gray-400 mb-4">
-                                                    <HomeIcon className="inline mr-2" size={18} />
-                                                    {place.address}{place.city ? `, ${place.city}` : ''}
-                                                </p>
-                                            )}
-                                            {place.description && (
-                                                <p className="text-gray-700 dark:text-gray-300 text-center">
-                                                    {place.description}
-                                                </p>
-                                            )}
-                                        </div>
                                     )}
                                 </Card>
 
@@ -310,7 +283,7 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
                                             <PartyPopper size={100} />
                                         </div>
                                     ) : (
-                                        <CardBody className="absolute left-0 top-0 h-full w-full bg-black bg-opacity-50 overflow-auto">
+                                        <CardBody className="absolute left-0 top-0 h-full w-full bg-black bg-opacity-60 overflow-auto">
                                             <motion.div
                                                 initial={{ opacity: 0 }}
                                                 animate={{ opacity: 1 }}
@@ -329,34 +302,28 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
                                                     <motion.div
                                                         initial={{ x: -20, opacity: 0 }}
                                                         animate={{ x: 0, opacity: 1 }}
-                                                        transition={{ duration: 0.5, delay: 0.1 }}
-                                                        className="flex items-center space-x-2"
+                                                        transition={{ duration: 0.5, delay: 0.2 }}
+                                                        className="flex flex-wrap gap-1.5"
                                                     >
-                                                        {place.tags && (
+                                                        {place.cuisine?.map((cuisine, idx) => (
                                                             <Chip
-                                                                variant="flat"
+                                                                key={idx}
                                                                 color="secondary"
-                                                                className="text-secondary-200 dark:text-secondary-600"
+                                                                variant="flat"
+                                                                size="sm"
                                                             >
-                                                                {place.tags}
+                                                                {cuisine}
                                                             </Chip>
-                                                        )}
+                                                        ))}
 
-                                                        {place.price && place.price > 10 && (
-                                                            <motion.div
-                                                                initial={{ x: -20, opacity: 0 }}
-                                                                animate={{ x: 0, opacity: 1 }}
-                                                                transition={{ duration: 0.5, delay: 0.3 }}
+                                                        {place.price && (
+                                                            <Chip
+                                                                color="success"
+                                                                variant="flat"
+                                                                size="sm"
                                                             >
-                                                                <Chip
-                                                                    variant="flat"
-                                                                    color="success"
-                                                                    className="text-success-300"
-                                                                    startContent={<IndianRupee size={18} />}
-                                                                >
-                                                                    {place.price} for 2
-                                                                </Chip>
-                                                            </motion.div>
+                                                                {place.price}
+                                                            </Chip>
                                                         )}
                                                     </motion.div>
 

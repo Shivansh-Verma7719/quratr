@@ -1,18 +1,7 @@
 "use client";
 import { createClient } from "@/utils/supabase/client";
-
-interface Place {
-  place_id: number;
-  name: string;
-  image: string;
-  rating: string;
-  cuisine: string[];
-  price: number;
-  description: string;
-  address: string;
-  city: string;
-  similarity: number;
-}
+import { updateUserVector as updateUserVectorUtil } from "@/utils/vectors/utils";
+import { Place } from "@/types/place";
 
 export async function getUserVector(): Promise<number[] | null> {
   const supabase = createClient();
@@ -124,11 +113,9 @@ export function updateVector(
   signal: number,
   alpha: number = 0.1
 ): number[] {
-  const updated = current.map(
-    (u, i) => u + alpha * signal * (embedding[i] || 0)
-  );
-  const norm = Math.hypot(...updated) || 1;
-  return updated.map((x) => x / norm);
+  // Use the new updateUserVector utility function
+  const liked = signal > 0;
+  return updateUserVectorUtil(current, embedding, liked, alpha);
 }
 
 export async function likePlace(placeId: string) {
