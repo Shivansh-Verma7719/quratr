@@ -1,6 +1,6 @@
 {
   "name": "quratr",
-  "version": "0.2.1",
+  "version": "1.5.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -22,19 +22,19 @@
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
     "axios": "^1.10.0",
-    "babel-plugin-react-compiler": "^19.0.0-beta-e993439-20250328",
+    "babel-plugin-react-compiler": "^19.1.0-rc.2",
     "browser-image-compression": "^2.0.2",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "framer-motion": "^12.23.6",
     "lucide-react": "^0.441.0",
     "motion": "^12.23.1",
-    "next": "^15.3.5",
+    "next": "15.4.3",
     "next-sitemap": "^4.2.3",
     "next-themes": "^0.3.0",
-    "react": "19.0.0",
+    "react": "19.1.0",
     "react-card-flip": "^1.2.3",
-    "react-dom": "19.0.0",
+    "react-dom": "19.1.0",
     "react-google-recaptcha-v3": "^1.11.0",
     "react-password-strength-bar": "^0.4.1",
     "react-simple-star-rating": "^5.1.7",
@@ -47,11 +47,11 @@
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.16",
     "@types/node": "^20.19.6",
-    "@types/react": "19.0.9",
-    "@types/react-dom": "19.0.3",
+    "@types/react": "19.1.8",
+    "@types/react-dom": "19.1.6",
     "@types/react-google-recaptcha": "^2.1.9",
     "eslint": "^8.57.1",
-    "eslint-config-next": "15.1.7",
+    "eslint-config-next": "15.4.3",
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.6.14",
@@ -59,7 +59,7 @@
     "typescript": "^5.8.3"
   },
   "overrides": {
-    "@types/react": "19.0.9",
-    "@types/react-dom": "19.0.3"
+    "@types/react": "19.1.8",
+    "@types/react-dom": "19.1.6"
   }
 }
